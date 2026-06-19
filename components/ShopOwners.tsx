@@ -15,17 +15,17 @@ export default function ShopOwners() {
           {/* Left: text */}
           <div>
             <AnimateInView>
-              <p className="text-amber text-[0.65rem] tracking-[0.45em] uppercase font-medium mb-4">
-                For Shop Owners
+              <p className="text-white/25 text-[0.65rem] tracking-[0.4em] uppercase font-medium mb-5">
+                for shop owners
               </p>
             </AnimateInView>
             <AnimateInView delay={0.1}>
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                Your shop, perfectly positioned.
+                your shop, perfectly positioned.
               </h2>
             </AnimateInView>
             <AnimateInView delay={0.2}>
-              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-10">
+              <p className="text-white/50 text-lg md:text-xl leading-relaxed mb-10">
                 Manage your shop&apos;s presence, tag your roast profiles and brewing methods, and
                 reach the customers who are already looking for exactly what you offer.
               </p>
@@ -33,29 +33,29 @@ export default function ShopOwners() {
             <AnimateInView delay={0.3}>
               <a
                 href="#waitlist-owner"
-                className="inline-block bg-amber text-black font-semibold px-10 py-4 rounded-full text-sm md:text-base tracking-wide hover:bg-amber/90 transition-all duration-200"
+                className="inline-block bg-white text-black font-semibold px-10 py-4 rounded-full text-sm md:text-base tracking-wide hover:bg-white/90 transition-all duration-200"
               >
-                Join the Waitlist for Shops
+                join the waitlist for shops
               </a>
             </AnimateInView>
           </div>
 
           {/* Right: feature highlights */}
           <AnimateInView delay={0.2}>
-            <div className="bg-surface rounded-2xl p-8 md:p-10 border border-white/5">
-              <p className="text-white/30 text-xs tracking-[0.35em] uppercase mb-8">
-                What you get
+            <div className="bg-surface rounded-2xl p-8 md:p-10 border border-white/[0.04]">
+              <p className="text-white/20 text-xs tracking-[0.35em] uppercase mb-8">
+                what you get
               </p>
               <ul className="space-y-6">
                 {highlights.map((item) => (
                   <li key={item} className="flex items-start gap-4">
-                    <div className="w-1 h-1 rounded-full bg-amber mt-2.5 flex-shrink-0" />
-                    <span className="text-white/70 text-base leading-relaxed">{item}</span>
+                    <div className="w-1 h-1 rounded-full bg-white/30 mt-2.5 flex-shrink-0" />
+                    <span className="text-white/60 text-base leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 pt-8 border-t border-white/5">
-                <p className="text-white/30 text-sm italic">
+              <div className="mt-10 pt-8 border-t border-white/[0.04]">
+                <p className="text-white/25 text-sm italic">
                   No pricing yet. Early shop owners get priority listing and help shape the product.
                 </p>
               </div>

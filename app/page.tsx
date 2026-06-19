@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import AudienceSplit from "@/components/AudienceSplit";
-import ProductShowcase from "@/components/ProductShowcase";
+import InteractiveMap from "@/components/InteractiveMap";
 import HowItWorks from "@/components/HowItWorks";
 import ShopOwners from "@/components/ShopOwners";
 import FounderNote from "@/components/FounderNote";
@@ -12,7 +12,7 @@ export default function Home() {
     <main>
       <Hero />
       <AudienceSplit />
-      <ProductShowcase />
+      <InteractiveMap />
       <HowItWorks />
       <ShopOwners />
       <FounderNote />

@@ -32,6 +32,17 @@ function TikTokIcon() {
   )
 }
 
+function TeardropMark() {
+  return (
+    <svg width="16" height="20" viewBox="0 0 40 52" className="opacity-30">
+      <path
+        d="M20 3 C20 3, 37 23, 37 33 A17 17 0 0 1 3 33 C3 23, 20 3, 20 3 Z"
+        fill="white"
+      />
+    </svg>
+  )
+}
+
 const socials = [
   { label: 'Instagram', icon: <InstagramIcon />, href: '#' },
   { label: 'X', icon: <XIcon />, href: '#' },
@@ -40,15 +51,18 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-white/5 py-16">
+    <footer className="bg-surface border-t border-white/[0.04] py-16">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center gap-8">
         {/* Wordmark */}
-        <span
-          className="font-bold uppercase tracking-[0.18em] text-white"
-          style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)' }}
-        >
-          Brewprint
-        </span>
+        <div className="flex items-center gap-2.5">
+          <TeardropMark />
+          <span
+            className="font-semibold text-white/60 tracking-[0.12em]"
+            style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
+          >
+            brewprint
+          </span>
+        </div>
 
         {/* Social icons */}
         <div className="flex items-center gap-6">
@@ -57,7 +71,7 @@ export default function Footer() {
               key={s.label}
               href={s.href}
               aria-label={s.label}
-              className="text-white/30 hover:text-amber transition-colors duration-200"
+              className="text-white/20 hover:text-white/60 transition-colors duration-200"
             >
               {s.icon}
             </a>
@@ -65,8 +79,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <p className="text-white/20 text-xs tracking-wide">
-          &copy; {new Date().getFullYear()} Brewprint. All rights reserved.
+        <p className="text-white/15 text-xs tracking-wide">
+          &copy; {new Date().getFullYear()} brewprint. all rights reserved.
         </p>
       </div>
     </footer>
