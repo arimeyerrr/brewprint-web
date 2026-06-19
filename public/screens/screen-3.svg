@@ -1,0 +1,82 @@
+<svg viewBox="0 0 270 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="270" height="540" fill="#0A0A0A"/>
+
+  <!-- Dynamic Island -->
+  <rect x="96" y="12" width="78" height="20" rx="10" fill="#1A1A1A"/>
+
+  <!-- Header bar -->
+  <line x1="0" y1="40" x2="270" y2="40" stroke="#161616" stroke-width="1"/>
+  <!-- Back arrow -->
+  <path d="M22 56 L13 64 L22 72" stroke="#888888" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <text x="135" y="68" fill="#FFFFFF" font-size="15" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">Rate Your Visit</text>
+  <text x="135" y="84" fill="#555555" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Onyx Coffee Lab</text>
+
+  <line x1="16" y1="96" x2="254" y2="96" stroke="#161616" stroke-width="1"/>
+
+  <!-- Overall score ring -->
+  <defs>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D98E4A"/>
+      <stop offset="100%" stop-color="#E8A85E"/>
+    </linearGradient>
+  </defs>
+  <!-- Background ring -->
+  <circle cx="135" cy="148" r="40" fill="none" stroke="#1A1A1A" stroke-width="7"/>
+  <!-- Score arc (~84% filled for 8.4/10) -->
+  <circle cx="135" cy="148" r="40" fill="none" stroke="url(#ringGrad)" stroke-width="7"
+    stroke-dasharray="211 251" stroke-dashoffset="63"
+    transform="rotate(-90 135 148)" stroke-linecap="round"/>
+  <text x="135" y="143" fill="#FFFFFF" font-size="22" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">8.4</text>
+  <text x="135" y="159" fill="#555555" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle">Overall</text>
+
+  <line x1="16" y1="202" x2="254" y2="202" stroke="#161616" stroke-width="1"/>
+
+  <!-- Category rows -->
+  <!-- Row: label, score text, then full bar then filled bar -->
+
+  <!-- Espresso Quality -->
+  <text x="16" y="222" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Espresso Quality</text>
+  <text x="254" y="222" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">9.0</text>
+  <rect x="16" y="228" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="228" width="214" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <!-- Milk Texture -->
+  <text x="16" y="250" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Milk Texture</text>
+  <text x="254" y="250" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">7.5</text>
+  <rect x="16" y="256" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="256" width="178" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <!-- Ambiance -->
+  <text x="16" y="278" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Ambiance</text>
+  <text x="254" y="278" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">8.5</text>
+  <rect x="16" y="284" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="284" width="202" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <!-- Service -->
+  <text x="16" y="306" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Service</text>
+  <text x="254" y="306" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">8.0</text>
+  <rect x="16" y="312" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="312" width="190" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <!-- Wifi -->
+  <text x="16" y="334" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Wifi / Work Friendly</text>
+  <text x="254" y="334" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">9.5</text>
+  <rect x="16" y="340" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="340" width="226" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <!-- Value -->
+  <text x="16" y="362" fill="#888888" font-size="11.5" font-family="system-ui,sans-serif">Value for Money</text>
+  <text x="254" y="362" fill="#CCCCCC" font-size="11.5" font-family="system-ui,sans-serif" text-anchor="end" font-weight="600">7.0</text>
+  <rect x="16" y="368" width="238" height="5" rx="2.5" fill="#1A1A1A"/>
+  <rect x="16" y="368" width="166" height="5" rx="2.5" fill="#D98E4A"/>
+
+  <line x1="16" y1="386" x2="254" y2="386" stroke="#161616" stroke-width="1"/>
+
+  <!-- Notes textarea -->
+  <rect x="16" y="396" width="238" height="58" rx="12" fill="#141414" stroke="#1E1E1E" stroke-width="1"/>
+  <text x="30" y="416" fill="#2E2E2E" font-size="12" font-family="system-ui,sans-serif">Add tasting notes...</text>
+
+  <!-- Submit -->
+  <rect x="16" y="466" width="238" height="44" rx="22" fill="#D98E4A"/>
+  <text x="135" y="493" fill="#000000" font-size="14" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Submit Review</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg viewBox="0 0 270 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="270" height="540" fill="#0A0A0A"/>
+
+  <!-- Dynamic Island -->
+  <rect x="96" y="12" width="78" height="20" rx="10" fill="#1A1A1A"/>
+
+  <!-- Search bar -->
+  <rect x="16" y="40" width="238" height="38" rx="19" fill="#1A1A1A"/>
+  <circle cx="38" cy="59" r="6" fill="none" stroke="#444444" stroke-width="1.6"/>
+  <line x1="42.5" y1="63.5" x2="46" y2="67" stroke="#444444" stroke-width="1.6"/>
+  <text x="58" y="63" fill="#383838" font-size="12" font-family="system-ui,sans-serif">Specialty coffee near me...</text>
+
+  <!-- Map area -->
+  <rect x="0" y="88" width="270" height="312" fill="#111111"/>
+
+  <!-- Grid lines -->
+  <line x1="0" y1="130" x2="270" y2="130" stroke="#161616" stroke-width="1"/>
+  <line x1="0" y1="178" x2="270" y2="178" stroke="#161616" stroke-width="1"/>
+  <line x1="0" y1="226" x2="270" y2="226" stroke="#161616" stroke-width="1"/>
+  <line x1="0" y1="274" x2="270" y2="274" stroke="#161616" stroke-width="1"/>
+  <line x1="0" y1="322" x2="270" y2="322" stroke="#161616" stroke-width="1"/>
+  <line x1="54" y1="88" x2="54" y2="400" stroke="#161616" stroke-width="1"/>
+  <line x1="108" y1="88" x2="108" y2="400" stroke="#161616" stroke-width="1"/>
+  <line x1="162" y1="88" x2="162" y2="400" stroke="#161616" stroke-width="1"/>
+  <line x1="216" y1="88" x2="216" y2="400" stroke="#161616" stroke-width="1"/>
+
+  <!-- Roads -->
+  <path d="M0 194 Q100 188 138 205 Q176 220 270 215" stroke="#1E1E1E" stroke-width="9" fill="none"/>
+  <path d="M84 88 Q88 200 92 400" stroke="#1E1E1E" stroke-width="7" fill="none"/>
+  <path d="M0 265 Q135 260 270 268" stroke="#191919" stroke-width="6" fill="none"/>
+  <path d="M154 88 Q158 200 162 400" stroke="#191919" stroke-width="6" fill="none"/>
+
+  <!-- Pin 1 — active/selected (large amber) -->
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="3" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <circle cx="135" cy="230" r="22" fill="#D98E4A" filter="url(#glow)" opacity="0.25"/>
+  <circle cx="135" cy="230" r="18" fill="#D98E4A"/>
+  <circle cx="135" cy="230" r="13" fill="#C07830"/>
+  <text x="135" y="235" fill="#000000" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="800">9.2</text>
+  <path d="M130 246 Q135 254 140 246" fill="#D98E4A"/>
+
+  <!-- Pin 2 -->
+  <circle cx="80" cy="160" r="15" fill="#1C1C1C"/>
+  <circle cx="80" cy="160" r="10" fill="#161616"/>
+  <text x="80" y="164" fill="#D98E4A" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">8.7</text>
+  <path d="M76 172 Q80 178 84 172" fill="#1C1C1C"/>
+
+  <!-- Pin 3 -->
+  <circle cx="205" cy="180" r="15" fill="#1C1C1C"/>
+  <circle cx="205" cy="180" r="10" fill="#161616"/>
+  <text x="205" y="184" fill="#D98E4A" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">7.9</text>
+  <path d="M201 192 Q205 198 209 192" fill="#1C1C1C"/>
+
+  <!-- Pin 4 -->
+  <circle cx="50" cy="305" r="12" fill="#1C1C1C"/>
+  <circle cx="50" cy="305" r="8" fill="#161616"/>
+  <text x="50" y="309" fill="#D98E4A" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">8.1</text>
+
+  <!-- Pin 5 -->
+  <circle cx="232" cy="318" r="12" fill="#1C1C1C"/>
+  <circle cx="232" cy="318" r="8" fill="#161616"/>
+  <text x="232" y="322" fill="#D98E4A" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">6.8</text>
+
+  <!-- Current location -->
+  <circle cx="172" cy="325" r="14" fill="#4A90E0" opacity="0.12"/>
+  <circle cx="172" cy="325" r="6" fill="#4A90E0" opacity="0.9"/>
+
+  <!-- Bottom sheet -->
+  <rect x="0" y="400" width="270" height="140" fill="#0F0F0F"/>
+  <line x1="0" y1="400" x2="270" y2="400" stroke="#1A1A1A" stroke-width="1"/>
+  <rect x="111" y="410" width="48" height="4" rx="2" fill="#252525"/>
+
+  <!-- Shop preview card -->
+  <rect x="16" y="426" width="238" height="72" rx="12" fill="#1A1A1A"/>
+  <rect x="24" y="434" width="50" height="56" rx="8" fill="#2A1A08"/>
+  <circle cx="49" cy="462" r="10" fill="none" stroke="#D98E4A" stroke-width="1.5" opacity="0.6"/>
+  <path d="M44.5 467 L44.5 457 L53.5 457 L53.5 467 Q49 469 44.5 467 Z" fill="none" stroke="#D98E4A" stroke-width="1.2" opacity="0.6"/>
+  <text x="86" y="446" fill="#FFFFFF" font-size="13" font-family="system-ui,sans-serif" font-weight="700">Onyx Coffee Lab</text>
+  <text x="86" y="462" fill="#555555" font-size="11" font-family="system-ui,sans-serif">0.3 mi · Specialty</text>
+  <rect x="86" y="468" width="64" height="20" rx="10" fill="#D98E4A"/>
+  <text x="118" y="482" fill="#000000" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">9.2 match</text>
+  <circle cx="240" cy="462" r="13" fill="#222222"/>
+  <path d="M235 462 L242 462 M238 458 L242 462 L238 466" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Nav -->
+  <rect x="0" y="484" width="270" height="56" fill="#0A0A0A"/>
+  <line x1="0" y1="484" x2="270" y2="484" stroke="#1A1A1A" stroke-width="1"/>
+  <!-- Map (active) -->
+  <path d="M22 499 L30 495 L38 499 L38 515 L30 519 L22 515 Z" fill="none" stroke="#D98E4A" stroke-width="1.6"/>
+  <line x1="30" y1="495" x2="30" y2="519" stroke="#D98E4A" stroke-width="1"/>
+  <!-- Feed -->
+  <rect x="79" y="500" width="18" height="16" rx="2" fill="none" stroke="#2E2E2E" stroke-width="1.6"/>
+  <!-- Search -->
+  <circle cx="135" cy="507" r="6" fill="none" stroke="#2E2E2E" stroke-width="1.6"/>
+  <line x1="139.5" y1="511.5" x2="144" y2="516" stroke="#2E2E2E" stroke-width="1.6"/>
+  <!-- Saved -->
+  <path d="M182 496 L182 518 L190 513 L198 518 L198 496 Z" fill="none" stroke="#2E2E2E" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- Profile -->
+  <circle cx="242" cy="503" r="5" fill="none" stroke="#2E2E2E" stroke-width="1.6"/>
+  <path d="M234 518 Q234 511 242 511 Q250 511 250 518" fill="none" stroke="#2E2E2E" stroke-width="1.6"/>
+</svg>
