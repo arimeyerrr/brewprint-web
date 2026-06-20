@@ -10,14 +10,14 @@ const STACK_NOTIFICATIONS = [
   { shop: 'Morning Light Café', msg: 'Profile viewed 47 times today',            time: '1h ago',  icon: '👁' },
 ]
 
-// Floating notifications — positions + drift anchors
+// Floating notifications — desktop only (lg+), safe zones away from left text column
 const FLOATERS = [
-  { shop: "Joe's Coffee",       msg: 'BOGO espresso today, 1–3 PM only.',                     time: 'now',    top: '6%',  left: '2%',   drift: [14, -18, 8, -12, 0],  cycle: 14 },
-  { shop: 'Morning Light Café', msg: 'Matcha lattes 50% off until 4 PM.',                     time: '2m ago', top: '10%', left: '55%',  drift: [-12, -22, -6, -16, 0], cycle: 17 },
-  { shop: 'The Press',          msg: 'Ethiopia Yirgacheffe just landed.',                      time: '6m ago', top: '40%', left: '68%',  drift: [10, -14, 18, -8, 0],  cycle: 13 },
-  { shop: 'Copper Cup',         msg: '2-for-1 cold brew — all day today.',                    time: '9m ago', top: '62%', left: '0%',   drift: [16, -10, 12, -18, 0], cycle: 16 },
-  { shop: "Joe's Coffee",       msg: 'New cardamom cortado on the menu.',                     time: '14m ago',top: '72%', left: '62%',  drift: [-8, -20, -14, -6, 0], cycle: 15 },
-  { shop: 'Morning Light Café', msg: '50 profile views this week. Keep momentum.', time: '22m ago',top: '30%', left: '-2%', drift: [12, -16, 6, -20, 0], cycle: 18 },
+  { shop: "Joe's Coffee",       msg: 'BOGO espresso today, 1–3 PM only.',           time: 'now',    top: '4%',  left: '62%',  drift: [14, -18, 8, -12, 0],  cycle: 14 },
+  { shop: 'Morning Light Café', msg: 'Matcha lattes 50% off until 4 PM.',           time: '2m ago', top: '7%',  left: '16%',  drift: [-12, -22, -6, -16, 0], cycle: 17 },
+  { shop: 'The Press',          msg: 'Ethiopia Yirgacheffe just landed.',            time: '6m ago', top: '28%', left: '72%',  drift: [10, -14, 18, -8, 0],  cycle: 13 },
+  { shop: 'Copper Cup',         msg: '2-for-1 cold brew — all day today.',          time: '9m ago', top: '84%', left: '14%',  drift: [16, -10, 12, -18, 0], cycle: 16 },
+  { shop: "Joe's Coffee",       msg: 'New cardamom cortado on the menu.',            time: '14m ago',top: '86%', left: '60%',  drift: [-8, -20, -14, -6, 0], cycle: 15 },
+  { shop: 'Morning Light Café', msg: '50 profile views this week. Keep momentum.',  time: '22m ago',top: '50%', left: '74%',  drift: [12, -16, 6, -20, 0],  cycle: 18 },
 ]
 
 function IOSNotification({ shop, msg, time }: { shop: string; msg: string; time: string }) {
@@ -54,8 +54,8 @@ export default function ShopOwners() {
   return (
     <section id="for-shops" className="relative bg-background overflow-hidden py-24 md:py-36">
 
-      {/* Floating iOS notifications in background */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Floating iOS notifications — desktop only, safe zones outside text column */}
+      <div className="hidden lg:block absolute inset-0 pointer-events-none">
         {FLOATERS.map((f, i) => (
           <motion.div
             key={i}
@@ -63,7 +63,7 @@ export default function ShopOwners() {
             style={{ top: f.top, left: f.left }}
             initial={{ opacity: 0, y: 20 }}
             animate={{
-              opacity: [0, 0.72, 0.72, 0.72, 0.72, 0.72, 0],
+              opacity: [0, 0.52, 0.52, 0.52, 0.52, 0.52, 0],
               y: f.drift,
               x: [0, 6, -4, 8, -2, 4, 0],
               rotate: [0, 0.8, -0.5, 1, -0.8, 0.4, 0],
