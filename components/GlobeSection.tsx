@@ -4,7 +4,7 @@ import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps
 import { motion, AnimatePresence } from 'framer-motion'
 import AnimateInView from './AnimateInView'
 
-const GEO_URL = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json'
+const GEO_URL = '/us-states.json'
 
 // FIPS code → terrain zone
 const TERRAIN: Record<string, string> = {

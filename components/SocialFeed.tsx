@@ -18,6 +18,11 @@ const POSTS = [
   { id: 13, user: 'sipnstay',        initials: 'SN', color: '#1A2A3A', img: '1506619118655-17d7ee7cf7d5', likes: 156, score: 9.3,  sponsored: false, title: 'Stay Awhile',      video: true  },
   { id: 14, user: 'baristalife',     initials: 'BL', color: '#3A1A2A', img: '1510591509098-f4fdc6d0ff04', likes: 389, score: 9.5,  sponsored: false, title: 'Art in Every Cup', video: false },
   { id: 15, user: 'roastmaster',     initials: 'RM', color: '#2A1A3A', img: '1587734195503-904fca47e0e9', likes: 234, score: 8.8,  sponsored: false, title: 'Fresh Pull',       video: false },
+  { id: 16, user: 'latteart.co',     initials: 'LA', color: '#3A2A1A', img: '1517701550927-b9adf24f4ef7', likes: 312, score: 9.5,  sponsored: false, title: 'Rosetta Pull',     video: true  },
+  { id: 17, user: 'groundskeeper',   initials: 'GK', color: '#1A3A2A', img: '1442512435-b7b86b9b3f4e', likes: 88,  score: 8.1,  sponsored: false, title: 'Origin Story',     video: false },
+  { id: 18, user: 'Dogwood Coffee',  initials: 'DC', color: '#2A1A0A', img: '1431330050574-e5e5e8d73c65', likes: 421, score: null, sponsored: true,  title: 'Dogwood Reserve',  video: false },
+  { id: 19, user: 'filterdripper',   initials: 'FD', color: '#1A2A3A', img: '1495474472287-4d71bcdd2085', likes: 155, score: 9.1,  sponsored: false, title: 'V60 Session',      video: true  },
+  { id: 20, user: 'blackcupclub',    initials: 'BC', color: '#0A1A0A', img: '1507133750040-201ed20b4b5a', likes: 278, score: 9.6,  sponsored: false, title: 'Straight Black',   video: false },
 ]
 
 function Avatar({ initials, color, size = 32 }: { initials: string; color: string; size?: number }) {
@@ -124,7 +129,7 @@ export default function SocialFeed() {
       </div>
 
       <AnimateInView delay={0.12}>
-        <div className="grid grid-cols-3 gap-px mb-10" style={{ background: '#111' }}>
+        <div className="grid grid-cols-3 lg:grid-cols-5 gap-px mb-10" style={{ background: '#111' }}>
           {POSTS.map((post) => (
             <GridPost key={post.id} post={post} />
           ))}

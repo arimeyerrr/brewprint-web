@@ -28,34 +28,59 @@ function CoffeePinLogo() {
           <stop offset="100%" stopColor="rgba(25,8,1,0.40)" />
         </radialGradient>
       </defs>
-
-      {/* Main pin body */}
-      <path
-        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
-        fill="url(#pinBody)"
-      />
-      {/* Swirl/coffee texture overlay */}
-      <path
-        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
-        fill="url(#pinSwirl)"
-      />
-      {/* Specular shine */}
-      <path
-        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
-        fill="url(#pinShine)"
-      />
-      {/* Inner dark circle — coffee viewed from above */}
+      <path d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z" fill="url(#pinBody)" />
+      <path d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z" fill="url(#pinSwirl)" />
+      <path d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z" fill="url(#pinShine)" />
       <circle cx="40" cy="32" r="15" fill="url(#innerDark)" />
       <circle cx="40" cy="32" r="12" fill="rgba(12,3,0,0.5)" />
-      {/* Coffee swirl strokes */}
-      <path d="M32 29C34 25.5 38.5 24.5 42 27C45 29 45.5 32.5 43 34.5"
-        stroke="rgba(195,115,45,0.65)" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      <path d="M36 36C38 32.5 42.5 31.5 45 33.5"
-        stroke="rgba(195,115,45,0.42)" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-      {/* Highlight zone */}
+      <path d="M32 29C34 25.5 38.5 24.5 42 27C45 29 45.5 32.5 43 34.5" stroke="rgba(195,115,45,0.65)" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <path d="M36 36C38 32.5 42.5 31.5 45 33.5" stroke="rgba(195,115,45,0.42)" strokeWidth="1.2" strokeLinecap="round" fill="none" />
       <ellipse cx="35" cy="25" rx="5.5" ry="6.5" fill="rgba(255,205,105,0.17)" />
       <circle cx="33" cy="22" r="2.2" fill="rgba(255,232,160,0.26)" />
     </svg>
+  )
+}
+
+const STEAM_WISPS = [
+  { x: '18%', delay: 0,    duration: 4.2, drift:  6 },
+  { x: '28%', delay: 0.9,  duration: 3.8, drift: -5 },
+  { x: '38%', delay: 1.7,  duration: 5.0, drift:  8 },
+  { x: '50%', delay: 0.4,  duration: 4.5, drift: -7 },
+  { x: '60%', delay: 2.1,  duration: 3.6, drift:  5 },
+  { x: '70%', delay: 1.2,  duration: 4.8, drift: -6 },
+  { x: '80%', delay: 0.7,  duration: 4.0, drift:  7 },
+]
+
+function Steam() {
+  return (
+    <div className="absolute inset-x-0 pointer-events-none overflow-visible" style={{ bottom: '57%', height: 180 }}>
+      {STEAM_WISPS.map((w, i) => (
+        <motion.div
+          key={i}
+          className="absolute bottom-0"
+          style={{
+            left: w.x,
+            width: 3,
+            height: 50 + i * 5,
+            background: 'linear-gradient(to top, rgba(200,140,80,0.18), rgba(255,255,255,0.06), transparent)',
+            borderRadius: 4,
+            filter: 'blur(4px)',
+          }}
+          animate={{
+            y:      [0, -(90 + i * 12)],
+            x:      [0, w.drift, w.drift * 0.4, w.drift * 1.2, 0],
+            opacity:[0, 0.55, 0.4, 0.2, 0],
+            scaleX: [1, 1.8, 2.5, 3.5, 4],
+          }}
+          transition={{
+            duration: w.duration,
+            delay:    w.delay,
+            repeat:   Infinity,
+            ease:     'easeOut',
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -67,14 +92,14 @@ function WaveLayer({ duration, delay, opacity, color, path, yRange }: {
   return (
     <motion.div
       className="absolute inset-x-0"
-      style={{ top: -52, opacity }}
+      style={{ top: -64, opacity }}
       animate={{
-        x: ['0%', '-11%', '3%', '-7%', '2%', '0%'],
-        y: yr ? [0, -yr, yr * 0.6, -yr * 0.4, yr * 0.2, 0] : undefined,
+        x: ['0%', '-13%', '4%', '-8%', '2%', '0%'],
+        y: yr ? [0, -yr, yr * 0.7, -yr * 0.5, yr * 0.3, 0] : undefined,
       }}
       transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'mirror' }}
     >
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ width: '148%', marginLeft: '-24%', display: 'block' }}>
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ width: '150%', marginLeft: '-25%', display: 'block' }}>
         <path d={d} fill={color} />
       </svg>
     </motion.div>
@@ -90,8 +115,8 @@ function LiquidContainer({ children }: { children: React.ReactNode }) {
       initial={{ y: '100%' }}
       animate={
         phase === 'pour'
-          ? { y: '40%' }
-          : { y: ['40%', '38.8%', '41.2%', '39.4%', '40.6%', '40%'] }
+          ? { y: '32%' }
+          : { y: ['32%', '30.5%', '33.5%', '31.2%', '33%', '32%'] }
       }
       transition={
         phase === 'pour'
@@ -114,106 +139,56 @@ export default function Hero() {
       />
 
       <LiquidContainer>
+        {/* Gradient body */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to top, rgba(5,1,0,1) 0%, rgba(14,5,0,1) 20%, rgba(26,9,1,0.98) 44%, rgba(44,16,2,0.90) 68%, rgba(62,23,4,0.52) 84%, rgba(78,28,6,0.18) 94%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(4,1,0,1) 0%, rgba(10,3,0,1) 12%, rgba(22,7,0,1) 30%, rgba(40,14,1,0.97) 52%, rgba(60,22,4,0.82) 72%, rgba(78,28,6,0.38) 88%, transparent 100%)',
           }}
         />
-        {/* Primary wave — darkest, most prominent */}
-        <WaveLayer
-          duration={8}
-          delay={0}
-          opacity={1}
-          yRange={6}
-          color="rgba(16,5,1,0.99)"
-          path="M0,38 C160,6 340,72 520,38 C700,6 880,74 1060,40 C1240,8 1360,58 1440,38 L1440,80 L0,80 Z"
-        />
-        {/* Secondary — slightly lighter, different phase */}
-        <WaveLayer
-          duration={12}
-          delay={1.5}
-          opacity={0.75}
-          yRange={10}
-          color="rgba(32,11,2,0.88)"
-          path="M0,50 C220,18 440,74 660,50 C880,26 1100,72 1320,50 C1380,42 1420,58 1440,50 L1440,80 L0,80 Z"
-        />
-        {/* Tertiary — lightest, ripple effect */}
-        <WaveLayer
-          duration={16}
-          delay={4}
-          opacity={0.45}
-          yRange={14}
-          color="rgba(58,22,5,0.55)"
-          path="M0,58 C140,42 280,68 420,56 C560,42 700,68 840,58 C980,44 1120,66 1260,58 C1340,52 1400,64 1440,58 L1440,80 L0,80 Z"
-        />
-        {/* Surface shimmer */}
-        <WaveLayer
-          duration={6}
-          delay={2}
-          opacity={0.22}
-          yRange={5}
-          color="rgba(90,35,8,0.5)"
-          path="M0,62 C100,56 200,68 300,62 C400,56 500,68 600,62 C700,56 800,68 900,62 C1000,56 1100,68 1200,62 C1300,56 1380,66 1440,62 L1440,80 L0,80 Z"
-        />
+
+        {/* Wave 1 — deep, slow */}
+        <WaveLayer duration={7} delay={0} opacity={1} yRange={8}
+          color="rgba(14,4,0,1)"
+          path="M0,32 C150,4 320,66 500,32 C680,0 860,68 1040,34 C1220,2 1360,54 1440,32 L1440,90 L0,90 Z" />
+        {/* Wave 2 — mid */}
+        <WaveLayer duration={11} delay={1.2} opacity={0.88} yRange={12}
+          color="rgba(28,10,1,0.96)"
+          path="M0,46 C200,14 400,74 600,46 C800,18 1000,74 1200,46 C1320,30 1400,62 1440,46 L1440,90 L0,90 Z" />
+        {/* Wave 3 — lighter */}
+        <WaveLayer duration={15} delay={3.5} opacity={0.65} yRange={16}
+          color="rgba(50,18,3,0.72)"
+          path="M0,54 C130,36 260,68 390,54 C520,38 650,68 780,54 C910,38 1040,66 1170,54 C1300,40 1390,62 1440,54 L1440,90 L0,90 Z" />
+        {/* Wave 4 — surface shimmer */}
+        <WaveLayer duration={5.5} delay={1.8} opacity={0.35} yRange={6}
+          color="rgba(90,35,8,0.55)"
+          path="M0,60 C90,54 180,66 270,60 C360,54 450,66 540,60 C630,54 720,66 810,60 C900,54 990,66 1080,60 C1170,54 1300,64 1440,60 L1440,90 L0,90 Z" />
+
+        {/* Steam above the liquid surface */}
+        <Steam />
       </LiquidContainer>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-transparent" />
       <div className="h-16 flex-shrink-0" />
 
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
-
-        {/* Pin logo above wordmark */}
         <AnimateInView delay={0.1}>
           <div className="mb-5">
             <CoffeePinLogo />
           </div>
         </AnimateInView>
 
-        {/* Wordmark with liquid letter-fill (bottom-to-top) */}
         <AnimateInView delay={0.25}>
-          <div className="relative mb-7">
-            {/* Empty state — dim base */}
-            <h1
-              className="font-bold text-white/10 leading-[0.85] select-none"
+          <div className="mb-7">
+            <motion.h1
+              className="font-bold text-white leading-[0.85]"
               style={{ fontSize: 'clamp(3.5rem, 12vw, 9rem)', letterSpacing: '-0.06em' }}
+              initial={{ opacity: 0.08 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 7, ease: 'easeInOut', delay: 1.2 }}
             >
               brewprint
-            </h1>
-
-            {/* Coffee fill — reveals bottom-to-top */}
-            <motion.div
-              className="absolute inset-0 overflow-hidden"
-              initial={{ clipPath: 'inset(100% 0 0 0)' }}
-              animate={{ clipPath: 'inset(45% 0 0 0)' }}
-              transition={{ duration: 8.5, ease: [0.08, 0.94, 0.22, 1.0], delay: 1.0 }}
-            >
-              <h1
-                className="font-bold leading-[0.85]"
-                style={{
-                  fontSize: 'clamp(3.5rem, 12vw, 9rem)',
-                  letterSpacing: '-0.06em',
-                  color: 'rgba(88, 42, 8, 0.90)',
-                }}
-              >
-                brewprint
-              </h1>
-            </motion.div>
-
-            {/* Full white — fades in after fill */}
-            <motion.div
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.8, delay: 9.0 }}
-            >
-              <h1
-                className="font-bold leading-[0.85] text-white"
-                style={{ fontSize: 'clamp(3.5rem, 12vw, 9rem)', letterSpacing: '-0.06em' }}
-              >
-                brewprint
-              </h1>
-            </motion.div>
+            </motion.h1>
           </div>
         </AnimateInView>
 

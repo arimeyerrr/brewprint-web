@@ -34,7 +34,7 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-white/35 hover:text-white text-xs tracking-[0.3em] uppercase transition-colors duration-200"
+              className="text-white/35 hover:text-white text-xs tracking-normal uppercase transition-colors duration-200"
             >
               {l.label}
             </a>
@@ -75,7 +75,7 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="text-white/50 text-sm tracking-[0.3em] uppercase"
+              className="text-white/50 text-sm tracking-normal uppercase"
             >
               {l.label}
             </a>
