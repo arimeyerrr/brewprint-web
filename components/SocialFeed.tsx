@@ -61,8 +61,8 @@ function GridPost({ post }: { post: typeof POSTS[0] }) {
 
       {/* Score */}
       {post.score && (
-        <div className="absolute top-2 right-2 rounded-full px-1.5 py-0.5 text-[10px] font-bold"
-          style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', color: '#D98E4A', border: '1px solid rgba(217,142,74,0.3)' }}>
+        <div className="absolute top-2 right-2 text-base font-black leading-none"
+          style={{ color: '#D98E4A', textShadow: '0 1px 8px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.95)' }}>
           {post.score}
         </div>
       )}

@@ -1,63 +1,74 @@
 'use client'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import AnimateInView from './AnimateInView'
 
 const NOTIFICATIONS = [
-  { shop: "Joe's Coffee",       msg: '14 new customers matched this week',  time: '2m ago',  icon: '☕' },
-  { shop: 'Morning Light Café', msg: 'Match score updated: 9.1 ↑',          time: '5m ago',  icon: '⭐' },
-  { shop: "Joe's Coffee",       msg: '@SarahSips left a 9.4 review',        time: '12m ago', icon: '🔔' },
-  { shop: 'The Press',          msg: '3 drinks ordered via brewprint today', time: '18m ago', icon: '📊' },
-  { shop: 'Morning Light Café', msg: 'Profile viewed 47 times today',       time: '1h ago',  icon: '👁' },
+  { shop: "Joe's Coffee",       msg: '14 new customers matched this week',       time: '2m ago',  icon: '☕' },
+  { shop: 'Morning Light Café', msg: 'Match score updated: 9.1 ↑',               time: '5m ago',  icon: '⭐' },
+  { shop: "Joe's Coffee",       msg: '@SarahSips left a 9.4 review',             time: '12m ago', icon: '🔔' },
+  { shop: 'The Press',          msg: '3 drinks discovered via brewprint today',  time: '18m ago', icon: '📊' },
+  { shop: 'Morning Light Café', msg: 'Profile viewed 47 times today',            time: '1h ago',  icon: '👁' },
 ]
 
+// iOS-style blast notifications — slow conveyor belt
 const BLASTS = [
-  { shop: "Joe's Coffee",       msg: 'NEW DRINK DROP — come in 1–3 PM for BOGO espresso.',           color: '#D98E4A', top: '15%' },
-  { shop: 'Morning Light Café', msg: 'HAPPY HOUR BLAST — matcha lattes 50% off until 4 PM.',         color: '#7BBCA0', top: '38%' },
-  { shop: 'The Press',          msg: 'LIMITED DROP — Ethiopia Yirgacheffe just landed.',              color: '#C4A07B', top: '60%' },
-  { shop: 'Copper Cup',         msg: 'WEEKEND BLAST — 2-for-1 cold brew all day. Today only.',       color: '#B08ED4', top: '80%' },
+  { shop: "Joe's Coffee",       msg: 'Come in 1–3 PM today for BOGO espresso. New seasonal latte just dropped.',    time: 'now'    },
+  { shop: 'Morning Light Café', msg: 'Happy Hour alert: all matcha drinks 50% off until 4 PM. Walk-ins welcome.',  time: '2m ago' },
+  { shop: 'The Press',          msg: 'Limited batch: Ethiopia Yirgacheffe just landed. Come try a pour-over.',     time: '5m ago' },
+  { shop: 'Copper Cup',         msg: 'Weekend special: 2-for-1 cold brew all day. Bring a friend.',               time: '8m ago' },
+  { shop: "Joe's Coffee",       msg: 'New drink on the menu: cardamom cortado. Only available this week.',        time: '11m ago'},
+  { shop: 'Morning Light Café', msg: 'Your storefront just hit 50 profile views this week. Momentum is building.',time: '15m ago'},
 ]
+
+// Duplicate for seamless loop
+const BLAST_LOOP = [...BLASTS, ...BLASTS]
+
+function IOSNotification({ shop, msg, time }: { shop: string; msg: string; time: string }) {
+  return (
+    <div
+      className="flex-shrink-0 mx-3"
+      style={{
+        width: 300,
+        background: 'rgba(22,22,24,0.92)',
+        backdropFilter: 'blur(22px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(22px) saturate(180%)',
+        borderRadius: 14,
+        border: '0.5px solid rgba(255,255,255,0.13)',
+        boxShadow: '0 8px 28px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.3)',
+        padding: '11px 14px 13px',
+      }}
+    >
+      {/* iOS notification header */}
+      <div className="flex items-center gap-2 mb-1.5">
+        {/* App icon — tiny teardrop */}
+        <div
+          className="flex items-center justify-center flex-shrink-0"
+          style={{
+            width: 18, height: 18,
+            borderRadius: 5,
+            background: 'linear-gradient(145deg, #C87A35, #5A2808)',
+          }}
+        >
+          <svg viewBox="0 0 44 60" fill="none" width={10} height={14}>
+            <path d="M22 2C12.611 2 5 9.611 5 19C5 31.5 22 58 22 58C22 58 39 31.5 39 19C39 9.611 31.389 2 22 2Z" fill="rgba(255,220,160,0.7)" />
+          </svg>
+        </div>
+        <span className="text-white/40 text-[10px] font-semibold tracking-widest uppercase">brewprint</span>
+        <span className="ml-auto text-white/25 text-[10px]">{time}</span>
+      </div>
+      {/* Title */}
+      <p className="text-white text-[13px] font-semibold leading-tight">{shop}</p>
+      {/* Message */}
+      <p className="text-white/55 text-[12px] leading-snug mt-0.5">{msg}</p>
+    </div>
+  )
+}
 
 export default function ShopOwners() {
+  const trackWidth = BLASTS.length * (300 + 24) // card width + margin×2
+
   return (
     <section id="for-shops" className="relative bg-background overflow-hidden py-24 md:py-36">
-
-      {/* BLAST notifications flying across */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {BLASTS.map((b, i) => (
-          <motion.div
-            key={i}
-            className="absolute flex items-center gap-3 px-5 py-2.5 rounded-full"
-            style={{
-              top: b.top,
-              whiteSpace: 'nowrap',
-              background: `rgba(${hexToRgb(b.color)},0.08)`,
-              border: `1px solid rgba(${hexToRgb(b.color)},0.22)`,
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-            }}
-            initial={{ x: '105vw' }}
-            animate={{ x: '-105vw' }}
-            transition={{
-              duration: 11,
-              delay: i * 3.5,
-              repeat: Infinity,
-              repeatDelay: BLASTS.length * 3.5 - 2,
-              ease: 'linear',
-            }}
-          >
-            <span className="text-[10px] font-black tracking-[0.18em] uppercase"
-              style={{ color: b.color }}>
-              BLAST
-            </span>
-            <span className="w-px h-3 opacity-30" style={{ background: b.color }} />
-            <span className="font-bold text-xs" style={{ color: b.color }}>{b.shop}</span>
-            <span className="text-white/55 text-xs">{b.msg}</span>
-            <svg viewBox="0 0 16 16" fill="none" className="w-3 h-3 flex-shrink-0" style={{ color: b.color }}>
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </motion.div>
-        ))}
-      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -97,7 +108,7 @@ export default function ShopOwners() {
             </AnimateInView>
           </div>
 
-          {/* Right: notification stack */}
+          {/* Right: static notification stack */}
           <AnimateInView delay={0.2}>
             <div className="space-y-3">
               {NOTIFICATIONS.map((n, i) => (
@@ -118,11 +129,12 @@ export default function ShopOwners() {
                     </div>
                     <p className="text-white/50 text-sm leading-snug">{n.msg}</p>
                   </div>
-                  <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1"
-                    style={{ background: '#D98E4A', boxShadow: '0 0 8px rgba(217,142,74,0.9)' }} />
+                  <div
+                    className="w-2 h-2 rounded-full flex-shrink-0 mt-1"
+                    style={{ background: '#D98E4A', boxShadow: '0 0 8px rgba(217,142,74,0.9)' }}
+                  />
                 </motion.div>
               ))}
-
               <div className="mt-6 pt-5 border-t border-white/[0.05]">
                 <p className="text-white/20 text-sm italic">
                   No pricing yet. Early shop owners get priority listing and help shape the product.
@@ -133,13 +145,23 @@ export default function ShopOwners() {
 
         </div>
       </div>
+
+      {/* iOS notification blast belt — slow conveyor, dedicated strip below main content */}
+      <div className="mt-20 pb-2">
+        <div className="overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+          <motion.div
+            className="flex items-center py-3"
+            animate={{ x: [0, -trackWidth] }}
+            transition={{ duration: 55, ease: 'linear', repeat: Infinity }}
+            style={{ width: trackWidth * 2 }}
+          >
+            {BLAST_LOOP.map((b, i) => (
+              <IOSNotification key={i} shop={b.shop} msg={b.msg} time={b.time} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
     </section>
   )
-}
-
-function hexToRgb(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return `${r},${g},${b}`
 }
