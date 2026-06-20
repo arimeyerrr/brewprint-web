@@ -24,8 +24,20 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-        <a href="#" className="text-white/60 text-sm font-semibold tracking-[0.15em]">
+        <a href="#" className="flex items-center text-white/60 text-sm font-semibold tracking-[0.12em]">
           brewprint
+          <svg viewBox="0 0 44 60" fill="none" style={{ width: 9, height: 13, marginLeft: 1.5, marginTop: -4, display: 'inline-block' }}>
+            <defs>
+              <radialGradient id="navtg" cx="42%" cy="33%" r="62%">
+                <stop offset="0%" stopColor="#C87A35" />
+                <stop offset="50%" stopColor="#8B4513" />
+                <stop offset="100%" stopColor="#3E1A07" />
+              </radialGradient>
+            </defs>
+            <path d="M22 2C12.611 2 5 9.611 5 19C5 31.5 22 58 22 58C22 58 39 31.5 39 19C39 9.611 31.389 2 22 2Z"
+              fill="url(#navtg)" stroke="rgba(200,120,50,0.4)" strokeWidth="1" />
+            <circle cx="16" cy="13" r="3.5" fill="rgba(255,220,160,0.28)" />
+          </svg>
         </a>
 
         {/* Desktop links */}

@@ -45,41 +45,71 @@ float noise(vec2 p) {
   vec2 i = floor(p); vec2 f = fract(p); f = f*f*(3.0-2.0*f);
   return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y);
 }
-float fbm(vec2 p) { return noise(p)*0.5 + noise(p*2.1+0.5)*0.25 + noise(p*4.3+1.2)*0.125; }
+float fbm(vec2 p) {
+  return noise(p)*0.50 + noise(p*2.1+1.3)*0.25 + noise(p*4.5+2.7)*0.125 + noise(p*9.1+0.9)*0.0625;
+}
 
 void main() {
-  float n = fbm(vUv * 3.8 + 0.4);
-  float lat01 = vUv.y; // 0=south, 1=north
+  float n  = fbm(vUv * 3.6 + 0.5);
+  float n2 = fbm(vUv * 7.2 + 2.1);
+  float lat01 = vUv.y;
 
-  vec3 deepOcean  = vec3(0.03, 0.08, 0.18);
-  vec3 shallowSea = vec3(0.06, 0.14, 0.28);
-  vec3 land       = vec3(0.12, 0.20, 0.09);
-  vec3 highland   = vec3(0.18, 0.22, 0.12);
-  vec3 desert     = vec3(0.22, 0.17, 0.08);
-  vec3 iceCap     = vec3(0.62, 0.70, 0.76);
+  // Terrain colors — natural Earth palette
+  vec3 abyssOcean = vec3(0.010, 0.040, 0.130);
+  vec3 deepOcean  = vec3(0.022, 0.072, 0.200);
+  vec3 midOcean   = vec3(0.032, 0.105, 0.260);
+  vec3 coastal    = vec3(0.040, 0.148, 0.310);
+  vec3 lowland    = vec3(0.120, 0.250, 0.095);
+  vec3 forest     = vec3(0.085, 0.200, 0.075);
+  vec3 savanna    = vec3(0.240, 0.290, 0.110);
+  vec3 highland   = vec3(0.300, 0.260, 0.165);
+  vec3 mountain   = vec3(0.380, 0.340, 0.260);
+  vec3 snowPeak   = vec3(0.820, 0.840, 0.860);
+  vec3 desert     = vec3(0.460, 0.360, 0.165);
+  vec3 iceCap     = vec3(0.800, 0.830, 0.870);
 
-  float isLand   = smoothstep(0.46, 0.52, n);
-  float isHigh   = smoothstep(0.70, 0.82, n);
-  float isDesert = smoothstep(0.20, 0.35, lat01) * (1.0 - smoothstep(0.55, 0.70, lat01)) * smoothstep(0.52, 0.60, n);
-  float polar    = smoothstep(0.76, 0.95, abs(lat01 * 2.0 - 1.0));
+  // Classify terrain
+  float isLand    = smoothstep(0.440, 0.520, n);
+  float isHighl   = smoothstep(0.640, 0.760, n);
+  float isMtn     = smoothstep(0.780, 0.900, n);
+  float isSnow    = smoothstep(0.890, 0.960, n);
+  float isDesert  = smoothstep(0.18, 0.38, lat01) * (1.0 - smoothstep(0.52, 0.72, lat01))
+                  * smoothstep(0.50, 0.62, n) * (1.0 - isHighl);
+  float polar     = smoothstep(0.72, 0.94, abs(lat01 * 2.0 - 1.0));
+  float coastal_t = smoothstep(0.36, 0.44, n);
 
-  vec3 oceanColor = mix(deepOcean, shallowSea, smoothstep(0.35, 0.46, n));
-  vec3 landColor  = mix(land, highland, isHigh);
-  landColor = mix(landColor, desert, isDesert * 0.7);
+  // Ocean gradient by depth
+  vec3 oceanColor = abyssOcean;
+  oceanColor = mix(oceanColor, deepOcean,  smoothstep(0.10, 0.26, n));
+  oceanColor = mix(oceanColor, midOcean,   smoothstep(0.26, 0.36, n));
+  oceanColor = mix(oceanColor, coastal,    coastal_t * 0.6);
+
+  // Land gradient by elevation
+  vec3 baseLand = mix(lowland, savanna, n2 * 0.5);
+  baseLand = mix(baseLand, forest, smoothstep(0.3, 0.6, n2) * (1.0 - isDesert));
+  vec3 landColor = baseLand;
+  landColor = mix(landColor, highland, isHighl * 0.8);
+  landColor = mix(landColor, mountain, isMtn * 0.9);
+  landColor = mix(landColor, snowPeak, isSnow);
+  landColor = mix(landColor, desert,   isDesert * 0.75);
+
   vec3 color = mix(oceanColor, landColor, isLand);
-  color = mix(color, iceCap, polar);
+  color = mix(color, iceCap, polar * 0.92);
 
-  // Directional light
-  float diff = max(dot(vNormal, normalize(vec3(1.8, 0.5, 2.5))), 0.0);
-  color *= (0.18 + 0.82 * diff);
+  // Directional sunlight
+  vec3 lightDir = normalize(vec3(2.0, 0.6, 2.2));
+  float diff = max(dot(vNormal, lightDir), 0.0);
+  float ambient = 0.22;
+  color *= (ambient + (1.0 - ambient) * diff);
 
-  // Atmosphere rim
-  float rim = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.5);
-  color += vec3(0.04, 0.14, 0.38) * rim;
+  // Atmospheric rim glow (blue haze at edge)
+  float rim = pow(1.0 - max(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0), 4.0);
+  color += vec3(0.05, 0.18, 0.48) * rim * 0.85;
 
-  // Ocean specular
-  float spec = pow(max(dot(reflect(-normalize(vec3(1.8,0.5,2.5)), vNormal), vec3(0,0,1)), 0.0), 32.0);
-  color += vec3(0.1, 0.2, 0.4) * spec * (1.0 - isLand) * 0.4;
+  // Ocean specular highlight
+  vec3 refl = reflect(-lightDir, vNormal);
+  float spec = pow(max(dot(refl, vec3(0.0, 0.0, 1.0)), 0.0), 40.0);
+  color += vec3(0.15, 0.28, 0.55) * spec * (1.0 - isLand) * 0.55;
 
   gl_FragColor = vec4(color, 1.0);
 }
@@ -150,17 +180,20 @@ export default function GlobeSection() {
     )
     group.add(atmMesh)
 
-    // US city pins
-    const pinPositions = US_CITIES.map(c => latLonToVec(c.lat, c.lon))
-    const pinArr = new Float32Array(pinPositions.length * 3)
-    pinPositions.forEach(([x, y, z], i) => { pinArr[i * 3] = x; pinArr[i * 3 + 1] = y; pinArr[i * 3 + 2] = z })
-    const pinGeo = new THREE.BufferGeometry()
-    pinGeo.setAttribute('position', new THREE.BufferAttribute(pinArr, 3))
-    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({ color: 0xD98E4A, size: 0.06, sizeAttenuation: true })))
-
-    // Pulse rings
-    const rings: { mesh: THREE.Line; phase: number }[] = []
+    // US city pins — small spheres so they render as circles not squares
+    const pinMat = new THREE.MeshBasicMaterial({ color: 0xD98E4A })
+    const pinGeo = new THREE.SphereGeometry(0.020, 10, 10)
+    const pinPositions = US_CITIES.map(c => latLonToVec(c.lat, c.lon, 1.04))
     pinPositions.forEach(([x, y, z]) => {
+      const pin = new THREE.Mesh(pinGeo, pinMat)
+      pin.position.set(x, y, z)
+      group.add(pin)
+    })
+
+    // Pulse rings — positioned at surface (1.03) just below sphere pins
+    const rings: { mesh: THREE.Line; phase: number }[] = []
+    const ringPositions = US_CITIES.map(c => latLonToVec(c.lat, c.lon, 1.03))
+    ringPositions.forEach(([x, y, z]) => {
       const normal = new THREE.Vector3(x, y, z).normalize()
       const up = Math.abs(normal.y) < 0.9 ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(1, 0, 0)
       const right = new THREE.Vector3().crossVectors(normal, up).normalize()

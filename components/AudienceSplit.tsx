@@ -59,7 +59,7 @@ const cards = [
       'Stop guessing. Get a personalized match score for every coffee shop based on your actual taste profile — before you walk in the door.',
     features: [
       'Build your taste profile once',
-      'TikTok-style discovery feed',
+      'Personalized discovery feed',
       'Personalized scores out of 10',
       'Find the right cup, every time',
     ],
