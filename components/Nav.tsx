@@ -43,7 +43,7 @@ export default function Nav() {
             href="#waitlist"
             className="bg-white text-black text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors tracking-wide"
           >
-            join waitlist
+            ready to sip
           </a>
         </div>
 
@@ -85,7 +85,7 @@ export default function Nav() {
             onClick={() => setOpen(false)}
             className="bg-white text-black text-sm font-semibold px-6 py-3 rounded-full text-center"
           >
-            join waitlist
+            ready to sip
           </a>
         </div>
       )}
