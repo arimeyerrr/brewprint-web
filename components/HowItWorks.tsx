@@ -1,9 +1,9 @@
 import AnimateInView from './AnimateInView'
 
 const steps = [
-  { number: '01', text: 'pick your usual.' },
-  { number: '02', text: 'pick your preferences.' },
-  { number: '03', text: 'get your brewprint.' },
+  { number: '01', text: 'Pick Your Usual.' },
+  { number: '02', text: 'Pick Your Preferences.' },
+  { number: '03', text: 'Get Your Brewprint.' },
 ]
 
 export default function HowItWorks() {
@@ -15,7 +15,7 @@ export default function HowItWorks() {
             className="font-bold text-white mb-20 leading-tight"
             style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)' }}
           >
-            how it works.
+            How It Works.
           </h2>
         </AnimateInView>
 

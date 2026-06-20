@@ -88,7 +88,7 @@ export default function AudienceSplit() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <AnimateInView>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-16 leading-tight text-center">
-            built for both sides of the cup.
+            Built for Both Sides of the Cup.
           </h2>
         </AnimateInView>
 

@@ -21,12 +21,69 @@ const US_CITIES = [
 function latLonToVec(lat: number, lon: number, r = 1.03): [number, number, number] {
   const phi = (90 - lat) * (Math.PI / 180)
   const theta = lon * (Math.PI / 180)
-  return [
-    r * Math.sin(phi) * Math.cos(theta),
-    r * Math.cos(phi),
-    r * Math.sin(phi) * Math.sin(theta),
-  ]
+  return [r * Math.sin(phi) * Math.cos(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta)]
 }
+
+const VERT = `
+varying vec3 vNormal;
+varying vec2 vUv;
+varying vec3 vPosition;
+void main() {
+  vNormal = normalize(normalMatrix * normal);
+  vUv = uv;
+  vPosition = position;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
+const FRAG = `
+varying vec3 vNormal;
+varying vec2 vUv;
+
+float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453); }
+float noise(vec2 p) {
+  vec2 i = floor(p); vec2 f = fract(p); f = f*f*(3.0-2.0*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y);
+}
+float fbm(vec2 p) { return noise(p)*0.5 + noise(p*2.1+0.5)*0.25 + noise(p*4.3+1.2)*0.125; }
+
+void main() {
+  float n = fbm(vUv * 3.8 + 0.4);
+  float lat01 = vUv.y; // 0=south, 1=north
+
+  vec3 deepOcean  = vec3(0.03, 0.08, 0.18);
+  vec3 shallowSea = vec3(0.06, 0.14, 0.28);
+  vec3 land       = vec3(0.12, 0.20, 0.09);
+  vec3 highland   = vec3(0.18, 0.22, 0.12);
+  vec3 desert     = vec3(0.22, 0.17, 0.08);
+  vec3 iceCap     = vec3(0.62, 0.70, 0.76);
+
+  float isLand   = smoothstep(0.46, 0.52, n);
+  float isHigh   = smoothstep(0.70, 0.82, n);
+  float isDesert = smoothstep(0.20, 0.35, lat01) * (1.0 - smoothstep(0.55, 0.70, lat01)) * smoothstep(0.52, 0.60, n);
+  float polar    = smoothstep(0.76, 0.95, abs(lat01 * 2.0 - 1.0));
+
+  vec3 oceanColor = mix(deepOcean, shallowSea, smoothstep(0.35, 0.46, n));
+  vec3 landColor  = mix(land, highland, isHigh);
+  landColor = mix(landColor, desert, isDesert * 0.7);
+  vec3 color = mix(oceanColor, landColor, isLand);
+  color = mix(color, iceCap, polar);
+
+  // Directional light
+  float diff = max(dot(vNormal, normalize(vec3(1.8, 0.5, 2.5))), 0.0);
+  color *= (0.18 + 0.82 * diff);
+
+  // Atmosphere rim
+  float rim = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.5);
+  color += vec3(0.04, 0.14, 0.38) * rim;
+
+  // Ocean specular
+  float spec = pow(max(dot(reflect(-normalize(vec3(1.8,0.5,2.5)), vNormal), vec3(0,0,1)), 0.0), 32.0);
+  color += vec3(0.1, 0.2, 0.4) * spec * (1.0 - isLand) * 0.4;
+
+  gl_FragColor = vec4(color, 1.0);
+}
+`
 
 export default function GlobeSection() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,9 +95,7 @@ export default function GlobeSection() {
     const canvas = canvasRef.current
     if (!container || !canvas) return
 
-    const W = container.offsetWidth
-    const H = container.offsetHeight
-
+    const W = container.offsetWidth, H = container.offsetHeight
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 1000)
     camera.position.z = 2.9
@@ -51,92 +106,59 @@ export default function GlobeSection() {
     renderer.setClearColor(0x000000, 0)
 
     const group = new THREE.Group()
-    // Start oriented so US faces viewer
     group.rotation.y = 3.0
-    group.rotation.x = 0.12
+    group.rotation.x = 0.1
     scene.add(group)
 
-    // Lighting — bright enough to see the sphere
-    scene.add(new THREE.AmbientLight(0x8090b0, 1.0))
-    const frontPt = new THREE.PointLight(0xc0d0ff, 2.5, 15)
-    frontPt.position.set(0, 1, 4)
-    scene.add(frontPt)
-    const amberPt = new THREE.PointLight(0xD98E4A, 0.8, 12)
-    amberPt.position.set(3, -1, 2)
-    scene.add(amberPt)
+    // Terrain sphere via GLSL shader
+    const earthMat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG })
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(1.0, 96, 96), earthMat))
 
-    // Base sphere — dark ocean, slightly visible
-    const oceanMat = new THREE.MeshStandardMaterial({
-      color: 0x060e1c,
-      roughness: 0.5,
-      metalness: 0.4,
+    // Subtle cloud layer
+    const cloudMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff, transparent: true, opacity: 0.06, roughness: 1
     })
-    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.985, 64, 64), oceanMat))
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(1.015, 32, 32), cloudMat))
 
-    // Vertex dot cloud — the "bean" look
-    const dotGeo = new THREE.SphereGeometry(1.001, 36, 36)
-    group.add(new THREE.Points(dotGeo, new THREE.PointsMaterial({
-      color: 0x6080c0,
-      size: 0.018,
-      sizeAttenuation: true,
-      transparent: true,
-      opacity: 0.65,
-    })))
+    // Grid overlay — very subtle
+    const gridMat = new THREE.LineBasicMaterial({ color: 0x6090c0, opacity: 0.18, transparent: true })
+    const makeLine = (pts: THREE.Vector3[]) =>
+      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat))
 
-    // Grid line materials
-    const gridMat = new THREE.LineBasicMaterial({ color: 0x2a4a80, opacity: 0.45, transparent: true })
-    const equatorMat = new THREE.LineBasicMaterial({ color: 0x3a6ab0, opacity: 0.7, transparent: true })
-
-    const makeLine = (pts: THREE.Vector3[], mat: THREE.LineBasicMaterial) => {
-      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat))
-    }
-
-    // Latitude rings
-    for (let lat = -80; lat <= 80; lat += 20) {
+    for (let lat = -80; lat <= 80; lat += 30) {
       const pts: THREE.Vector3[] = []
       for (let i = 0; i <= 361; i++) {
-        const phi = (90 - lat) * (Math.PI / 180)
-        const theta = i * (Math.PI / 180)
+        const phi = (90 - lat) * (Math.PI / 180), theta = i * (Math.PI / 180)
         pts.push(new THREE.Vector3(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta)))
       }
-      makeLine(pts, lat === 0 ? equatorMat : gridMat)
+      makeLine(pts)
     }
-
-    // Longitude lines
-    for (let lon = 0; lon < 360; lon += 20) {
+    for (let lon = 0; lon < 360; lon += 30) {
       const pts: THREE.Vector3[] = []
       for (let i = 0; i <= 180; i++) {
-        const phi = i * (Math.PI / 180)
-        const theta = lon * (Math.PI / 180)
+        const phi = i * (Math.PI / 180), theta = lon * (Math.PI / 180)
         pts.push(new THREE.Vector3(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta)))
       }
-      makeLine(pts, gridMat)
+      makeLine(pts)
     }
 
-    // Outer atmosphere glow
-    const atmMat = new THREE.MeshStandardMaterial({
-      color: 0x1a3a6a,
-      transparent: true,
-      opacity: 0.18,
-      side: THREE.BackSide,
-    })
-    group.add(new THREE.Mesh(new THREE.SphereGeometry(1.12, 64, 64), atmMat))
+    // Atmosphere
+    scene.add(new THREE.AmbientLight(0x334466, 0.6))
+    const atmMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(1.1, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0x1a3a7a, transparent: true, opacity: 0.15, side: THREE.BackSide })
+    )
+    group.add(atmMesh)
 
-    // US city pins — amber
+    // US city pins
     const pinPositions = US_CITIES.map(c => latLonToVec(c.lat, c.lon))
     const pinArr = new Float32Array(pinPositions.length * 3)
-    pinPositions.forEach(([x, y, z], i) => {
-      pinArr[i * 3] = x; pinArr[i * 3 + 1] = y; pinArr[i * 3 + 2] = z
-    })
+    pinPositions.forEach(([x, y, z], i) => { pinArr[i * 3] = x; pinArr[i * 3 + 1] = y; pinArr[i * 3 + 2] = z })
     const pinGeo = new THREE.BufferGeometry()
     pinGeo.setAttribute('position', new THREE.BufferAttribute(pinArr, 3))
-    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({
-      color: 0xD98E4A,
-      size: 0.055,
-      sizeAttenuation: true,
-    })))
+    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({ color: 0xD98E4A, size: 0.06, sizeAttenuation: true })))
 
-    // Pulse rings around each pin
+    // Pulse rings
     const rings: { mesh: THREE.Line; phase: number }[] = []
     pinPositions.forEach(([x, y, z]) => {
       const normal = new THREE.Vector3(x, y, z).normalize()
@@ -158,10 +180,8 @@ export default function GlobeSection() {
       rings.push({ mesh, phase: Math.random() * Math.PI * 2 })
     })
 
-    // Interaction
-    const AUTO_ROT = 0.0014
+    const AUTO_ROT = 0.0013
     let dragging = false, prevX = 0, prevY = 0, velX = 0, velY = 0
-
     const onDown = (x: number, y: number) => { dragging = true; prevX = x; prevY = y; velX = 0; velY = 0 }
     const onMove = (x: number, y: number) => {
       if (!dragging) return
@@ -170,7 +190,6 @@ export default function GlobeSection() {
       prevX = x; prevY = y
     }
     const onUp = () => { dragging = false }
-
     canvas.addEventListener('mousedown', e => onDown(e.clientX, e.clientY))
     window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY))
     window.addEventListener('mouseup', onUp)
@@ -178,24 +197,19 @@ export default function GlobeSection() {
     window.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true })
     window.addEventListener('touchend', onUp)
 
-    const regionTimer = setInterval(() => {
-      setActiveIdx(i => (i + 1) % US_CITIES.length)
-    }, 2500)
+    const regionTimer = setInterval(() => setActiveIdx(i => (i + 1) % US_CITIES.length), 2500)
 
-    let t = 0
-    let raf: number
+    let t = 0, raf: number
     const tick = () => {
-      raf = requestAnimationFrame(tick)
-      t += 0.016
+      raf = requestAnimationFrame(tick); t += 0.016
       if (!dragging) {
         velX *= 0.90; velY *= 0.90
-        group.rotation.y += velY + AUTO_ROT
-        group.rotation.x += velX
+        group.rotation.y += velY + AUTO_ROT; group.rotation.x += velX
         group.rotation.x = Math.max(-0.4, Math.min(0.4, group.rotation.x))
       }
       rings.forEach(({ mesh, phase }) => {
-        const pulse = 0.93 + 0.1 * Math.sin(t * 1.6 + phase)
-        mesh.scale.setScalar(pulse)
+        const p = 0.93 + 0.1 * Math.sin(t * 1.6 + phase)
+        mesh.scale.setScalar(p)
         ;(mesh.material as THREE.LineBasicMaterial).opacity = 0.08 + 0.25 * Math.abs(Math.sin(t * 1.6 + phase))
       })
       renderer.render(scene, camera)
@@ -209,11 +223,9 @@ export default function GlobeSection() {
     window.addEventListener('resize', onResize)
 
     return () => {
-      cancelAnimationFrame(raf)
-      clearInterval(regionTimer)
+      cancelAnimationFrame(raf); clearInterval(regionTimer)
       window.removeEventListener('mousemove', e => onMove(e.clientX, e.clientY))
-      window.removeEventListener('mouseup', onUp)
-      window.removeEventListener('resize', onResize)
+      window.removeEventListener('mouseup', onUp); window.removeEventListener('resize', onResize)
       renderer.dispose()
     }
   }, [])
@@ -222,15 +234,13 @@ export default function GlobeSection() {
 
   return (
     <section id="globe" className="relative bg-black overflow-hidden" style={{ minHeight: '100vh' }}>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(20,35,80,0.25) 0%, transparent 70%)' }}
-      />
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(15,30,70,0.3) 0%, transparent 70%)' }} />
 
       <div className="absolute top-0 inset-x-0 z-10 pt-24 text-center px-6">
         <AnimateInView>
           <h2 className="font-bold text-white leading-tight mb-3" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>
-            every shop.<br />your score.
+            Every Shop. Your Score.
           </h2>
         </AnimateInView>
         <AnimateInView delay={0.1}>
@@ -244,21 +254,10 @@ export default function GlobeSection() {
         <canvas ref={canvasRef} className="w-full h-full" style={{ cursor: 'grab' }} />
       </div>
 
-      {/* City score card */}
-      <div
-        className="absolute bottom-14 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 px-7 py-4 rounded-2xl"
-        style={{
-          background: 'rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          minWidth: 260,
-        }}
-      >
-        <div
-          className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-          style={{ background: '#D98E4A', boxShadow: '0 0 10px rgba(217,142,74,0.9)' }}
-        />
+      <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 px-7 py-4 rounded-2xl"
+        style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.08)', minWidth: 260 }}>
+        <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+          style={{ background: '#D98E4A', boxShadow: '0 0 10px rgba(217,142,74,0.9)' }} />
         <div className="flex-1">
           <div className="text-white text-sm font-semibold">{city.name}</div>
           <div className="text-white/35 text-xs mt-0.5">{city.note}</div>

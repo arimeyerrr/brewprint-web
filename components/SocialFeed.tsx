@@ -3,206 +3,86 @@ import { useState } from 'react'
 import AnimateInView from './AnimateInView'
 
 const STORIES = [
-  { id: 'bb', name: 'Barista B.', initials: 'BB', color: '#8B4513', active: true },
-  { id: 'ss', name: 'SarahSips', initials: 'SS', color: '#4a5568', active: false },
+  { id: 'bb', name: 'Barista B.', initials: 'BB', color: '#7B3A1A', active: true },
+  { id: 'ss', name: 'SarahSips', initials: 'SS', color: '#3D4A5C', active: false },
   { id: 'mb', name: 'MikeBrews', initials: 'MB', color: '#2d4a6b', active: false },
   { id: 'jn', name: 'Jenna', initials: 'JN', color: '#5a3a4a', active: false },
   { id: 'tm', name: 'Tom', initials: 'TM', color: '#2a3a2a', active: false },
 ]
 
 const POSTS = [
-  {
-    id: 1,
-    user: 'Barista Brian',
-    initials: 'BB',
-    color: '#8B4513',
-    image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=800&q=85&auto=format&fit=crop',
-    title: 'Morning Brews & News',
-    caption: 'Reviewing the new roast from Opus — this one hits different.',
-    likes: 243,
-    comments: 2,
-    score: 9.2,
-    sponsored: false,
-  },
-  {
-    id: 2,
-    user: 'SarahSips',
-    initials: 'SS',
-    color: '#4a5568',
-    image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=85&auto=format&fit=crop',
-    title: 'Iced Latte Season',
-    caption: 'Found the best oat milk latte in the city. No notes.',
-    likes: 189,
-    comments: 1,
-    score: 8.7,
-    sponsored: false,
-  },
-  {
-    id: 3,
-    user: 'Volta Coffee',
-    initials: 'VC',
-    color: '#3a2a1a',
-    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=85&auto=format&fit=crop',
-    title: 'Pour Over Perfection',
-    caption: 'Come try our new single origin Ethiopian pour over.',
-    likes: 312,
-    comments: 4,
-    score: null,
-    sponsored: true,
-  },
-  {
-    id: 4,
-    user: 'MikeBrews',
-    initials: 'MB',
-    color: '#2d4a6b',
-    image: 'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=800&q=85&auto=format&fit=crop',
-    title: 'Hidden Gem Alert',
-    caption: 'This place just became my permanent study spot. 9.4 match.',
-    likes: 156,
-    comments: 3,
-    score: 9.4,
-    sponsored: false,
-  },
+  { id: 1, user: 'BaristaBrian', initials: 'BB', color: '#7B3A1A', img: '1541167760496-1628856ab772', likes: 243, score: 9.2, sponsored: false, title: 'Morning Brews' },
+  { id: 2, user: 'SarahSips', initials: 'SS', color: '#3D4A5C', img: '1461023058943-07fcbe16d735', likes: 189, score: 8.7, sponsored: false, title: 'Iced Season' },
+  { id: 3, user: 'Volta Coffee', initials: 'VC', color: '#2A1A0A', img: '1509042239860-f550ce710b93', likes: 312, score: null, sponsored: true, title: 'Pour Over' },
+  { id: 4, user: 'MikeBrews', initials: 'MB', color: '#2d4a6b', img: '1445116572660-236099ec97a0', likes: 156, score: 9.4, sponsored: false, title: 'Hidden Gem' },
+  { id: 5, user: 'Jenna', initials: 'JN', color: '#5a3a4a', img: '1485808191679-5f86510bd9d4', likes: 201, score: 8.5, sponsored: false, title: 'Sunday Pour' },
+  { id: 6, user: 'Tom', initials: 'TM', color: '#2a3a2a', img: '1464983953574-0892a716854b', likes: 98, score: 9.1, sponsored: false, title: 'Espresso Life' },
+  { id: 7, user: 'Portland Roasters', initials: 'PR', color: '#3A1A0A', img: '1511920170033-f8396924c348', likes: 445, score: null, sponsored: true, title: 'Single Origin' },
+  { id: 8, user: 'coffeeaddict', initials: 'CA', color: '#2A3A4A', img: '1447933601403-0c6688de566e', likes: 334, score: 9.6, sponsored: false, title: 'Perfect Shot' },
+  { id: 9, user: 'morningpour', initials: 'MP', color: '#4A3A1A', img: '1495474472287-4d71bcdd2085', likes: 122, score: 8.3, sponsored: false, title: 'First Light' },
+  { id: 10, user: 'weekendwanderer', initials: 'WW', color: '#2A4A3A', img: '1498804103079-a6351b050096', likes: 278, score: 9.0, sponsored: false, title: 'New Spot' },
+  { id: 11, user: 'Opus Coffee', initials: 'OC', color: '#1A1A2A', img: '1514432324607-a09d9b4aefdd', likes: 189, score: null, sponsored: true, title: 'Harvest Blend' },
+  { id: 12, user: 'dailydose', initials: 'DD', color: '#3A2A1A', img: '1476224203421-9ac39bcb3327', likes: 67, score: 7.8, sponsored: false, title: 'Cold Brew' },
+  { id: 13, user: 'sipnstay', initials: 'SN', color: '#1A2A3A', img: '1525286332767-7e0d37ea66b9', likes: 156, score: 9.3, sponsored: false, title: 'Stay Awhile' },
+  { id: 14, user: 'baristalife', initials: 'BL', color: '#3A1A2A', img: '1510591509098-f4fdc6d0ff04', likes: 389, score: 9.5, sponsored: false, title: 'Art in Every Cup' },
+  { id: 15, user: 'roastmaster', initials: 'RM', color: '#2A1A3A', img: '1587734195503-904fca47e0e9', likes: 234, score: 8.8, sponsored: false, title: 'Fresh Pull' },
 ]
 
-function CupIcon() {
+function Avatar({ initials, color, size = 32 }: { initials: string; color: string; size?: number }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-      <path d="M17 8h1a4 4 0 010 8h-1" />
-      <path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z" />
-      <line x1="6" y1="2" x2="6" y2="4" />
-      <line x1="10" y1="2" x2="10" y2="4" />
-      <line x1="14" y1="2" x2="14" y2="4" />
-    </svg>
-  )
-}
-
-function CommentIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-    </svg>
-  )
-}
-
-function SendIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-      <line x1="22" y1="2" x2="11" y2="13" />
-      <polygon points="22 2 15 22 11 13 2 9 22 2" />
-    </svg>
-  )
-}
-
-function BookmarkIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-    </svg>
-  )
-}
-
-function Avatar({ initials, color, size = 36 }: { initials: string; color: string; size?: number }) {
-  return (
-    <div
-      className="rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-white"
-      style={{ width: size, height: size, background: color, fontSize: size * 0.35 }}
-    >
+    <div className="rounded-full flex items-center justify-center font-semibold text-white flex-shrink-0"
+      style={{ width: size, height: size, background: color, fontSize: size * 0.36 }}>
       {initials}
     </div>
   )
 }
 
-function PostCard({ post }: { post: typeof POSTS[0] }) {
-  const [cupped, setCupped] = useState(false)
-  const [saved, setSaved] = useState(false)
+function GridPost({ post }: { post: typeof POSTS[0] }) {
+  const [hovered, setHovered] = useState(false)
+  const [liked, setLiked] = useState(false)
 
   return (
-    <div className="bg-surface rounded-2xl overflow-hidden border border-white/[0.04]">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Avatar initials={post.initials} color={post.color} size={36} />
-          <div>
-            <p className="text-white text-sm font-semibold leading-tight">{post.user}</p>
-            {post.sponsored && (
-              <p className="text-white/30 text-[10px] tracking-wider uppercase leading-tight">Sponsored</p>
-            )}
-          </div>
+    <div
+      className="relative overflow-hidden rounded-xl cursor-pointer"
+      style={{ aspectRatio: '1/1', background: '#111' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <img
+        src={`https://images.unsplash.com/photo-${post.img}?w=400&q=80&auto=format&fit=crop`}
+        alt={post.title}
+        className="w-full h-full object-cover transition-transform duration-500"
+        style={{ transform: hovered ? 'scale(1.06)' : 'scale(1)' }}
+      />
+
+      {/* Score badge */}
+      {post.score && (
+        <div className="absolute top-2 right-2 rounded-full px-2 py-0.5 text-[10px] font-bold"
+          style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(6px)', color: '#D98E4A', border: '1px solid rgba(217,142,74,0.35)' }}>
+          {post.score}
         </div>
-        <button className="text-white/30 hover:text-white/60 transition-colors">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-            <circle cx="5" cy="12" r="1.5" />
-            <circle cx="12" cy="12" r="1.5" />
-            <circle cx="19" cy="12" r="1.5" />
-          </svg>
+      )}
+      {post.sponsored && (
+        <div className="absolute top-2 right-2 rounded-sm px-1.5 py-0.5 text-[9px] font-semibold tracking-widest uppercase text-white/80"
+          style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)' }}>
+          Ad
+        </div>
+      )}
+
+      {/* Hover overlay */}
+      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-1 transition-opacity duration-300"
+        style={{ opacity: hovered ? 1 : 0 }}>
+        <button onClick={() => setLiked(!liked)} className={`text-sm font-semibold transition-colors ${liked ? 'text-amber' : 'text-white'}`}>
+          ☕ {post.likes + (liked ? 1 : 0)}
         </button>
+        <p className="text-white text-xs font-medium px-3 text-center leading-tight">{post.title}</p>
+        <p className="text-white/50 text-[10px]">@{post.user}</p>
       </div>
 
-      {/* Image */}
-      <div className="relative" style={{ paddingBottom: '80%' }}>
-        <img
-          src={post.image}
-          alt={post.title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {post.score && (
-          <div
-            className="absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold"
-            style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', color: '#D98E4A', border: '1px solid rgba(217,142,74,0.3)' }}
-          >
-            {post.score} match
-          </div>
-        )}
-        {post.sponsored && (
-          <div
-            className="absolute top-3 right-3 rounded-sm px-2 py-1 text-[10px] font-semibold tracking-widest uppercase text-white"
-            style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}
-          >
-            Sponsored
-          </div>
-        )}
-      </div>
-
-      {/* Actions */}
-      <div className="px-4 pt-3 pb-1">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setCupped(!cupped)}
-              className={`transition-colors duration-200 ${cupped ? 'text-amber' : 'text-white/60 hover:text-white'}`}
-            >
-              <CupIcon />
-            </button>
-            <button className="text-white/60 hover:text-white transition-colors">
-              <CommentIcon />
-            </button>
-            <button className="text-white/60 hover:text-white transition-colors">
-              <SendIcon />
-            </button>
-          </div>
-          <button
-            onClick={() => setSaved(!saved)}
-            className={`transition-colors duration-200 ${saved ? 'text-white' : 'text-white/60 hover:text-white'}`}
-          >
-            <BookmarkIcon />
-          </button>
-        </div>
-
-        <p className="text-white text-sm font-semibold mb-1">
-          {(post.likes + (cupped ? 1 : 0)).toLocaleString()} likes
-        </p>
-        <p className="text-white text-sm font-bold leading-snug">{post.title}</p>
-        <p className="text-white/55 text-sm leading-snug">
-          <span className="text-white/70 font-medium">{post.user}</span>{' '}
-          {post.caption}
-        </p>
-        {post.comments > 0 && (
-          <button className="text-white/25 text-xs mt-1.5 hover:text-white/45 transition-colors">
-            View all {post.comments} comment{post.comments !== 1 ? 's' : ''}
-          </button>
-        )}
-        <div className="h-4" />
+      {/* Username strip at bottom */}
+      <div className="absolute inset-x-0 bottom-0 px-2 py-1.5 bg-gradient-to-t from-black/70 to-transparent flex items-center gap-1.5">
+        <Avatar initials={post.initials} color={post.color} size={18} />
+        <span className="text-white/70 text-[10px] truncate">{post.user}</span>
       </div>
     </div>
   )
@@ -211,55 +91,48 @@ function PostCard({ post }: { post: typeof POSTS[0] }) {
 export default function SocialFeed() {
   return (
     <section className="bg-black py-20 md:py-28">
-      <div className="max-w-md mx-auto px-4">
+      <div className="max-w-2xl mx-auto px-4">
 
         <AnimateInView>
-          <p className="text-white/20 text-xs tracking-[0.45em] uppercase font-medium mb-4 text-center">
-            the feed
+          <p className="text-white/20 text-xs tracking-[0.2em] uppercase font-medium mb-4 text-center">
+            The Feed
           </p>
         </AnimateInView>
         <AnimateInView delay={0.08}>
-          <h2
-            className="font-bold text-white leading-tight mb-12 text-center"
-            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
-          >
-            what people are sipping.
+          <h2 className="font-bold text-white leading-tight mb-12 text-center" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+            See What Your Friends Are Sipping.
           </h2>
         </AnimateInView>
 
         {/* Stories */}
-        <AnimateInView delay={0.12}>
-          <div className="flex items-start gap-5 overflow-x-auto pb-2 mb-8 scrollbar-none">
+        <AnimateInView delay={0.1}>
+          <div className="flex items-start gap-4 overflow-x-auto pb-3 mb-8" style={{ scrollbarWidth: 'none' }}>
             {STORIES.map((s) => (
               <div key={s.id} className="flex flex-col items-center gap-1.5 flex-shrink-0">
-                <div
-                  className="rounded-full p-0.5"
-                  style={{ background: s.active ? 'linear-gradient(135deg, #D98E4A, #f0b060)' : 'rgba(255,255,255,0.12)' }}
-                >
-                  <Avatar initials={s.initials} color={s.color} size={52} />
+                <div className="rounded-full p-0.5"
+                  style={{ background: s.active ? 'linear-gradient(135deg, #D98E4A, #f0b060)' : 'rgba(255,255,255,0.1)' }}>
+                  <Avatar initials={s.initials} color={s.color} size={48} />
                 </div>
-                <span className="text-white/40 text-[10px] text-center leading-tight max-w-[52px] truncate">{s.name}</span>
+                <span className="text-white/35 text-[10px] text-center max-w-[48px] truncate">{s.name}</span>
               </div>
             ))}
           </div>
         </AnimateInView>
 
-        {/* Posts */}
-        <div className="space-y-4">
-          {POSTS.map((post, i) => (
-            <AnimateInView key={post.id} delay={0.1 + i * 0.08}>
-              <PostCard post={post} />
-            </AnimateInView>
-          ))}
-        </div>
+        {/* 3-column grid */}
+        <AnimateInView delay={0.14}>
+          <div className="grid grid-cols-3 gap-1 mb-10">
+            {POSTS.map((post) => (
+              <GridPost key={post.id} post={post} />
+            ))}
+          </div>
+        </AnimateInView>
 
-        <AnimateInView delay={0.4}>
-          <div className="text-center mt-10">
-            <a
-              href="#waitlist"
-              className="inline-block border border-white/15 text-white/60 text-sm px-7 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-200"
-            >
-              join the feed →
+        <AnimateInView delay={0.2}>
+          <div className="text-center">
+            <a href="#waitlist"
+              className="inline-block border border-white/15 text-white/60 text-sm px-7 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-200">
+              Join the Feed →
             </a>
           </div>
         </AnimateInView>
