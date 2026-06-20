@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Nav from "@/components/Nav";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "brewprint — coffee discovery, personalized",
   description:
-    "Discover coffee shops that match your exact taste. Personalized match scores, interactive maps, and granular reviews — built for specialty coffee lovers.",
+    "Connecting every coffee shop to its perfect customer — and every coffee lover to their perfect cup.",
 };
 
 export default function RootLayout({
@@ -19,7 +20,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-background text-foreground">{children}</body>
+      <body className="min-h-full bg-background text-foreground">
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }

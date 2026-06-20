@@ -8,7 +8,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-surface py-24 md:py-36">
+    <section id="how-it-works" className="bg-surface py-24 md:py-36">
       <div className="max-w-5xl mx-auto px-6 md:px-12 text-center">
         <AnimateInView>
           <h2

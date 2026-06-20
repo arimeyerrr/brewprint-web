@@ -87,7 +87,7 @@ export default function AudienceSplit() {
     <section className="bg-background py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <AnimateInView>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-16 max-w-lg leading-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-16 leading-tight text-center">
             built for both sides of the cup.
           </h2>
         </AnimateInView>

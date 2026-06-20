@@ -4,7 +4,7 @@ import CoffeeVisual from "@/components/CoffeeVisual";
 import GlobeSection from "@/components/GlobeSection";
 import HowItWorks from "@/components/HowItWorks";
 import ShopOwners from "@/components/ShopOwners";
-import FounderNote from "@/components/FounderNote";
+import FounderStory from "@/components/FounderStory";
 import WaitlistForm from "@/components/WaitlistForm";
 import Footer from "@/components/Footer";
 
@@ -17,7 +17,7 @@ export default function Home() {
       <GlobeSection />
       <HowItWorks />
       <ShopOwners />
-      <FounderNote />
+      <FounderStory />
       <WaitlistForm />
       <Footer />
     </main>

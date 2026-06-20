@@ -9,7 +9,7 @@ const highlights = [
 
 export default function ShopOwners() {
   return (
-    <section className="bg-background py-24 md:py-32">
+    <section id="for-shops" className="bg-background py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           {/* Left: text */}

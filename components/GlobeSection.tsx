@@ -30,64 +30,50 @@ export default function GlobeSection() {
     // Wireframe sphere
     const sphereGeo = new THREE.SphereGeometry(1, 48, 48)
     const wireGeo = new THREE.WireframeGeometry(sphereGeo)
-    const wireMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.07, transparent: true })
-    group.add(new THREE.LineSegments(wireGeo, wireMat))
+    group.add(new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.07, transparent: true })))
 
-    // White dots at vertices
-    const dotMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.016, sizeAttenuation: true })
-    group.add(new THREE.Points(sphereGeo, dotMat))
+    // White vertex dots
+    group.add(new THREE.Points(sphereGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.014, sizeAttenuation: true })))
 
     // Glass inner sphere
-    const glassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x0a0a12,
-      transparent: true,
-      opacity: 0.18,
-      roughness: 0,
-      metalness: 0.1,
-    })
-    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.98, 48, 48), glassMat))
-
-    // Ambient + point lights for glass effect
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4))
-    const pt = new THREE.PointLight(0xD98E4A, 1.2, 10)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.3))
+    const pt = new THREE.PointLight(0xD98E4A, 0.8, 10)
     pt.position.set(2, 2, 2)
     scene.add(pt)
 
-    // Amber coffee pins on surface
-    const pinCoords: [number, number, number][] = [
-      [0.62, 0.68, 0.39],
-      [-0.51, 0.28, 0.82],
-      [0.12, -0.58, 0.81],
-      [0.79, -0.22, 0.57],
-      [-0.72, 0.62, 0.31],
-      [0.28, 0.88, 0.38],
-      [0.45, 0.1, -0.89],
-      [-0.3, -0.7, 0.65],
+    const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x060608, transparent: true, opacity: 0.14, roughness: 0 })
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.97, 48, 48), glassMat))
+
+    // Amber coffee shop pins
+    const rawPins: [number, number, number][] = [
+      [0.62, 0.68, 0.39], [-0.51, 0.28, 0.82], [0.12, -0.58, 0.81],
+      [0.79, -0.22, 0.57], [-0.72, 0.62, 0.31], [0.28, 0.88, 0.38],
+      [0.45, 0.10, -0.89], [-0.30, -0.70, 0.65],
     ]
-    const pinArr = new Float32Array(pinCoords.length * 3)
-    pinCoords.forEach(([x, y, z], i) => {
+    const pinArr = new Float32Array(rawPins.length * 3)
+    rawPins.forEach(([x, y, z], i) => {
       const l = Math.sqrt(x * x + y * y + z * z)
-      pinArr[i * 3] = x / l
-      pinArr[i * 3 + 1] = y / l
-      pinArr[i * 3 + 2] = z / l
+      pinArr[i * 3] = x / l; pinArr[i * 3 + 1] = y / l; pinArr[i * 3 + 2] = z / l
     })
     const pinGeo = new THREE.BufferGeometry()
     pinGeo.setAttribute('position', new THREE.BufferAttribute(pinArr, 3))
-    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({ color: 0xD98E4A, size: 0.05, sizeAttenuation: true })))
+    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({ color: 0xD98E4A, size: 0.052, sizeAttenuation: true })))
 
-    // Interaction
+    // Interaction — controlled, non-accelerating
+    const AUTO_ROT = 0.0022
     let dragging = false
     let prevX = 0, prevY = 0
-    let velX = 0.0025, velY = 0
+    let velX = 0, velY = 0
 
-    const onDown = (x: number, y: number) => { dragging = true; prevX = x; prevY = y; velX = 0; velY = 0 }
+    const onDown = (x: number, y: number) => {
+      dragging = true; prevX = x; prevY = y; velX = 0; velY = 0
+    }
     const onMove = (x: number, y: number) => {
       if (!dragging) return
-      const dx = (x - prevX) * 0.006
-      const dy = (y - prevY) * 0.006
-      group.rotation.y += dx
-      group.rotation.x += dy
-      velX = dx * 0.6; velY = dy * 0.6
+      velX = (x - prevX) * 0.004
+      velY = (y - prevY) * 0.004
+      group.rotation.y += velX
+      group.rotation.x += velY
       prevX = x; prevY = y
     }
     const onUp = () => { dragging = false }
@@ -103,10 +89,13 @@ export default function GlobeSection() {
     const tick = () => {
       raf = requestAnimationFrame(tick)
       if (!dragging) {
-        group.rotation.y += velX
-        group.rotation.x += velY
-        velX = velX * 0.98 + 0.0018
-        velY *= 0.97
+        // Momentum decays, then settles to auto-rotation only
+        velX *= 0.92
+        velY *= 0.92
+        group.rotation.y += velY + AUTO_ROT
+        group.rotation.x += velX
+        // Clamp x-axis tilt so it doesn't flip
+        group.rotation.x = Math.max(-0.5, Math.min(0.5, group.rotation.x))
       }
       renderer.render(scene, camera)
     }
@@ -122,7 +111,6 @@ export default function GlobeSection() {
 
     return () => {
       cancelAnimationFrame(raf)
-      canvas.removeEventListener('mousedown', e => onDown(e.clientX, e.clientY))
       window.removeEventListener('mousemove', e => onMove(e.clientX, e.clientY))
       window.removeEventListener('mouseup', onUp)
       window.removeEventListener('resize', onResize)
@@ -131,20 +119,15 @@ export default function GlobeSection() {
   }, [])
 
   return (
-    <section className="relative bg-black overflow-hidden" style={{ minHeight: '100vh' }}>
-      {/* Warm center glow */}
+    <section id="globe" className="relative bg-black overflow-hidden" style={{ minHeight: '100vh' }}>
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(61,31,8,0.22) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(50,20,5,0.25) 0%, transparent 70%)' }}
       />
 
-      {/* Heading */}
-      <div className="absolute top-0 inset-x-0 z-10 pt-20 pb-6 text-center px-6">
+      <div className="absolute top-0 inset-x-0 z-10 pt-24 text-center px-6">
         <AnimateInView>
-          <h2
-            className="font-bold text-white leading-tight mb-3"
-            style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
-          >
+          <h2 className="font-bold text-white leading-tight mb-3" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>
             every shop.<br />your score.
           </h2>
         </AnimateInView>
@@ -155,14 +138,13 @@ export default function GlobeSection() {
         </AnimateInView>
       </div>
 
-      {/* Globe */}
       <div ref={containerRef} className="w-full" style={{ height: '100vh' }}>
         <canvas ref={canvasRef} className="w-full h-full" style={{ cursor: 'grab' }} />
       </div>
 
-      {/* Glass score card */}
+      {/* Glassmorphism card */}
       <div
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex items-center gap-5 px-6 py-4 rounded-2xl"
+        className="absolute bottom-14 left-1/2 -translate-x-1/2 z-10 flex items-center gap-5 px-6 py-4 rounded-2xl"
         style={{
           background: 'rgba(255,255,255,0.04)',
           backdropFilter: 'blur(24px)',
@@ -175,7 +157,7 @@ export default function GlobeSection() {
           <div className="text-amber font-bold text-2xl leading-none">9.2</div>
           <div className="text-white/25 text-xs mt-1">your match</div>
         </div>
-        <div className="w-px h-8 bg-white/8" />
+        <div className="w-px h-8 bg-white/10" />
         <div>
           <div className="text-white text-sm font-medium">Onyx Coffee Lab</div>
           <div className="text-white/25 text-xs">top match near you</div>
