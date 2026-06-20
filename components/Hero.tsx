@@ -3,6 +3,62 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import AnimateInView from './AnimateInView'
 
+function CoffeePinLogo() {
+  return (
+    <svg viewBox="0 0 80 108" fill="none" style={{ width: 68, height: 92 }}>
+      <defs>
+        <radialGradient id="pinBody" cx="40%" cy="28%" r="68%">
+          <stop offset="0%"   stopColor="#D4853C" />
+          <stop offset="22%"  stopColor="#B56A25" />
+          <stop offset="50%"  stopColor="#7E4212" />
+          <stop offset="80%"  stopColor="#4C2208" />
+          <stop offset="100%" stopColor="#2A1004" />
+        </radialGradient>
+        <radialGradient id="pinSwirl" cx="34%" cy="26%" r="44%">
+          <stop offset="0%"   stopColor="rgba(220,155,75,0.55)" />
+          <stop offset="55%"  stopColor="rgba(190,115,45,0.22)" />
+          <stop offset="100%" stopColor="rgba(150,80,20,0)" />
+        </radialGradient>
+        <radialGradient id="pinShine" cx="30%" cy="20%" r="28%">
+          <stop offset="0%"   stopColor="rgba(255,228,158,0.38)" />
+          <stop offset="100%" stopColor="rgba(255,200,100,0)" />
+        </radialGradient>
+        <radialGradient id="innerDark" cx="50%" cy="45%" r="55%">
+          <stop offset="0%"   stopColor="rgba(10,3,0,0.75)" />
+          <stop offset="100%" stopColor="rgba(25,8,1,0.40)" />
+        </radialGradient>
+      </defs>
+
+      {/* Main pin body */}
+      <path
+        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
+        fill="url(#pinBody)"
+      />
+      {/* Swirl/coffee texture overlay */}
+      <path
+        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
+        fill="url(#pinSwirl)"
+      />
+      {/* Specular shine */}
+      <path
+        d="M40 2C22.327 2 8 16.327 8 34C8 54.5 40 106 40 106C40 106 72 54.5 72 34C72 16.327 57.673 2 40 2Z"
+        fill="url(#pinShine)"
+      />
+      {/* Inner dark circle — coffee viewed from above */}
+      <circle cx="40" cy="32" r="15" fill="url(#innerDark)" />
+      <circle cx="40" cy="32" r="12" fill="rgba(12,3,0,0.5)" />
+      {/* Coffee swirl strokes */}
+      <path d="M32 29C34 25.5 38.5 24.5 42 27C45 29 45.5 32.5 43 34.5"
+        stroke="rgba(195,115,45,0.65)" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <path d="M36 36C38 32.5 42.5 31.5 45 33.5"
+        stroke="rgba(195,115,45,0.42)" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+      {/* Highlight zone */}
+      <ellipse cx="35" cy="25" rx="5.5" ry="6.5" fill="rgba(255,205,105,0.17)" />
+      <circle cx="33" cy="22" r="2.2" fill="rgba(255,232,160,0.26)" />
+    </svg>
+  )
+}
+
 function WaveLayer({ duration, delay, opacity, color, path, yRange }: {
   duration: number; delay: number; opacity: number; color: string; path?: string; yRange?: number
 }) {
@@ -106,6 +162,13 @@ export default function Hero() {
       <div className="h-16 flex-shrink-0" />
 
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
+
+        {/* Pin logo above wordmark */}
+        <AnimateInView delay={0.1}>
+          <div className="mb-5">
+            <CoffeePinLogo />
+          </div>
+        </AnimateInView>
 
         {/* Wordmark with liquid letter-fill (bottom-to-top) */}
         <AnimateInView delay={0.25}>
