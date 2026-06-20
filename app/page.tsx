@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
-import AudienceSplit from "@/components/AudienceSplit";
-import AppShowcase from "@/components/AppShowcase";
 import CoffeeVisual from "@/components/CoffeeVisual";
+import AudienceSplit from "@/components/AudienceSplit";
+import SocialFeed from "@/components/SocialFeed";
 import GlobeSection from "@/components/GlobeSection";
 import HowItWorks from "@/components/HowItWorks";
 import ShopOwners from "@/components/ShopOwners";
@@ -13,9 +13,9 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <AudienceSplit />
-      <AppShowcase />
       <CoffeeVisual />
+      <AudienceSplit />
+      <SocialFeed />
       <GlobeSection />
       <HowItWorks />
       <ShopOwners />

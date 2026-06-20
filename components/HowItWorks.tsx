@@ -3,7 +3,7 @@ import AnimateInView from './AnimateInView'
 const steps = [
   { number: '01', text: 'pick your usual.' },
   { number: '02', text: 'pick your preferences.' },
-  { number: '03', text: 'get your scores.' },
+  { number: '03', text: 'get your brewprint.' },
 ]
 
 export default function HowItWorks() {

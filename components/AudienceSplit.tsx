@@ -95,7 +95,7 @@ export default function AudienceSplit() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {cards.map((card, i) => (
             <AnimateInView key={card.label} delay={0.08 + i * 0.1}>
-              <div className="group flex flex-col h-full bg-surface rounded-2xl p-8 md:p-10 border border-white/[0.04] hover:border-white/10 transition-colors duration-300">
+              <div className="group flex flex-col items-center text-center h-full bg-surface rounded-2xl p-8 md:p-10 border border-white/[0.04] hover:border-white/10 transition-colors duration-300">
                 <div className="mb-5">{card.icon}</div>
                 <p className="text-white/30 text-[0.65rem] tracking-[0.35em] uppercase font-medium mb-3">
                   {card.label}
@@ -103,9 +103,9 @@ export default function AudienceSplit() {
                 <p className="text-white/60 text-base md:text-lg leading-relaxed mb-8">
                   {card.pitch}
                 </p>
-                <ul className="space-y-3 mb-10">
+                <ul className="space-y-3 mb-10 w-full">
                   {card.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
+                    <li key={f} className="flex items-center justify-center gap-3">
                       <Check />
                       <span className="text-white/40 text-sm">{f}</span>
                     </li>

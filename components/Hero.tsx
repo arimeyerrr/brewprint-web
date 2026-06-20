@@ -119,7 +119,7 @@ export default function Hero() {
             href="#waitlist"
             className="inline-block bg-white text-black font-semibold px-10 py-4 rounded-full text-sm md:text-base tracking-wide hover:bg-white/90 transition-all duration-200"
           >
-            ready to sip
+            ready to sip?
           </a>
         </AnimateInView>
       </div>

@@ -3,15 +3,19 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import AnimateInView from './AnimateInView'
 
-const COFFEE_REGIONS = [
-  { name: 'Ethiopia', note: 'Birthplace of coffee', lat: 9, lon: 38 },
-  { name: 'Colombia', note: 'Smooth, caramel sweetness', lat: 4, lon: -74 },
-  { name: 'Brazil', note: "World's top producer", lat: -10, lon: -51 },
-  { name: 'Vietnam', note: 'Bold robusta blends', lat: 16, lon: 108 },
-  { name: 'Guatemala', note: 'Dark chocolate & spice', lat: 15, lon: -90 },
-  { name: 'Kenya', note: 'Berry-bright acidity', lat: -1, lon: 37 },
-  { name: 'Indonesia', note: 'Earthy, full body', lat: -8, lon: 115 },
-  { name: 'Mexico', note: 'Mild, nutty finish', lat: 17, lon: -92 },
+const US_CITIES = [
+  { name: 'New York', note: 'Top match in your area', lat: 40.71, lon: -74.01, score: 9.2 },
+  { name: 'Los Angeles', note: 'Great specialty scene', lat: 34.05, lon: -118.24, score: 8.8 },
+  { name: 'Chicago', note: 'High match density', lat: 41.85, lon: -87.65, score: 9.4 },
+  { name: 'Miami', note: 'Trending near you', lat: 25.77, lon: -80.19, score: 8.6 },
+  { name: 'Austin', note: 'Your best match city', lat: 30.27, lon: -97.74, score: 9.7 },
+  { name: 'Seattle', note: 'Strong pour-over scene', lat: 47.61, lon: -122.33, score: 9.1 },
+  { name: 'San Francisco', note: 'Match-heavy neighborhood', lat: 37.77, lon: -122.42, score: 8.9 },
+  { name: 'Nashville', note: 'Rising coffee culture', lat: 36.17, lon: -86.78, score: 9.3 },
+  { name: 'Denver', note: 'High altitude, great taste', lat: 39.74, lon: -104.98, score: 8.5 },
+  { name: 'Portland', note: 'Legendary roast scene', lat: 45.52, lon: -122.68, score: 9.0 },
+  { name: 'Boston', note: 'Historic shop culture', lat: 42.36, lon: -71.06, score: 8.7 },
+  { name: 'Atlanta', note: 'Growing specialty market', lat: 33.75, lon: -84.39, score: 9.2 },
 ]
 
 function latLonToVec(lat: number, lon: number, r = 1.03): [number, number, number] {
@@ -38,8 +42,8 @@ export default function GlobeSection() {
     const H = container.offsetHeight
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 1000)
-    camera.position.z = 3.0
+    const camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 1000)
+    camera.position.z = 2.9
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
     renderer.setSize(W, H)
@@ -47,36 +51,47 @@ export default function GlobeSection() {
     renderer.setClearColor(0x000000, 0)
 
     const group = new THREE.Group()
+    // Start oriented so US faces viewer
+    group.rotation.y = 3.0
+    group.rotation.x = 0.12
     scene.add(group)
 
-    // Lighting
-    scene.add(new THREE.AmbientLight(0x0a1525, 1.2))
-    const bluePt = new THREE.PointLight(0x1a4a8a, 1.8, 12)
-    bluePt.position.set(-2.5, 1.5, 2)
-    scene.add(bluePt)
-    const amberPt = new THREE.PointLight(0xD98E4A, 0.6, 12)
-    amberPt.position.set(3, -1, 1)
+    // Lighting — bright enough to see the sphere
+    scene.add(new THREE.AmbientLight(0x8090b0, 1.0))
+    const frontPt = new THREE.PointLight(0xc0d0ff, 2.5, 15)
+    frontPt.position.set(0, 1, 4)
+    scene.add(frontPt)
+    const amberPt = new THREE.PointLight(0xD98E4A, 0.8, 12)
+    amberPt.position.set(3, -1, 2)
     scene.add(amberPt)
 
-    // Ocean sphere base
+    // Base sphere — dark ocean, slightly visible
     const oceanMat = new THREE.MeshStandardMaterial({
-      color: 0x020c1a,
-      roughness: 0.6,
-      metalness: 0.3,
+      color: 0x060e1c,
+      roughness: 0.5,
+      metalness: 0.4,
     })
-    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.99, 64, 64), oceanMat))
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.985, 64, 64), oceanMat))
+
+    // Vertex dot cloud — the "bean" look
+    const dotGeo = new THREE.SphereGeometry(1.001, 36, 36)
+    group.add(new THREE.Points(dotGeo, new THREE.PointsMaterial({
+      color: 0x6080c0,
+      size: 0.018,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.65,
+    })))
 
     // Grid line materials
-    const gridMat = new THREE.LineBasicMaterial({ color: 0x1a3a60, opacity: 0.3, transparent: true })
-    const equatorMat = new THREE.LineBasicMaterial({ color: 0x2a5a90, opacity: 0.55, transparent: true })
-    const beltMat = new THREE.LineBasicMaterial({ color: 0x4a2808, opacity: 0.4, transparent: true })
+    const gridMat = new THREE.LineBasicMaterial({ color: 0x2a4a80, opacity: 0.45, transparent: true })
+    const equatorMat = new THREE.LineBasicMaterial({ color: 0x3a6ab0, opacity: 0.7, transparent: true })
 
-    const makeLine = (points: THREE.Vector3[], mat: THREE.LineBasicMaterial) => {
-      const geo = new THREE.BufferGeometry().setFromPoints(points)
-      group.add(new THREE.Line(geo, mat))
+    const makeLine = (pts: THREE.Vector3[], mat: THREE.LineBasicMaterial) => {
+      group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat))
     }
 
-    // Latitude lines
+    // Latitude rings
     for (let lat = -80; lat <= 80; lat += 20) {
       const pts: THREE.Vector3[] = []
       for (let i = 0; i <= 361; i++) {
@@ -85,17 +100,6 @@ export default function GlobeSection() {
         pts.push(new THREE.Vector3(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta)))
       }
       makeLine(pts, lat === 0 ? equatorMat : gridMat)
-    }
-
-    // Coffee belt (tropics) in amber
-    for (const lat of [23.5, -23.5]) {
-      const pts: THREE.Vector3[] = []
-      for (let i = 0; i <= 361; i++) {
-        const phi = (90 - lat) * (Math.PI / 180)
-        const theta = i * (Math.PI / 180)
-        pts.push(new THREE.Vector3(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta)))
-      }
-      makeLine(pts, beltMat)
     }
 
     // Longitude lines
@@ -109,27 +113,30 @@ export default function GlobeSection() {
       makeLine(pts, gridMat)
     }
 
-    // Atmosphere glow ring
-    const atmosphereGeo = new THREE.SphereGeometry(1.08, 64, 64)
-    const atmosphereMat = new THREE.MeshStandardMaterial({
-      color: 0x0a1e3a,
+    // Outer atmosphere glow
+    const atmMat = new THREE.MeshStandardMaterial({
+      color: 0x1a3a6a,
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.18,
       side: THREE.BackSide,
     })
-    group.add(new THREE.Mesh(atmosphereGeo, atmosphereMat))
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(1.12, 64, 64), atmMat))
 
-    // Coffee region pins
-    const pinPositions = COFFEE_REGIONS.map(r => latLonToVec(r.lat, r.lon))
+    // US city pins — amber
+    const pinPositions = US_CITIES.map(c => latLonToVec(c.lat, c.lon))
     const pinArr = new Float32Array(pinPositions.length * 3)
     pinPositions.forEach(([x, y, z], i) => {
       pinArr[i * 3] = x; pinArr[i * 3 + 1] = y; pinArr[i * 3 + 2] = z
     })
     const pinGeo = new THREE.BufferGeometry()
     pinGeo.setAttribute('position', new THREE.BufferAttribute(pinArr, 3))
-    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({ color: 0xD98E4A, size: 0.07, sizeAttenuation: true })))
+    group.add(new THREE.Points(pinGeo, new THREE.PointsMaterial({
+      color: 0xD98E4A,
+      size: 0.055,
+      sizeAttenuation: true,
+    })))
 
-    // Pulse rings around each coffee region
+    // Pulse rings around each pin
     const rings: { mesh: THREE.Line; phase: number }[] = []
     pinPositions.forEach(([x, y, z]) => {
       const normal = new THREE.Vector3(x, y, z).normalize()
@@ -140,20 +147,19 @@ export default function GlobeSection() {
       for (let i = 0; i <= 64; i++) {
         const a = (i / 64) * Math.PI * 2
         pts.push(new THREE.Vector3(
-          x + (Math.cos(a) * right.x + Math.sin(a) * fwd.x) * 0.1,
-          y + (Math.cos(a) * right.y + Math.sin(a) * fwd.y) * 0.1,
-          z + (Math.cos(a) * right.z + Math.sin(a) * fwd.z) * 0.1,
+          x + (Math.cos(a) * right.x + Math.sin(a) * fwd.x) * 0.09,
+          y + (Math.cos(a) * right.y + Math.sin(a) * fwd.y) * 0.09,
+          z + (Math.cos(a) * right.z + Math.sin(a) * fwd.z) * 0.09,
         ))
       }
-      const rGeo = new THREE.BufferGeometry().setFromPoints(pts)
-      const rMat = new THREE.LineBasicMaterial({ color: 0xD98E4A, opacity: 0.25, transparent: true })
-      const mesh = new THREE.Line(rGeo, rMat)
+      const rMat = new THREE.LineBasicMaterial({ color: 0xD98E4A, opacity: 0.3, transparent: true })
+      const mesh = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), rMat)
       group.add(mesh)
       rings.push({ mesh, phase: Math.random() * Math.PI * 2 })
     })
 
     // Interaction
-    const AUTO_ROT = 0.0016
+    const AUTO_ROT = 0.0014
     let dragging = false, prevX = 0, prevY = 0, velX = 0, velY = 0
 
     const onDown = (x: number, y: number) => { dragging = true; prevX = x; prevY = y; velX = 0; velY = 0 }
@@ -172,10 +178,9 @@ export default function GlobeSection() {
     window.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true })
     window.addEventListener('touchend', onUp)
 
-    // Cycle active region
     const regionTimer = setInterval(() => {
-      setActiveIdx(i => (i + 1) % COFFEE_REGIONS.length)
-    }, 3000)
+      setActiveIdx(i => (i + 1) % US_CITIES.length)
+    }, 2500)
 
     let t = 0
     let raf: number
@@ -186,12 +191,12 @@ export default function GlobeSection() {
         velX *= 0.90; velY *= 0.90
         group.rotation.y += velY + AUTO_ROT
         group.rotation.x += velX
-        group.rotation.x = Math.max(-0.42, Math.min(0.42, group.rotation.x))
+        group.rotation.x = Math.max(-0.4, Math.min(0.4, group.rotation.x))
       }
       rings.forEach(({ mesh, phase }) => {
-        const pulse = 0.92 + 0.12 * Math.sin(t * 1.8 + phase)
+        const pulse = 0.93 + 0.1 * Math.sin(t * 1.6 + phase)
         mesh.scale.setScalar(pulse)
-        ;(mesh.material as THREE.LineBasicMaterial).opacity = 0.1 + 0.22 * Math.abs(Math.sin(t * 1.8 + phase))
+        ;(mesh.material as THREE.LineBasicMaterial).opacity = 0.08 + 0.25 * Math.abs(Math.sin(t * 1.6 + phase))
       })
       renderer.render(scene, camera)
     }
@@ -213,24 +218,24 @@ export default function GlobeSection() {
     }
   }, [])
 
-  const region = COFFEE_REGIONS[activeIdx]
+  const city = US_CITIES[activeIdx]
 
   return (
     <section id="globe" className="relative bg-black overflow-hidden" style={{ minHeight: '100vh' }}>
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(18,7,2,0.55) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(20,35,80,0.25) 0%, transparent 70%)' }}
       />
 
       <div className="absolute top-0 inset-x-0 z-10 pt-24 text-center px-6">
         <AnimateInView>
           <h2 className="font-bold text-white leading-tight mb-3" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>
-            coffee, everywhere.<br />scored for you.
+            every shop.<br />your score.
           </h2>
         </AnimateInView>
         <AnimateInView delay={0.1}>
           <p className="text-white/28 text-sm max-w-sm mx-auto">
-            Drag to explore — amber points mark the world's great coffee origins. Your match score travels with you.
+            Drag to explore — every amber pin is a coffee shop scored specifically for you.
           </p>
         </AnimateInView>
       </div>
@@ -239,36 +244,27 @@ export default function GlobeSection() {
         <canvas ref={canvasRef} className="w-full h-full" style={{ cursor: 'grab' }} />
       </div>
 
-      {/* Coffee belt legend */}
-      <div className="absolute top-1/2 right-6 md:right-12 -translate-y-1/2 z-10 flex flex-col items-end gap-3">
-        <div className="flex items-center gap-2">
-          <span className="text-white/20 text-[10px] tracking-widest uppercase">coffee belt</span>
-          <div className="w-6 h-px" style={{ background: 'rgba(100,45,12,0.7)' }} />
-        </div>
-      </div>
-
-      {/* Active region card */}
+      {/* City score card */}
       <div
         className="absolute bottom-14 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 px-7 py-4 rounded-2xl"
         style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'rgba(255,255,255,0.05)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.07)',
-          minWidth: 240,
-          transition: 'opacity 0.4s',
+          border: '1px solid rgba(255,255,255,0.08)',
+          minWidth: 260,
         }}
       >
         <div
           className="w-2.5 h-2.5 rounded-full flex-shrink-0"
           style={{ background: '#D98E4A', boxShadow: '0 0 10px rgba(217,142,74,0.9)' }}
         />
-        <div>
-          <div className="text-white text-sm font-semibold">{region.name}</div>
-          <div className="text-white/35 text-xs mt-0.5">{region.note}</div>
+        <div className="flex-1">
+          <div className="text-white text-sm font-semibold">{city.name}</div>
+          <div className="text-white/35 text-xs mt-0.5">{city.note}</div>
         </div>
-        <div className="ml-auto pl-4 border-l border-white/10 text-right">
-          <div className="text-amber font-bold text-lg leading-none">9.{(activeIdx * 3 + 1) % 9 + 1}</div>
+        <div className="pl-4 border-l border-white/10 text-right">
+          <div className="text-amber font-bold text-xl leading-none">{city.score}</div>
           <div className="text-white/25 text-[10px] mt-0.5">your match</div>
         </div>
       </div>
