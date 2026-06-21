@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const COFFEES = [
-  { name: 'Espresso',     tags: ['Bold', 'Intense', 'Short'],       img: '1510591509098-f4fdc6d0ff04' },
-  { name: 'Latte',        tags: ['Creamy', 'Sweet', 'Smooth'],      img: '1541167760496-1628856ab772' },
-  { name: 'Matcha Latte', tags: ['Earthy', 'Sweet', 'Vibrant'],     img: '1504630083234-14187a9df0f5' },
-  { name: 'Pour Over',    tags: ['Clean', 'Bright', 'Complex'],     img: '1509042239860-f550ce710b93' },
-  { name: 'Cold Brew',    tags: ['Smooth', 'Bold', 'Refreshing'],   img: '1498804103079-a6351b050096' },
+  { name: 'Drip Coffee',  tags: ['Clean', 'Rich', 'Classic'],      file: '/drinks/drip.png',      glow: 'rgba(100,50,8,0.28)' },
+  { name: 'Matcha Latte', tags: ['Earthy', 'Sweet', 'Vibrant'],    file: '/drinks/matcha.png',    glow: 'rgba(55,110,35,0.22)' },
+  { name: 'Latte',        tags: ['Creamy', 'Sweet', 'Smooth'],     file: '/drinks/latte.png',     glow: 'rgba(140,75,18,0.28)' },
+  { name: 'Cold Brew',    tags: ['Smooth', 'Bold', 'Refreshing'],  file: '/drinks/cold-brew.png', glow: 'rgba(160,85,12,0.28)' },
+  { name: 'Espresso',     tags: ['Bold', 'Intense', 'Short'],      file: '/drinks/espresso.png',  glow: 'rgba(175,95,15,0.28)' },
 ]
 
 const STEPS = [
@@ -28,107 +28,105 @@ const STEPS = [
   },
 ]
 
-function CoffeePicker() {
-  const [idx, setIdx] = useState(1)
+function DrinkCarousel() {
+  const [idx, setIdx] = useState(0)
   const [dir, setDir] = useState(1)
 
-  function go(next: number) {
-    const n = (next + COFFEES.length) % COFFEES.length
-    setDir(next > idx || (idx === COFFEES.length - 1 && next === 0) ? 1 : -1)
-    setIdx(n)
+  function goNext() { setDir(1); setIdx((idx + 1) % COFFEES.length) }
+  function goPrev() { setDir(-1); setIdx((idx - 1 + COFFEES.length) % COFFEES.length) }
+  function goTo(i: number) {
+    if (i === idx) return
+    setDir(i > idx ? 1 : -1)
+    setIdx(i)
   }
 
   const c = COFFEES[idx]
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      {/* Image (60% of phone) */}
-      <div className="relative overflow-hidden" style={{ flex: '0 0 60%' }}>
+    <div className="relative flex flex-col items-center" style={{ width: 300 }}>
+      {/* Ambient glow */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={idx}
+          className="absolute pointer-events-none"
+          style={{
+            inset: '-60px',
+            borderRadius: '50%',
+            background: c.glow,
+            filter: 'blur(60px)',
+            zIndex: 0,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7 }}
+        />
+      </AnimatePresence>
+
+      {/* Image container */}
+      <div
+        className="relative overflow-hidden w-full"
+        style={{ aspectRatio: '4/5', borderRadius: 28, zIndex: 1, background: '#000' }}
+      >
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={idx}
             custom={dir}
+            className="absolute inset-0"
             variants={{
-              enter: (d: number) => ({ y: d > 0 ? '100%' : '-100%', opacity: 0 }),
-              center: { y: '0%', opacity: 1 },
-              exit: (d: number) => ({ y: d > 0 ? '-100%' : '100%', opacity: 0 }),
+              enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+              center: { x: '0%', opacity: 1 },
+              exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
             }}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.32, ease: 'easeOut' }}
-            className="absolute inset-0"
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
             <img
-              src={`https://images.unsplash.com/photo-${c.img}?w=400&q=80&auto=format&fit=crop`}
+              src={c.file}
               alt={c.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
-            <div className="absolute inset-0"
-              style={{ background: 'linear-gradient(to top, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.1) 55%, transparent 100%)' }} />
           </motion.div>
         </AnimatePresence>
 
-        {/* Subtle chevrons for up/down hint */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 pointer-events-none">
-          <svg viewBox="0 0 16 9" fill="none" width={14}>
-            <path d="M2 7L8 2L14 7" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none">
-          <svg viewBox="0 0 16 9" fill="none" width={14}>
-            <path d="M2 2L8 7L14 2" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
+        {/* Click zones */}
+        <button onClick={goPrev} className="absolute left-0 inset-y-0 w-2/5" aria-label="previous" />
+        <button onClick={goNext} className="absolute right-0 inset-y-0 w-2/5" aria-label="next" />
       </div>
 
-      {/* Info + controls */}
-      <div className="flex-1 flex flex-col justify-between px-4 pt-3 pb-2" style={{ background: '#050505' }}>
+      {/* Label */}
+      <div className="mt-5 text-center" style={{ zIndex: 1, minHeight: 48 }}>
         <AnimatePresence mode="wait">
-          <motion.div key={idx}
+          <motion.div
+            key={idx}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.22 }}
           >
-            <p className="text-white text-[13px] font-bold">{c.name}</p>
-            <p className="text-white/35 text-[10px] mt-0.5">{c.tags.join(' · ')}</p>
+            <p className="text-white font-bold text-xl" style={{ letterSpacing: '-0.015em' }}>{c.name}</p>
+            <p className="text-white/35 text-sm mt-1">{c.tags.join(' · ')}</p>
           </motion.div>
         </AnimatePresence>
+      </div>
 
-        <div className="flex items-center justify-between">
-          {/* Indicator dots */}
-          <div className="flex gap-1.5 items-center">
-            {COFFEES.map((_, i) => (
-              <button key={i} onClick={() => go(i)} className="p-0.5">
-                <div className="rounded-full transition-all duration-300"
-                  style={{
-                    width: i === idx ? 14 : 5,
-                    height: 5,
-                    background: i === idx ? '#D98E4A' : 'rgba(255,255,255,0.15)',
-                  }} />
-              </button>
-            ))}
-          </div>
-
-          {/* Up / Down arrows */}
-          <div className="flex gap-1.5">
-            <button onClick={() => go(idx - 1)}
-              className="w-7 h-7 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <svg viewBox="0 0 12 9" fill="none" width={10}>
-                <path d="M2 7L6 2L10 7" stroke="rgba(255,255,255,0.45)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button onClick={() => go(idx + 1)}
-              className="w-7 h-7 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <svg viewBox="0 0 12 9" fill="none" width={10}>
-                <path d="M2 2L6 7L10 2" stroke="rgba(255,255,255,0.45)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
-        </div>
+      {/* Dots */}
+      <div className="flex items-center gap-2 mt-4" style={{ zIndex: 1 }}>
+        {COFFEES.map((_, i) => (
+          <button key={i} onClick={() => goTo(i)} aria-label={COFFEES[i].name}>
+            <motion.div
+              className="rounded-full"
+              style={{ height: 3 }}
+              animate={{
+                width: i === idx ? 22 : 8,
+                background: i === idx ? '#D98E4A' : 'rgba(255,255,255,0.15)',
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </button>
+        ))}
       </div>
     </div>
   )
@@ -219,7 +217,7 @@ function ResultsScreen() {
   )
 }
 
-const PHONE_SCREENS = [<CoffeePicker />, <ProfileScreen />, <ResultsScreen />]
+const PHONE_SCREENS = [<ProfileScreen key="profile" />, <ResultsScreen key="results" />]
 
 function PhoneMockup({ step, slideDir }: { step: number; slideDir: number }) {
   return (
@@ -253,7 +251,7 @@ function PhoneMockup({ step, slideDir }: { step: number; slideDir: number }) {
             transition={{ duration: 0.38, ease: 'easeOut' }}
             className="h-full"
           >
-            {PHONE_SCREENS[step]}
+            {PHONE_SCREENS[step - 1]}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -289,7 +287,7 @@ export default function HowItWorks() {
           </h2>
         </div>
 
-        {/* Content: text + phone */}
+        {/* Content: text + visual */}
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16 lg:gap-24 mb-14">
 
           {/* Left: step text */}
@@ -369,14 +367,32 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Right: phone */}
+          {/* Right: step 0 = drink carousel, steps 1-2 = phone */}
           <div className="flex-shrink-0 order-1 md:order-2">
-            <motion.div
-              animate={{ y: step === 1 ? -4 : step === 2 ? 4 : 0 }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-            >
-              <PhoneMockup step={step} slideDir={dir} />
-            </motion.div>
+            <AnimatePresence mode="wait">
+              {step === 0 ? (
+                <motion.div
+                  key="carousel"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                >
+                  <DrinkCarousel />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="phone"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  style={{ y: step === 1 ? -4 : 4 }}
+                >
+                  <PhoneMockup step={step} slideDir={dir} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 

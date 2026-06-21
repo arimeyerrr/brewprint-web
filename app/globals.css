@@ -24,6 +24,3 @@ body {
   color: var(--foreground);
 }
 
-* {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='26' viewBox='0 0 20 26'%3E%3Cpath d='M10 1C5.582 1 2 4.582 2 9C2 15 10 25 10 25C10 25 18 15 18 9C18 4.582 14.418 1 10 1Z' fill='%23D98E4A' opacity='0.88'/%3E%3Ccircle cx='10' cy='9' r='2.5' fill='rgba(255%2C220%2C160%2C0.55)'/%3E%3C/svg%3E") 10 25, auto;
-}

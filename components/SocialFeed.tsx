@@ -15,14 +15,14 @@ const POSTS = [
   { id: 10, user: 'weekendwanderer',  initials: 'WW', color: '#2A4A3A', img: '1498804103079-a6351b050096', likes: 278, score: 9.0,  sponsored: false, title: 'New Spot'          },
   { id: 11, user: 'Opus Coffee',      initials: 'OC', color: '#1A1A2A', img: '1514432324607-a09d9b4aefdd', likes: 189, score: null, sponsored: true,  title: 'Harvest Blend'     },
   { id: 12, user: 'dailydose',        initials: 'DD', color: '#3A2A1A', img: '1476224203421-9ac39bcb3327', likes: 67,  score: 7.8,  sponsored: false, title: 'Cold Brew'         },
-  { id: 13, user: 'sipnstay',         initials: 'SN', color: '#1A2A3A', img: '1506619118655-17d7ee7cf7d5', likes: 156, score: 9.3,  sponsored: false, title: 'Stay Awhile'       },
+  { id: 13, user: 'sipnstay',         initials: 'SN', color: '#1A2A3A', img: '1508921912186-1d1a45ebb3c1', likes: 156, score: 9.3,  sponsored: false, title: 'Stay Awhile'       },
   { id: 14, user: 'baristalife',      initials: 'BL', color: '#3A1A2A', img: '1510591509098-f4fdc6d0ff04', likes: 389, score: 9.5,  sponsored: false, title: 'Art in Every Cup'  },
   { id: 15, user: 'roastmaster',      initials: 'RM', color: '#2A1A3A', img: '1587734195503-904fca47e0e9', likes: 234, score: 8.8,  sponsored: false, title: 'Fresh Pull'        },
   { id: 16, user: 'latteart.co',      initials: 'LA', color: '#3A2A1A', img: '1501959915551-4e8d30928317', likes: 312, score: 9.5,  sponsored: false, title: 'Rosetta Pull'      },
-  { id: 17, user: 'groundskeeper',    initials: 'GK', color: '#1A3A2A', img: '1513558818408-22eb2df3ef44', likes: 88,  score: 8.1,  sponsored: false, title: 'Origin Story'      },
-  { id: 18, user: 'Dogwood Coffee',   initials: 'DC', color: '#2A1A0A', img: '1535529738923-8ae5f0ab1e3a', likes: 421, score: null, sponsored: true,  title: 'Dogwood Reserve'   },
-  { id: 19, user: 'filterdripper',    initials: 'FD', color: '#1A2A3A', img: '1515694346734-977df0850f01', likes: 155, score: 9.1,  sponsored: false, title: 'V60 Session'       },
-  { id: 20, user: 'blackcupclub',     initials: 'BC', color: '#0A1A0A', img: '1566803847726-d5cf8ae6f98e', likes: 278, score: 9.6,  sponsored: false, title: 'Straight Black'    },
+  { id: 17, user: 'groundskeeper',    initials: 'GK', color: '#1A3A2A', img: '1467003909585-2f8a72700288', likes: 88,  score: 8.1,  sponsored: false, title: 'Origin Story'      },
+  { id: 18, user: 'Dogwood Coffee',   initials: 'DC', color: '#2A1A0A', img: '1494790108377-be9c29b29330', likes: 421, score: null, sponsored: true,  title: 'Dogwood Reserve'   },
+  { id: 19, user: 'filterdripper',    initials: 'FD', color: '#1A2A3A', img: '1556742502-ec7c0e9f34b1', likes: 155, score: 9.1,  sponsored: false, title: 'V60 Session'       },
+  { id: 20, user: 'blackcupclub',     initials: 'BC', color: '#0A1A0A', img: '1455279032140-49a4bf46f343', likes: 278, score: 9.6,  sponsored: false, title: 'Straight Black'    },
 ]
 
 function Avatar({ initials, color, size = 32 }: { initials: string; color: string; size?: number }) {
