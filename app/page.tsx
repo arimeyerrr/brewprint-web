@@ -4,6 +4,7 @@ import AudienceSplit from "@/components/AudienceSplit";
 import SocialFeed from "@/components/SocialFeed";
 import HowItWorks from "@/components/HowItWorks";
 import ShopOwners from "@/components/ShopOwners";
+import GlobeSection from "@/components/GlobeSection";
 import FounderStory from "@/components/FounderStory";
 import WaitlistForm from "@/components/WaitlistForm";
 import Footer from "@/components/Footer";

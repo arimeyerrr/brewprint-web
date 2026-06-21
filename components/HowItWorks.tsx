@@ -1,6 +1,34 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+function TiltWrapper({ children, maxTilt = 7 }: { children: React.ReactNode; maxTilt?: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const onMove = useCallback((e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 2
+    const y = ((e.clientY - r.top) / r.height - 0.5) * 2
+    el.style.transform = `perspective(900px) rotateX(${-y * maxTilt * 0.6}deg) rotateY(${x * maxTilt}deg)`
+  }, [maxTilt])
+
+  const onLeave = useCallback(() => {
+    const el = ref.current
+    if (!el) return
+    el.style.transition = 'transform 0.55s cubic-bezier(0.23, 1, 0.32, 1)'
+    el.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)'
+    setTimeout(() => { if (el) el.style.transition = '' }, 550)
+  }, [])
+
+  return (
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
+      style={{ display: 'inline-block', transformStyle: 'preserve-3d' }}>
+      {children}
+    </div>
+  )
+}
 
 const COFFEES = [
   { name: 'Drip Coffee',  tags: ['Clean', 'Rich', 'Classic'],      file: '/drinks/drip.png',      glow: 'rgba(100,50,8,0.28)' },
@@ -378,18 +406,25 @@ export default function HowItWorks() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                 >
-                  <DrinkCarousel />
+                  <TiltWrapper maxTilt={6}>
+                    <DrinkCarousel />
+                  </TiltWrapper>
                 </motion.div>
               ) : (
                 <motion.div
                   key="phone"
                   initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                  style={{ y: step === 1 ? -4 : 4 }}
+                  transition={{
+                    opacity: { duration: 0.4, ease: 'easeOut' },
+                    scale: { duration: 0.4, ease: 'easeOut' },
+                    y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 },
+                  }}
                 >
-                  <PhoneMockup step={step} slideDir={dir} />
+                  <TiltWrapper maxTilt={9}>
+                    <PhoneMockup step={step} slideDir={dir} />
+                  </TiltWrapper>
                 </motion.div>
               )}
             </AnimatePresence>
