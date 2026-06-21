@@ -5,18 +5,12 @@ export default function FounderStory() {
     <section id="story" className="bg-black py-28 md:py-40">
       <div className="max-w-5xl mx-auto px-6 md:px-12">
 
-        <AnimateInView>
-          <p className="text-white/20 text-xs tracking-[0.3em] uppercase font-medium mb-10 text-center">
-            The Story
-          </p>
-        </AnimateInView>
-
         <AnimateInView delay={0.08}>
           <h2
             className="font-bold text-white leading-tight mb-20 text-center"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)' }}
           >
-            Built Because the Tool Didn&apos;t Exist.
+            Our Story.
           </h2>
         </AnimateInView>
 
@@ -79,7 +73,7 @@ export default function FounderStory() {
             <div className="bg-surface rounded-2xl p-8 md:p-10 border border-white/[0.04] h-full">
               <p className="text-white/20 text-xs tracking-[0.3em] uppercase mb-4">Vision</p>
               <p className="text-white/65 text-base leading-relaxed">
-                Brewprint will revolutionize the way Americans experience coffee, reviving the coffee shop as a destination rather than a transaction and bringing to the United States the community and ritual that coffee culture embodies around the world.
+                Brewprint will change the way people experience coffee — reviving the coffee shop as a destination rather than a transaction, and building the platform where the ritual and community of coffee culture can truly flourish.
               </p>
             </div>
           </AnimateInView>

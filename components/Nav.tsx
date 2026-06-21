@@ -24,7 +24,7 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-        <a href="#" className="text-white/60 text-sm font-semibold tracking-[0.12em]">
+        <a href="#" className="text-white/60 text-sm font-semibold" style={{ letterSpacing: '-0.02em' }}>
           brewprint
         </a>
 
