@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+const WAITLIST_FN = 'https://tftaftmbadjfntmqdjle.supabase.co/functions/v1/waitlist-signup'
 
 type AudienceType = 'lover' | 'owner'
 
@@ -35,6 +36,8 @@ export default function WaitlistForm() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [focused, setFocused] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -65,9 +68,29 @@ export default function WaitlistForm() {
     setTimeout(() => { if (el) el.style.transition = '' }, 600)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(WAITLIST_FN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, audience_type: type }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setSubmitted(true)
+      } else if (data.error === 'already_registered') {
+        setError("You're already on the list!")
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -239,8 +262,9 @@ export default function WaitlistForm() {
 
                         <motion.button
                           type="submit"
-                          whileHover={{ scale: 1.015 }}
-                          whileTap={{ scale: 0.985 }}
+                          disabled={loading}
+                          whileHover={loading ? {} : { scale: 1.015 }}
+                          whileTap={loading ? {} : { scale: 0.985 }}
                           className="w-full font-semibold text-white text-base"
                           style={{
                             background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)',
@@ -249,12 +273,19 @@ export default function WaitlistForm() {
                             letterSpacing: '-0.01em',
                             boxShadow: '0 8px 36px rgba(217,142,74,0.32), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.25)',
                             border: 'none',
-                            cursor: 'pointer',
+                            cursor: loading ? 'default' : 'pointer',
+                            opacity: loading ? 0.7 : 1,
                           }}
                         >
-                          Join the Waitlist →
+                          {loading ? 'Joining…' : 'Join the Waitlist →'}
                         </motion.button>
                       </form>
+
+                      {error && (
+                        <p className="text-center text-[12px] mt-4" style={{ color: 'rgba(217,142,74,0.85)' }}>
+                          {error}
+                        </p>
+                      )}
 
                       <p className="text-center text-[11px] mt-5" style={{ color: 'rgba(255,255,255,0.18)' }}>
                         no spam, ever. unsubscribe anytime.
