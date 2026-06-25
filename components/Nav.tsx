@@ -24,8 +24,9 @@ export default function Nav() {
       }`}
     >
       <div className="px-5 md:px-8 lg:px-14 h-16 flex items-center justify-between">
-        <a href="#" className="text-white/80 text-sm font-semibold" style={{ letterSpacing: '-0.02em' }}>
-          brewprint
+        <a href="#" className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="Brewprint" className="w-8 h-8 object-contain" />
+          <span className="text-white/80 text-sm font-semibold" style={{ letterSpacing: '-0.02em' }}>brewprint</span>
         </a>
 
         {/* Desktop links */}

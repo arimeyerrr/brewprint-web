@@ -55,7 +55,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center gap-8">
         {/* Wordmark */}
         <div className="flex items-center gap-2.5">
-          <TeardropMark />
+          <img src="/logo.png" alt="Brewprint" className="w-7 h-7 object-contain opacity-70" />
           <span
             className="font-semibold text-white/60 tracking-[0.12em]"
             style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
