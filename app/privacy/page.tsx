@@ -20,7 +20,7 @@ export default function PrivacyPage() {
         <div className="prose-brewprint">
           <Section title="1. Who We Are">
             <p>Brewprint (&quot;Brewprint,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is a coffee discovery platform that connects coffee lovers with independent coffee shops. We operate the Brewprint mobile application and the website at brewprintapp.com.</p>
-            <p>If you have questions about this policy, contact us at <a href="mailto:hello@brewprintapp.com">hello@brewprintapp.com</a>.</p>
+            <p>If you have questions about this policy, contact us at <a href="mailto:privacy@brewprintapp.com">privacy@brewprintapp.com</a>.</p>
           </Section>
 
           <Section title="2. Information We Collect">
@@ -78,16 +78,16 @@ export default function PrivacyPage() {
           <Section title="6. Your Rights and Choices">
             <ul>
               <li><strong>Access and correction</strong> — you can view and update your profile information in the app at any time.</li>
-              <li><strong>Data deletion</strong> — you can delete your account and all associated data from your account settings, or by emailing us at hello@brewprintapp.com.</li>
+              <li><strong>Data deletion</strong> — you can delete your account and all associated data from your account settings, or by emailing us at privacy@brewprintapp.com.</li>
               <li><strong>Push notifications</strong> — you can disable push notifications at any time through your device settings.</li>
               <li><strong>Location</strong> — you can revoke location access at any time through your device settings. This will limit shop discovery features.</li>
               <li><strong>Waitlist unsubscribe</strong> — every waitlist email includes an unsubscribe link.</li>
             </ul>
-            <p>If you are located in the European Economic Area or California, you may have additional rights under GDPR or CCPA. Contact us at hello@brewprintapp.com to exercise these rights.</p>
+            <p>If you are located in the European Economic Area or California, you may have additional rights under GDPR or CCPA. Contact us at privacy@brewprintapp.com to exercise these rights.</p>
           </Section>
 
           <Section title="7. Security">
-            <p>We use industry-standard security measures including encrypted data transmission (TLS), secure authentication, and row-level database security. No method of transmission over the internet is 100% secure. If you believe your account has been compromised, contact us immediately at hello@brewprintapp.com.</p>
+            <p>We use industry-standard security measures including encrypted data transmission (TLS), secure authentication, and row-level database security. No method of transmission over the internet is 100% secure. If you believe your account has been compromised, contact us immediately at privacy@brewprintapp.com.</p>
           </Section>
 
           <Section title="8. Children">
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="10. Contact Us">
-            <p>Questions or concerns about this policy? Email us at <a href="mailto:hello@brewprintapp.com">hello@brewprintapp.com</a>.</p>
+            <p>Questions or concerns about this policy? Email us at <a href="mailto:privacy@brewprintapp.com">privacy@brewprintapp.com</a>.</p>
           </Section>
         </div>
       </div>

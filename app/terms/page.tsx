@@ -29,7 +29,7 @@ export default function TermsPage() {
             Brewprint is a dual-sided mobile application that connects consumers with independent coffee shops through a proprietary preference-matching algorithm. Consumers discover, review, and save local coffee shops. Coffee shop owners access a business dashboard with analytics, marketing tools, and subscription-based features.
           </p>
           <p>
-            You can contact us by phone at (954) 289-7411, email at <a href="mailto:arimeyerrr@gmail.com">arimeyerrr@gmail.com</a>, or by mail to 1305 NW 5th Avenue, Lady Lake, FL 32603, United States.
+            You can contact us by phone at (954) 289-7411, email at <a href="mailto:ari@brewprintapp.com">ari@brewprintapp.com</a>, or by mail to 1305 NW 5th Avenue, Lady Lake, FL 32603, United States.
           </p>
           <p>
             These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity (&quot;you&quot;), and Onebrew LLC, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
@@ -64,7 +64,7 @@ export default function TermsPage() {
             <h3>Your use of our Services</h3>
             <p>Subject to your compliance with these Legal Terms, including the &quot;PROHIBITED ACTIVITIES&quot; section below, we grant you a non-exclusive, non-transferable, revocable license to access the Services and download or print a copy of any portion of the Content to which you have properly gained access, solely for your personal, non-commercial use or internal business purpose.</p>
             <p>Except as set out in this section or elsewhere in our Legal Terms, no part of the Services and no Content or Marks may be copied, reproduced, aggregated, republished, uploaded, posted, publicly displayed, encoded, translated, transmitted, distributed, sold, licensed, or otherwise exploited for any commercial purpose whatsoever, without our express prior written permission.</p>
-            <p>If you wish to make any use of the Services, Content, or Marks other than as set out in this section, please address your request to: <a href="mailto:arimeyerrr@gmail.com">arimeyerrr@gmail.com</a>. We reserve all rights not expressly granted to you in and to the Services, Content, and Marks. Any breach of these Intellectual Property Rights will constitute a material breach of our Legal Terms and your right to use our Services will terminate immediately.</p>
+            <p>If you wish to make any use of the Services, Content, or Marks other than as set out in this section, please address your request to: <a href="mailto:ari@brewprintapp.com">ari@brewprintapp.com</a>. We reserve all rights not expressly granted to you in and to the Services, Content, and Marks. Any breach of these Intellectual Property Rights will constitute a material breach of our Legal Terms and your right to use our Services will terminate immediately.</p>
 
             <h3>Your submissions and contributions</h3>
             <p><strong>Submissions:</strong> By directly sending us any question, comment, suggestion, idea, feedback, or other information about the Services (&quot;Submissions&quot;), you agree to assign to us all intellectual property rights in such Submission. You agree that we shall own this Submission and be entitled to its unrestricted use and dissemination for any lawful purpose, commercial or otherwise, without acknowledgment or compensation to you.</p>
@@ -96,7 +96,7 @@ export default function TermsPage() {
             <p>We offer a 90-day free trial to new users who register with the Services. The account will be charged according to the user&apos;s chosen subscription at the end of the free trial.</p>
 
             <h3>Cancellation</h3>
-            <p>All purchases are non-refundable. You can cancel your subscription at any time by logging into your account. Your cancellation will take effect at the end of the current paid term. If you have any questions or are unsatisfied with our Services, please email us at <a href="mailto:arimeyerrr@gmail.com">arimeyerrr@gmail.com</a>.</p>
+            <p>All purchases are non-refundable. You can cancel your subscription at any time by logging into your account. Your cancellation will take effect at the end of the current paid term. If you have any questions or are unsatisfied with our Services, please email us at <a href="mailto:ari@brewprintapp.com">ari@brewprintapp.com</a>.</p>
 
             <h3>Fee Changes</h3>
             <p>We may, from time to time, make changes to the subscription fee and will communicate any price changes to you in accordance with applicable law.</p>
@@ -251,7 +251,7 @@ export default function TermsPage() {
               <p style={{ margin: 0 }}>Lady Lake, FL 32603</p>
               <p style={{ margin: 0 }}>United States</p>
               <p style={{ margin: 0 }}>Phone: (954) 289-7411</p>
-              <p style={{ margin: 0 }}><a href="mailto:arimeyerrr@gmail.com">arimeyerrr@gmail.com</a></p>
+              <p style={{ margin: 0 }}><a href="mailto:ari@brewprintapp.com">ari@brewprintapp.com</a></p>
             </div>
           </Section>
 
