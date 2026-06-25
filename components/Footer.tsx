@@ -54,15 +54,15 @@ export default function Footer() {
     <footer className="bg-surface border-t border-white/[0.04] py-16">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center gap-8">
         {/* Wordmark */}
-        <div className="flex items-center gap-2.5">
-          <img src="/logo.png" alt="Brewprint" className="w-7 h-7 object-contain opacity-70" />
+        <a href="/" aria-label="Brewprint home" className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="Brewprint" className="w-8 h-8 object-contain opacity-80" />
           <span
             className="font-semibold text-white/60 tracking-[0.12em]"
             style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
           >
             brewprint
           </span>
-        </div>
+        </a>
 
         {/* Social icons */}
         <div className="flex items-center gap-6">
@@ -79,12 +79,19 @@ export default function Footer() {
         </div>
 
         {/* Legal links */}
-        <div className="flex items-center gap-5">
-          <a href="/privacy" className="text-white/20 hover:text-white/50 text-xs transition-colors duration-200">
+        <div className="flex items-center gap-3">
+          <a
+            href="/privacy"
+            className="text-white/40 hover:text-white/70 text-xs font-medium px-4 py-2 rounded-full transition-colors duration-200"
+            style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+          >
             Privacy Policy
           </a>
-          <span className="text-white/10 text-xs">·</span>
-          <a href="/terms" className="text-white/20 hover:text-white/50 text-xs transition-colors duration-200">
+          <a
+            href="/terms"
+            className="text-white/40 hover:text-white/70 text-xs font-medium px-4 py-2 rounded-full transition-colors duration-200"
+            style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+          >
             Terms of Service
           </a>
         </div>

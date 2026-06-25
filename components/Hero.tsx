@@ -174,7 +174,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
         <AnimateInView delay={0.1}>
           <div className="mb-5">
-            <CoffeePinLogo />
+            <img src="/logo.png" alt="Brewprint" style={{ width: 68, height: 92, objectFit: 'contain' }} />
           </div>
         </AnimateInView>
 
