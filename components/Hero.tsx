@@ -62,7 +62,7 @@ function Steam() {
             left: w.x,
             width: 3,
             height: 50 + i * 5,
-            background: 'linear-gradient(to top, rgba(200,140,80,0.18), rgba(255,255,255,0.06), transparent)',
+            background: 'linear-gradient(to top, rgba(210,120,40,0.22), rgba(230,165,75,0.10), transparent)',
             borderRadius: 4,
             filter: 'blur(4px)',
           }}
@@ -139,30 +139,38 @@ export default function Hero() {
       />
 
       <LiquidContainer>
-        {/* Gradient body */}
+        {/* Gradient body — espresso bottom to caramel cream top */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to top, rgba(4,1,0,1) 0%, rgba(10,3,0,1) 12%, rgba(22,7,0,1) 30%, rgba(40,14,1,0.97) 52%, rgba(60,22,4,0.82) 72%, rgba(78,28,6,0.38) 88%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(4,1,0,1) 0%, rgba(14,5,0,1) 10%, rgba(38,12,1,1) 25%, rgba(72,26,4,0.98) 42%, rgba(118,50,10,0.88) 58%, rgba(160,78,20,0.65) 74%, rgba(195,110,38,0.32) 88%, transparent 100%)',
           }}
         />
 
-        {/* Wave 1 — deep, slow */}
+        {/* Wave 1 — espresso base, deep and slow */}
         <WaveLayer duration={7} delay={0} opacity={1} yRange={8}
-          color="rgba(14,4,0,1)"
+          color="rgba(18,5,0,1)"
           path="M0,32 C150,4 320,66 500,32 C680,0 860,68 1040,34 C1220,2 1360,54 1440,32 L1440,90 L0,90 Z" />
-        {/* Wave 2 — mid */}
-        <WaveLayer duration={11} delay={1.2} opacity={0.88} yRange={12}
-          color="rgba(28,10,1,0.96)"
+        {/* Wave 2 — dark roast brown */}
+        <WaveLayer duration={11} delay={1.2} opacity={0.92} yRange={12}
+          color="rgba(58,20,3,0.97)"
           path="M0,46 C200,14 400,74 600,46 C800,18 1000,74 1200,46 C1320,30 1400,62 1440,46 L1440,90 L0,90 Z" />
-        {/* Wave 3 — lighter */}
-        <WaveLayer duration={15} delay={3.5} opacity={0.65} yRange={16}
-          color="rgba(50,18,3,0.72)"
+        {/* Wave 3 — latte brown */}
+        <WaveLayer duration={15} delay={3.5} opacity={0.78} yRange={16}
+          color="rgba(105,42,8,0.82)"
           path="M0,54 C130,36 260,68 390,54 C520,38 650,68 780,54 C910,38 1040,66 1170,54 C1300,40 1390,62 1440,54 L1440,90 L0,90 Z" />
-        {/* Wave 4 — surface shimmer */}
-        <WaveLayer duration={5.5} delay={1.8} opacity={0.35} yRange={6}
-          color="rgba(90,35,8,0.55)"
-          path="M0,60 C90,54 180,66 270,60 C360,54 450,66 540,60 C630,54 720,66 810,60 C900,54 990,66 1080,60 C1170,54 1300,64 1440,60 L1440,90 L0,90 Z" />
+        {/* Wave 4 — caramel mid */}
+        <WaveLayer duration={9} delay={2.6} opacity={0.60} yRange={10}
+          color="rgba(158,68,16,0.70)"
+          path="M0,58 C180,44 360,70 540,58 C720,44 900,70 1080,58 C1260,44 1380,66 1440,58 L1440,90 L0,90 Z" />
+        {/* Wave 5 — golden caramel surface */}
+        <WaveLayer duration={6.5} delay={0.9} opacity={0.42} yRange={8}
+          color="rgba(205,108,30,0.55)"
+          path="M0,62 C120,56 240,68 360,62 C480,56 600,68 720,62 C840,56 960,68 1080,62 C1200,56 1340,66 1440,62 L1440,90 L0,90 Z" />
+        {/* Wave 6 — cream foam shimmer */}
+        <WaveLayer duration={4.5} delay={1.8} opacity={0.22} yRange={5}
+          color="rgba(235,165,65,0.45)"
+          path="M0,65 C90,61 180,69 270,65 C360,61 450,69 540,65 C630,61 720,69 810,65 C900,61 990,69 1080,65 C1170,61 1300,67 1440,65 L1440,90 L0,90 Z" />
 
         {/* Steam above the liquid surface */}
         <Steam />
@@ -174,7 +182,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
         <AnimateInView delay={0.1}>
           <div className="mb-5">
-            <img src="/logo.png" alt="Brewprint" style={{ width: 68, height: 92, objectFit: 'contain' }} />
+            <img src="/logo.png" alt="Brewprint" style={{ width: 'clamp(180px, 28vw, 340px)', objectFit: 'contain' }} />
           </div>
         </AnimateInView>
 
