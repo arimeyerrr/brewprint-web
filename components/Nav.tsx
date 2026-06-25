@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react'
 
 const links = [
-  { label: 'how it works', href: '#how-it-works' },
-  { label: 'for shops', href: '#for-shops' },
-  { label: 'our story', href: '#story' },
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'For Shops', href: '#for-shops' },
+  { label: 'Our Story', href: '#story' },
 ]
 
 export default function Nav() {

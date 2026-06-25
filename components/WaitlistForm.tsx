@@ -190,10 +190,10 @@ export default function WaitlistForm() {
                       </div>
                       <p className="text-[10px] tracking-[0.35em] uppercase font-medium mb-5"
                         style={{ color: 'rgba(217,142,74,0.55)' }}>
-                        you&apos;re on the list
+                        You&apos;re on the List
                       </p>
                       <h3 className="font-bold text-white text-3xl md:text-4xl mb-4" style={{ letterSpacing: '-0.02em' }}>
-                        we&apos;ll be in touch.
+                        We&apos;ll Be in Touch.
                       </h3>
                       <p className="text-white/40 text-base leading-relaxed">
                         Thanks for joining the Brewprint waitlist. We&apos;ll email you when we launch.
@@ -231,7 +231,7 @@ export default function WaitlistForm() {
                                 />
                               )}
                               <span className="relative z-10">
-                                {t === 'lover' ? 'coffee lover' : 'shop owner'}
+                                {t === 'lover' ? 'Coffee Lover' : 'Shop Owner'}
                               </span>
                             </button>
                           ))}
@@ -288,7 +288,7 @@ export default function WaitlistForm() {
                       )}
 
                       <p className="text-center text-[11px] mt-5" style={{ color: 'rgba(255,255,255,0.18)' }}>
-                        no spam, ever. unsubscribe anytime.{' '}
+                        No spam, ever. Unsubscribe anytime.{' '}
                         <a href="/privacy" className="underline hover:text-white/40 transition-colors" style={{ textUnderlineOffset: '2px' }}>Privacy</a>
                         {' · '}
                         <a href="/terms" className="underline hover:text-white/40 transition-colors" style={{ textUnderlineOffset: '2px' }}>Terms</a>

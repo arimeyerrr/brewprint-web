@@ -54,7 +54,7 @@ function Check() {
 const cards = [
   {
     icon: <CoffeeIcon />,
-    label: 'for coffee lovers',
+    label: 'For Coffee Lovers',
     pitch:
       'Stop guessing. Get a personalized match score for every coffee shop based on your actual taste profile — before you walk in the door.',
     features: [
@@ -64,11 +64,11 @@ const cards = [
       'Find the right cup, every time',
     ],
     href: '#waitlist-lover',
-    cta: 'join as a coffee lover',
+    cta: 'Join as a Coffee Lover',
   },
   {
     icon: <ShopIcon />,
-    label: 'for shop owners',
+    label: 'For Shop Owners',
     pitch:
       "Reach customers who are already looking for exactly what you offer. Tag your brewing methods, beans, and ambiance — and let the algorithm do the matching.",
     features: [
@@ -78,7 +78,7 @@ const cards = [
       'Early access & priority listing',
     ],
     href: '#waitlist-owner',
-    cta: 'join as a shop owner',
+    cta: 'Join as a Shop Owner',
   },
 ]
 
