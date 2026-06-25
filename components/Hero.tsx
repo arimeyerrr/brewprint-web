@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import AnimateInView from './AnimateInView'
+import LogoPour from './LogoPour'
 
 function CoffeePinLogo() {
   return (
@@ -182,7 +183,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
         <AnimateInView delay={0.1}>
           <div className="mb-5">
-            <img src="/logo.png" alt="Brewprint" style={{ width: 'clamp(180px, 28vw, 340px)', objectFit: 'contain' }} />
+            <LogoPour style={{ width: 'clamp(180px, 28vw, 340px)' }} />
           </div>
         </AnimateInView>
 
