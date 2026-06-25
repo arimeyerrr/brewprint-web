@@ -78,6 +78,17 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* Legal links */}
+        <div className="flex items-center gap-5">
+          <a href="/privacy" className="text-white/20 hover:text-white/50 text-xs transition-colors duration-200">
+            Privacy Policy
+          </a>
+          <span className="text-white/10 text-xs">·</span>
+          <a href="/terms" className="text-white/20 hover:text-white/50 text-xs transition-colors duration-200">
+            Terms of Service
+          </a>
+        </div>
+
         {/* Copyright */}
         <p className="text-white/15 text-xs tracking-wide">
           &copy; {new Date().getFullYear()} brewprint. all rights reserved.

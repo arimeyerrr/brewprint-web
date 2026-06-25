@@ -16,7 +16,10 @@ export default function AdminPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const res = await fetch(`${ADMIN_FN}?password=${encodeURIComponent(password)}`)
+    const res = await fetch(ADMIN_FN, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${password}` },
+    })
     const json = await res.json()
     setLoading(false)
     if (!res.ok) {

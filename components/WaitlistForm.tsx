@@ -288,7 +288,10 @@ export default function WaitlistForm() {
                       )}
 
                       <p className="text-center text-[11px] mt-5" style={{ color: 'rgba(255,255,255,0.18)' }}>
-                        no spam, ever. unsubscribe anytime.
+                        no spam, ever. unsubscribe anytime.{' '}
+                        <a href="/privacy" className="underline hover:text-white/40 transition-colors" style={{ textUnderlineOffset: '2px' }}>Privacy</a>
+                        {' · '}
+                        <a href="/terms" className="underline hover:text-white/40 transition-colors" style={{ textUnderlineOffset: '2px' }}>Terms</a>
                       </p>
                     </motion.div>
                   )}
