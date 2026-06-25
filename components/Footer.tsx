@@ -57,8 +57,8 @@ export default function Footer() {
         <a href="/" aria-label="Brewprint home" className="flex items-center gap-2.5">
           <img src="/logo.png" alt="Brewprint" className="w-8 h-8 object-contain opacity-80" />
           <span
-            className="font-semibold text-white/60 tracking-[0.12em]"
-            style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
+            className="font-bold text-white/70"
+            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', letterSpacing: '-0.03em' }}
           >
             brewprint
           </span>
