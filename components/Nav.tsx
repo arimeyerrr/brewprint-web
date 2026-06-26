@@ -25,7 +25,7 @@ export default function Nav() {
     >
       <div className="px-5 md:px-8 lg:px-14 h-16 flex items-center justify-between">
         <a href="/" aria-label="Brewprint home">
-          <img src="/logo.png" alt="Brewprint" className="w-9 h-9 object-contain" />
+          <img src="/logo.png" alt="Brewprint" className="w-9 h-9 object-contain" style={{ filter: 'drop-shadow(0 0 6px rgba(200,120,40,0.5))' }} />
         </a>
 
         {/* Desktop links */}

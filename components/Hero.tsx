@@ -182,7 +182,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-6">
         <AnimateInView delay={0.1}>
           <div className="mb-5">
-            <img src="/logo.png" alt="Brewprint" style={{ width: 'clamp(180px, 28vw, 340px)', objectFit: 'contain' }} />
+            <img src="/logo.png" alt="Brewprint" style={{ width: 'clamp(180px, 28vw, 340px)', objectFit: 'contain', filter: 'drop-shadow(0 0 24px rgba(200,120,40,0.55)) drop-shadow(0 0 6px rgba(255,200,100,0.25))' }} />
           </div>
         </AnimateInView>
 

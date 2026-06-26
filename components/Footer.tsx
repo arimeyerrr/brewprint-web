@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center gap-7">
         {/* Wordmark */}
         <a href="/" aria-label="Brewprint home" className="flex items-center gap-2.5">
-          <img src="/logo.png" alt="Brewprint" className="w-8 h-8 object-contain opacity-80" />
+          <img src="/logo.png" alt="Brewprint" className="w-8 h-8 object-contain opacity-80" style={{ filter: 'drop-shadow(0 0 5px rgba(200,120,40,0.4))' }} />
           <span
             className="font-bold text-white/70"
             style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', letterSpacing: '-0.03em' }}
