@@ -56,42 +56,102 @@ const STEPS = [
   },
 ]
 
+const PEEK_W = 62
+
 function DrinkCarousel({ onConfirm }: { onConfirm: () => void }) {
   const [idx, setIdx] = useState(0)
   const [dir, setDir] = useState(1)
-  function goNext() { setDir(1); setIdx((idx + 1) % COFFEES.length) }
-  function goPrev() { setDir(-1); setIdx((idx - 1 + COFFEES.length) % COFFEES.length) }
+  const total = COFFEES.length
+  const prevIdx = (idx - 1 + total) % total
+  const nextIdx = (idx + 1) % total
+
+  function goNext() { setDir(1); setIdx(nextIdx) }
+  function goPrev() { setDir(-1); setIdx(prevIdx) }
   function goTo(i: number) {
     if (i === idx) return
     setDir(i > idx ? 1 : -1)
     setIdx(i)
   }
+
   const c = COFFEES[idx]
+
   return (
-    <div className="relative flex flex-col items-center" style={{ width: 300 }}>
+    <div className="relative flex flex-col items-center" style={{ width: 380 }}>
+      {/* Ambient glow */}
       <AnimatePresence mode="wait">
         <motion.div key={idx} className="absolute pointer-events-none"
           style={{ inset: '-60px', borderRadius: '50%', background: c.glow, filter: 'blur(60px)', zIndex: 0 }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           transition={{ duration: 0.7 }} />
       </AnimatePresence>
-      <div className="relative overflow-hidden w-full"
-        style={{ aspectRatio: '4/5', borderRadius: 28, zIndex: 1, background: '#000' }}>
-        <AnimatePresence mode="wait" custom={dir}>
-          <motion.div key={idx} custom={dir} className="absolute inset-0"
-            variants={{
-              enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
-              center: { x: '0%', opacity: 1 },
-              exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
+
+      {/* Three-card row: prev peek | center | next peek */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, width: '100%', position: 'relative', zIndex: 1 }}>
+
+        {/* Left peek — shows previous drink */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`prev-${prevIdx}`}
+            onClick={goPrev}
+            style={{
+              width: PEEK_W, flexShrink: 0, aspectRatio: '4/5',
+              borderRadius: 18, overflow: 'hidden', background: '#050505',
+              cursor: 'pointer', position: 'relative',
             }}
-            initial="enter" animate="center" exit="exit"
-            transition={{ duration: 0.4, ease: 'easeOut' }}>
-            <img src={c.file} alt={c.name} className="w-full h-full object-contain" />
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <img src={COFFEES[prevIdx].file} alt={COFFEES[prevIdx].name} style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.5 }} />
+            {/* Fade toward center */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 100%)' }} />
           </motion.div>
         </AnimatePresence>
-        <button onClick={goPrev} className="absolute left-0 inset-y-0 w-2/5 cursor-pointer" aria-label="previous" />
-        <button onClick={goNext} className="absolute right-0 inset-y-0 w-2/5 cursor-pointer" aria-label="next" />
+
+        {/* Center card */}
+        <div style={{ flex: 1, position: 'relative' }}>
+          <div style={{ aspectRatio: '4/5', borderRadius: 24, overflow: 'hidden', background: '#000', position: 'relative' }}>
+            <AnimatePresence mode="wait" custom={dir}>
+              <motion.div key={idx} custom={dir} className="absolute inset-0"
+                variants={{
+                  enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+                  center: { x: '0%', opacity: 1 },
+                  exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
+                }}
+                initial="enter" animate="center" exit="exit"
+                transition={{ duration: 0.4, ease: 'easeOut' }}>
+                <img src={c.file} alt={c.name} className="w-full h-full object-contain" />
+              </motion.div>
+            </AnimatePresence>
+            <button onClick={goPrev} className="absolute left-0 inset-y-0 w-2/5 cursor-pointer" aria-label="previous" />
+            <button onClick={goNext} className="absolute right-0 inset-y-0 w-2/5 cursor-pointer" aria-label="next" />
+          </div>
+        </div>
+
+        {/* Right peek — shows next drink */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`next-${nextIdx}`}
+            onClick={goNext}
+            style={{
+              width: PEEK_W, flexShrink: 0, aspectRatio: '4/5',
+              borderRadius: 18, overflow: 'hidden', background: '#050505',
+              cursor: 'pointer', position: 'relative',
+            }}
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <img src={COFFEES[nextIdx].file} alt={COFFEES[nextIdx].name} style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.5 }} />
+            {/* Fade toward center */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(0,0,0,0.55) 0%, transparent 100%)' }} />
+          </motion.div>
+        </AnimatePresence>
       </div>
+
+      {/* Label */}
       <div className="mt-5 text-center" style={{ zIndex: 1, minHeight: 48 }}>
         <AnimatePresence mode="wait">
           <motion.div key={idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}>
@@ -100,7 +160,9 @@ function DrinkCarousel({ onConfirm }: { onConfirm: () => void }) {
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="flex items-center gap-2 mt-4" style={{ zIndex: 1 }}>
+
+      {/* Dots */}
+      <div className="flex items-center gap-2 mt-4 justify-center" style={{ zIndex: 1 }}>
         {COFFEES.map((_, i) => (
           <button key={i} onClick={() => goTo(i)} aria-label={COFFEES[i].name} className="cursor-pointer">
             <motion.div className="rounded-full" style={{ height: 3 }}
@@ -110,7 +172,7 @@ function DrinkCarousel({ onConfirm }: { onConfirm: () => void }) {
         ))}
       </div>
 
-      {/* Confirm selection — matches real app */}
+      {/* Confirm selection */}
       <motion.button
         onClick={onConfirm}
         className="w-full mt-7 font-semibold text-black text-sm tracking-widest uppercase rounded-full cursor-pointer"
@@ -130,15 +192,27 @@ function DrinkCarousel({ onConfirm }: { onConfirm: () => void }) {
 const PREF_GROUPS = [
   {
     label: 'VIBE & ATMOSPHERE',
-    tags: ['Quiet', 'Lively', 'Good Lighting', 'Greenery', 'Outdoor Seating', 'Modern'],
+    tags: ['Quiet', 'Lively', 'Good Lighting', 'Greenery', 'Outdoor Seating', 'Modern', 'Cozy', 'Minimal'],
   },
   {
-    label: 'AESTHETIC',
-    tags: ['Latte Art', 'Interior Design', 'Instagrammable'],
+    label: 'AESTHETIC & PRESENTATION',
+    tags: ['Latte Art', 'Interior Design', 'Instagrammable', 'Rustic', 'Industrial'],
+  },
+  {
+    label: 'ROAST PROFILE',
+    tags: ['Light Roast', 'Medium Roast', 'Dark Roast', 'Single Origin', 'Blend'],
+  },
+  {
+    label: 'FLAVOR NOTES',
+    tags: ['Bold', 'Nutty', 'Chocolatey', 'Fruity', 'Floral', 'Caramel', 'Bright'],
   },
   {
     label: 'COMFORT & AMENITIES',
-    tags: ['Fast Wifi', 'Outlets', 'Parking', 'Dog Friendly'],
+    tags: ['Fast Wifi', 'Outlets', 'Parking', 'Dog Friendly', 'Study-Friendly'],
+  },
+  {
+    label: 'MENU & DIETARY',
+    tags: ['Alt Milks', 'Sugar Free', 'Pastries', 'Vegan Options', 'Pour Over', 'Espresso Bar'],
   },
 ]
 

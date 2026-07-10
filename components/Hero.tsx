@@ -234,20 +234,28 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           >
-            <motion.img
-              src="/logo.png"
-              alt="Brewprint"
-              style={{ width: 'clamp(90px, 12vw, 160px)', objectFit: 'contain', filter: 'drop-shadow(0 0 22px rgba(200,120,40,0.6))', marginBottom: 18 }}
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.2 }}
-            />
-
-            <h1
-              className="font-bold text-white"
-              style={{ fontSize: 'clamp(4rem, 9vw, 8.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, marginBottom: 22 }}
-            >
-              Brewprint
-            </h1>
+            {/* Logo + title on same line */}
+            <div className="flex items-center gap-3 lg:gap-5" style={{ marginBottom: 22 }}>
+              <motion.img
+                src="/logo.png"
+                alt="Brewprint"
+                style={{
+                  height: 'clamp(3.2rem, 7.8vw, 7.6rem)',
+                  width: 'auto',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 24px rgba(200,120,40,0.65)) drop-shadow(0 0 8px rgba(255,180,60,0.3))',
+                  flexShrink: 0,
+                }}
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.2 }}
+              />
+              <h1
+                className="font-bold text-white"
+                style={{ fontSize: 'clamp(3.5rem, 8.5vw, 8rem)', letterSpacing: '-0.055em', lineHeight: 0.88, margin: 0 }}
+              >
+                Brewprint
+              </h1>
+            </div>
 
             <p
               className="text-white/45 font-medium leading-snug max-w-sm"
@@ -264,7 +272,7 @@ export default function Hero() {
               Join the Waitlist →
             </a>
 
-            <p className="text-white/22 text-xs mt-3 tracking-wide">Launching soon. Early access guaranteed.</p>
+            <p className="text-white/22 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
           </motion.div>
 
           {/* RIGHT: phone */}
