@@ -224,7 +224,7 @@ export default function Hero() {
       <div className="h-20 flex-shrink-0" />
 
       {/* ── Three-column layout: logo | text | phone ── */}
-      <div className="relative z-10 flex-1 flex items-center justify-start px-6 pb-10 pt-4">
+      <div className="relative z-10 flex-1 flex items-center justify-center px-6 pb-10 pt-4">
         <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-8 lg:gap-10">
 
           {/* FAR LEFT: big standalone logo — desktop only */}
