@@ -227,9 +227,9 @@ export default function Hero() {
       <div className="relative z-10 flex-1 flex items-center py-10">
         <div className="w-full flex flex-col lg:flex-row items-center">
 
-          {/* LEFT 40%: logo only — desktop */}
+          {/* LEFT: logo only — desktop */}
           <motion.div
-            className="hidden lg:flex lg:w-2/5 items-center justify-center"
+            className="hidden lg:flex lg:w-[30%] items-center justify-start pl-12"
             initial={{ opacity: 0, x: -32 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
@@ -248,8 +248,8 @@ export default function Hero() {
             />
           </motion.div>
 
-          {/* RIGHT 60%: text stacked left, phone right */}
-          <div className="lg:w-3/5 w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-14 px-6 lg:px-0">
+          {/* RIGHT 70%: text stacked left, phone right */}
+          <div className="lg:w-[70%] w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-14 px-6 lg:px-0">
 
             {/* Text column */}
             <motion.div
