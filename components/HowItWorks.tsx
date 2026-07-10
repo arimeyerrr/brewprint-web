@@ -113,98 +113,244 @@ function DrinkCarousel() {
   )
 }
 
-const PROFILE_TRAITS = [
-  { label: 'Bold',   pct: 85 },
-  { label: 'Nutty',  pct: 72 },
-  { label: 'Smooth', pct: 65 },
-  { label: 'Sweet',  pct: 54 },
-  { label: 'Floral', pct: 38 },
-  { label: 'Acidic', pct: 22 },
+/* ── Step 2: Preference tag selector — matches real app screenshot ── */
+
+const PREF_GROUPS = [
+  {
+    label: 'VIBE & ATMOSPHERE',
+    tags: ['Quiet', 'Lively', 'Good Lighting', 'Greenery', 'Outdoor Seating', 'Modern'],
+  },
+  {
+    label: 'AESTHETIC',
+    tags: ['Latte Art', 'Interior Design', 'Instagrammable'],
+  },
+  {
+    label: 'COMFORT & AMENITIES',
+    tags: ['Fast Wifi', 'Outlets', 'Parking', 'Dog Friendly'],
+  },
 ]
 
-function ProfileScreen() {
+function PreferencesScreen() {
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  function toggle(t: string) {
+    setSelected(prev => {
+      const next = new Set(prev)
+      next.has(t) ? next.delete(t) : next.add(t)
+      return next
+    })
+  }
   return (
-    <div className="h-full p-5 flex flex-col gap-3 overflow-hidden">
-      <p className="text-white/30 text-[9px] tracking-widest uppercase">taste profile</p>
-      <p className="text-white text-[13px] font-semibold">Your Flavor DNA</p>
-      <div className="flex flex-col gap-2.5 mt-1 flex-1">
-        {PROFILE_TRAITS.map((t, i) => (
-          <div key={t.label} className="flex items-center gap-2">
-            <span className="text-white/30 text-[9px] w-11 text-right flex-shrink-0">{t.label}</span>
-            <div className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-              <motion.div className="h-full rounded-full"
-                style={{ background: `rgba(217,142,74,${0.35 + t.pct / 160})` }}
-                initial={{ width: 0 }} animate={{ width: `${t.pct}%` }}
-                transition={{ duration: 0.8, delay: i * 0.07, ease: 'easeOut' }} />
+    <div className="h-full flex flex-col overflow-hidden" style={{ background: '#000' }}>
+      {/* Header */}
+      <div style={{ padding: '12px 14px 8px', flexShrink: 0 }}>
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>
+          REFINE YOUR TASTE
+        </p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 9.5, fontWeight: 600 }}>
+          {selected.size} SELECTED
+        </p>
+      </div>
+
+      {/* Tag groups */}
+      <div style={{ flex: 1, overflow: 'hidden', padding: '4px 12px 8px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {PREF_GROUPS.map(group => (
+          <div key={group.label}>
+            <p style={{ color: 'rgba(255,255,255,0.22)', fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 7, textAlign: 'center' }}>
+              {group.label}
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 5, justifyContent: 'center' }}>
+              {group.tags.map(tag => {
+                const on = selected.has(tag)
+                return (
+                  <motion.button
+                    key={tag}
+                    onClick={() => toggle(tag)}
+                    style={{
+                      padding: '5px 10px', borderRadius: 20, fontSize: 8.5, fontWeight: 500, cursor: 'pointer',
+                      background: on ? 'rgba(217,142,74,0.15)' : 'rgba(255,255,255,0.04)',
+                      border: `0.5px solid ${on ? 'rgba(217,142,74,0.5)' : 'rgba(255,255,255,0.12)'}`,
+                      color: on ? '#D98E4A' : 'rgba(255,255,255,0.6)',
+                    }}
+                    whileTap={{ scale: 0.94 }}
+                    transition={{ duration: 0.12 }}
+                  >
+                    {tag}
+                  </motion.button>
+                )
+              })}
             </div>
-            <span className="text-white/20 text-[9px] w-6 flex-shrink-0">{t.pct}%</span>
           </div>
         ))}
       </div>
-      <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
-        <span className="text-white/25 text-[10px]">Your match score</span>
-        <motion.span className="font-black text-[15px]" style={{ color: '#D98E4A' }}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-          9.4
-        </motion.span>
+
+      {/* CTA */}
+      <div style={{ padding: '10px 14px 14px', flexShrink: 0 }}>
+        <div style={{
+          background: 'white', borderRadius: 22, padding: '9px 0',
+          textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#000',
+          letterSpacing: '0.04em',
+        }}>
+          BUILD MY FEED
+        </div>
       </div>
     </div>
   )
 }
 
-const NEARBY_DOTS: [number, number, boolean][] = [
-  [28, 60, false], [44, 38, false], [62, 52, true],
-  [50, 72, false], [75, 44, false], [83, 65, false],
-  [18, 42, false], [60, 78, false],
+/* ── Step 3: Map view + shop bottom sheet — matches real app screenshots ── */
+
+const MAP_PINS_HIW = [
+  { x: 22, y: 24, score: '9.4', photo: true,  c1: '#2d4228', c2: '#1e2d1a' },
+  { x: 54, y: 18, score: '7.6', photo: true,  c1: '#4a2e1a', c2: '#321e0e' },
+  { x: 70, y: 34, score: '8.8', photo: true,  c1: '#1a2d4a', c2: '#101d32' },
+  { x: 36, y: 48, score: '7.4', photo: true,  c1: '#38203c', c2: '#261428' },
+  { x: 78, y: 52, score: '6.4', photo: false, c1: '', c2: '' },
+  { x: 16, y: 58, score: '5.3', photo: false, c1: '', c2: '' },
+  { x: 62, y: 62, score: '9.1', photo: true,  c1: '#2a3820', c2: '#1a2414' },
 ]
 
 function ResultsScreen() {
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      <div className="flex-none relative overflow-hidden" style={{ height: '42%', background: 'linear-gradient(135deg, #070e18, #05101a)' }}>
-        {/* Map grid in results */}
+    <div className="h-full flex flex-col overflow-hidden" style={{ background: '#0d1825' }}>
+
+      {/* Map area */}
+      <div style={{ position: 'relative', flex: 1 }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-          {Array.from({ length: 7 }).map((_, i) => (
-            <line key={`v${i}`} x1={i * 40} y1="0" x2={i * 40} y2="100%" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+          <rect x="0%" y="0%" width="14%" height="22%" fill="#101e2c" />
+          <rect x="54%" y="44%" width="18%" height="16%" rx="1" fill="#0e1d14" />
+          {[20, 32, 46, 60, 72].map(y => (
+            <line key={`h${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#16273d" strokeWidth="2" />
           ))}
-          {Array.from({ length: 6 }).map((_, i) => (
-            <line key={`h${i}`} x1="0" y1={i * 30} x2="100%" y2={i * 30} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+          {[14, 28, 42, 56, 70, 84].map(x => (
+            <line key={`v${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#16273d" strokeWidth="2" />
+          ))}
+          <line x1="0" y1="36%" x2="100%" y2="6%" stroke="#1c2f46" strokeWidth="3" />
+          <line x1="10%" y1="100%" x2="88%" y2="44%" stroke="#1c2f46" strokeWidth="2.5" />
+          {[8, 26, 39, 53, 66].map(y => (
+            <line key={`mh${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#13202e" strokeWidth="1" />
+          ))}
+          {[7, 21, 35, 49, 63, 77].map(x => (
+            <line key={`mv${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#13202e" strokeWidth="1" />
           ))}
         </svg>
-        {NEARBY_DOTS.map(([x, y, active], i) => (
-          <div key={i} className="absolute rounded-full"
-            style={{
-              left: `${x}%`, top: `${y}%`,
-              width: active ? 9 : 5, height: active ? 9 : 5,
-              background: active ? '#D98E4A' : 'rgba(217,142,74,0.3)',
-              boxShadow: active ? '0 0 10px rgba(217,142,74,0.8)' : undefined,
-              transform: 'translate(-50%,-50%)',
-            }} />
-        ))}
-        <div className="absolute inset-x-0 bottom-0 h-8" style={{ background: 'linear-gradient(to top, #050505, transparent)' }} />
-        <div className="absolute bottom-1.5 left-3 text-[8px] text-white/20 tracking-widest uppercase">matches near you</div>
-      </div>
-      <div className="flex-1 p-3 flex flex-col gap-2">
-        {[
-          { name: 'Opus Coffee', score: 9.7, tag: 'Top match' },
-          { name: 'Volta Coffee', score: 9.1, tag: 'Strong match' },
-          { name: 'East End Roasters', score: 8.8, tag: 'Great match' },
-        ].map(s => (
-          <div key={s.name} className="flex items-center justify-between px-3 py-2.5 rounded-xl"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div>
-              <p className="text-white text-[11px] font-semibold">{s.name}</p>
-              <p className="text-white/25 text-[9px] mt-0.5">{s.tag}</p>
-            </div>
-            <span className="font-black text-[13px]" style={{ color: '#D98E4A' }}>{s.score}</span>
+
+        {/* Neighbourhood label */}
+        <div style={{ position: 'absolute', top: '12%', right: '5%', fontSize: 6.5, fontWeight: 700, color: 'rgba(255,255,255,0.11)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          OAKVIEW
+        </div>
+
+        {/* User location */}
+        <div style={{ position: 'absolute', left: '44%', top: '42%', transform: 'translate(-50%,-50%)', zIndex: 3 }}>
+          <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#4B8FEA', border: '1.5px solid white', boxShadow: '0 0 0 6px rgba(75,143,234,0.18)' }} />
+        </div>
+
+        {/* Shop pins */}
+        {MAP_PINS_HIW.map((pin, i) => (
+          <div key={i} style={{ position: 'absolute', left: `${pin.x}%`, top: `${pin.y}%`, transform: 'translate(-50%,-50%)', zIndex: 4 }}>
+            {pin.photo ? (
+              <div style={{ position: 'relative', width: 32, height: 32 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: '50%',
+                  background: `linear-gradient(135deg, ${pin.c1}, ${pin.c2})`,
+                  border: '2px solid rgba(0,0,0,0.8)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.7)',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: -4, right: -5,
+                  background: '#080c12', borderRadius: 5,
+                  padding: '1px 3.5px', fontSize: 7, fontWeight: 800,
+                  color: parseFloat(pin.score) >= 9 ? '#D98E4A' : 'rgba(255,255,255,0.82)',
+                  border: '0.5px solid rgba(255,255,255,0.12)',
+                  lineHeight: 1.4,
+                }}>
+                  {pin.score}
+                </div>
+              </div>
+            ) : (
+              <div style={{
+                background: 'rgba(6,10,18,0.9)', backdropFilter: 'blur(8px)',
+                border: '0.5px solid rgba(255,255,255,0.14)', borderRadius: 7,
+                padding: '2px 5px', fontSize: 7.5, fontWeight: 800,
+                color: 'rgba(255,255,255,0.7)',
+              }}>
+                {pin.score}
+              </div>
+            )}
           </div>
         ))}
+
+        {/* Filter pills overlay */}
+        <div style={{ position: 'absolute', top: 6, left: 8, right: 8, zIndex: 5 }}>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {[{ l: 'My Usual ▾', a: true }, { l: 'cozy', a: false }, { l: 'wifi', a: false }].map(f => (
+              <div key={f.l} style={{
+                background: f.a ? 'rgba(217,142,74,0.14)' : 'rgba(6,10,18,0.82)',
+                backdropFilter: 'blur(12px)',
+                border: `0.5px solid ${f.a ? 'rgba(217,142,74,0.45)' : 'rgba(255,255,255,0.1)'}`,
+                borderRadius: 18, padding: '3.5px 8px', fontSize: 7.5, fontWeight: 600,
+                color: f.a ? '#D98E4A' : 'rgba(255,255,255,0.55)',
+                whiteSpace: 'nowrap' as const,
+              }}>{f.l}</div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom gradient */}
+        <div style={{ position: 'absolute', inset: '60% 0 0 0', background: 'linear-gradient(to top, rgba(8,12,18,0.95), transparent)', zIndex: 2 }} />
+      </div>
+
+      {/* Bottom sheet */}
+      <div style={{ background: '#080c12', borderTop: '0.5px solid rgba(255,255,255,0.08)', padding: '8px 12px 10px', flexShrink: 0 }}>
+        {/* Drag handle */}
+        <div style={{ width: 26, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.14)', margin: '0 auto 9px' }} />
+
+        {/* FOR YOU badge + score */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+          <div style={{
+            background: 'rgba(255,255,255,0.06)', border: '0.5px solid rgba(255,255,255,0.1)',
+            borderRadius: 6, padding: '2px 6px', fontSize: 7.5, fontWeight: 600, color: 'rgba(255,255,255,0.4)',
+            letterSpacing: '0.08em',
+          }}>FOR YOU</div>
+          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 8 }}>5.0</span>
+          <span style={{ color: '#D98E4A', fontSize: 14, fontWeight: 900, marginLeft: 'auto' }}>9.4</span>
+        </div>
+
+        {/* Shop photo strip + name */}
+        <div style={{
+          height: 52, borderRadius: 8, marginBottom: 7,
+          background: 'linear-gradient(135deg, #1a2a18 0%, #0e1a10 40%, #0a1208 100%)',
+          display: 'flex', alignItems: 'flex-end', padding: '0 10px 6px',
+          border: '0.5px solid rgba(255,255,255,0.06)',
+        }}>
+          <p style={{ color: 'white', fontSize: 13, fontWeight: 700 }}>Afternoon Coffee</p>
+        </div>
+
+        {/* Tags */}
+        <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+          {['Specialty Coffee', 'Cozy Vibe', 'Good WiFi'].map(tag => (
+            <div key={tag} style={{
+              fontSize: 7, color: 'rgba(255,255,255,0.45)',
+              padding: '2px 6px', borderRadius: 18,
+              border: '0.5px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.04)',
+            }}>{tag}</div>
+          ))}
+        </div>
+
+        {/* Rate CTA */}
+        <div style={{
+          background: 'white', borderRadius: 22, padding: '7px 0',
+          textAlign: 'center', fontSize: 9.5, fontWeight: 700, color: '#000',
+          letterSpacing: '0.04em',
+        }}>
+          Rate This Shop
+        </div>
       </div>
     </div>
   )
 }
 
-const PHONE_SCREENS = [<ProfileScreen key="profile" />, <ResultsScreen key="results" />]
+const PHONE_SCREENS = [<PreferencesScreen key="prefs" />, <ResultsScreen key="results" />]
 
 function PhoneMockup({ step, slideDir }: { step: number; slideDir: number }) {
   return (
