@@ -22,6 +22,24 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-foreground">
+        {/* Map coordinate grid — appears subtly over all sections */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+            backgroundImage: [
+              'linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px)',
+              'linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px)',
+              'linear-gradient(rgba(217,142,74,0.018) 1px, transparent 1px)',
+              'linear-gradient(90deg, rgba(217,142,74,0.018) 1px, transparent 1px)',
+            ].join(', '),
+            backgroundSize: '72px 72px, 72px 72px, 360px 360px, 360px 360px',
+            mixBlendMode: 'overlay',
+          }}
+        />
         <MouseGlow />
         <Nav />
         {children}
