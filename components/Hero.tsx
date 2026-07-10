@@ -2,8 +2,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-/* ── Liquid ── */
-
 function WaveLayer({ duration, delay, opacity, color, path, yRange }: {
   duration: number; delay: number; opacity: number; color: string; path?: string; yRange?: number
 }) {
@@ -13,10 +11,7 @@ function WaveLayer({ duration, delay, opacity, color, path, yRange }: {
     <motion.div
       className="absolute inset-x-0"
       style={{ top: -64, opacity }}
-      animate={{
-        x: ['0%', '-13%', '4%', '-8%', '2%', '0%'],
-        y: yr ? [0, -yr, yr * 0.7, -yr * 0.5, yr * 0.3, 0] : undefined,
-      }}
+      animate={{ x: ['0%', '-13%', '4%', '-8%', '2%', '0%'], y: yr ? [0, -yr, yr * 0.7, -yr * 0.5, yr * 0.3, 0] : undefined }}
       transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'mirror' }}
     >
       <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ width: '150%', marginLeft: '-25%', display: 'block' }}>
@@ -33,16 +28,10 @@ function LiquidContainer({ children }: { children: React.ReactNode }) {
       className="absolute inset-x-0 bottom-0"
       style={{ height: '100%' }}
       initial={{ y: '100%' }}
-      animate={
-        phase === 'pour'
-          ? { y: '55%' }
-          : { y: ['55%', '53.5%', '56.5%', '54.2%', '56%', '55%'] }
-      }
-      transition={
-        phase === 'pour'
-          ? { duration: 8.5, ease: [0.08, 0.94, 0.22, 1.0], delay: 1.0 }
-          : { duration: 9, repeat: Infinity, ease: 'easeInOut', times: [0, 0.2, 0.45, 0.65, 0.85, 1] }
-      }
+      animate={phase === 'pour' ? { y: '55%' } : { y: ['55%', '53.5%', '56.5%', '54.2%', '56%', '55%'] }}
+      transition={phase === 'pour'
+        ? { duration: 8.5, ease: [0.08, 0.94, 0.22, 1.0], delay: 1.0 }
+        : { duration: 9, repeat: Infinity, ease: 'easeInOut', times: [0, 0.2, 0.45, 0.65, 0.85, 1] }}
       onAnimationComplete={() => { if (phase === 'pour') setPhase('breathe') }}
     >
       {children}
@@ -50,8 +39,109 @@ function LiquidContainer({ children }: { children: React.ReactNode }) {
   )
 }
 
-/* ── Phone pins ── */
+/* ── Shared phone shell ── */
+const PW = 230
+const PH = 488
 
+function PhoneShell({ children, bg = '#06090f' }: { children: React.ReactNode; bg?: string }) {
+  return (
+    <div style={{
+      width: PW, height: PH, background: bg, borderRadius: 42,
+      border: '1.5px solid rgba(255,255,255,0.13)',
+      boxShadow: '0 50px 130px rgba(0,0,0,0.9), 0 16px 48px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.04) inset',
+      overflow: 'hidden', position: 'relative', flexShrink: 0,
+    }}>
+      {/* Dynamic island */}
+      <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', background: '#000', borderRadius: 18, padding: '4px 14px', minWidth: 78, zIndex: 30, display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#181818' }} />
+        <div style={{ flex: 1 }} />
+        <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#181818' }} />
+      </div>
+      {/* Glass gloss */}
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 42, background: 'linear-gradient(145deg, rgba(255,255,255,0.055) 0%, transparent 40%)', pointerEvents: 'none', zIndex: 40 }} />
+      {children}
+    </div>
+  )
+}
+
+/* ── Phone 1: Pick Your Usual ── */
+function DrinkPhone() {
+  return (
+    <PhoneShell bg="#080808">
+      {/* Starburst */}
+      <div style={{ position: 'absolute', top: 34, left: '50%', transform: 'translateX(-50%)', width: 192, height: 192, zIndex: 1 }}>
+        <svg viewBox="0 0 192 192" style={{ position: 'absolute', inset: 0, opacity: 0.13 }}>
+          {Array.from({ length: 22 }).map((_, i) => {
+            const a = (i / 22) * Math.PI * 2
+            return <line key={i} x1={96 + Math.cos(a) * 9} y1={96 + Math.sin(a) * 9} x2={96 + Math.cos(a) * 94} y2={96 + Math.sin(a) * 94} stroke="#D98E4A" strokeWidth="1.2" />
+          })}
+        </svg>
+        <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle, rgba(190,90,20,0.2) 0%, transparent 65%)' }} />
+        <div style={{ position: 'absolute', inset: 26, borderRadius: '50%', background: 'linear-gradient(135deg, #1a0a02, #0d0602)', border: '1.5px solid rgba(255,255,255,0.07)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/drinks/latte.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 40% 30%, rgba(80,30,5,0.6), transparent)' }} />
+        </div>
+      </div>
+
+      <div style={{ position: 'absolute', top: 34, left: 0, right: 0, textAlign: 'center', zIndex: 5 }}>
+        <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, margin: 0 }}>pick your usual</p>
+      </div>
+
+      <div style={{ position: 'absolute', bottom: 76, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, zIndex: 5 }}>
+        <p style={{ color: 'white', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em', margin: 0 }}>Latte</p>
+        <div style={{ display: 'flex', gap: 5 }}>
+          {['Creamy', 'Sweet', 'Smooth'].map(t => (
+            <span key={t} style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.06)', borderRadius: 20, padding: '3px 9px', border: '0.5px solid rgba(255,255,255,0.1)' }}>{t}</span>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ position: 'absolute', bottom: 22, left: 20, right: 20, background: 'white', borderRadius: 26, padding: '10px 0', textAlign: 'center', fontSize: 9.5, fontWeight: 800, color: '#000', letterSpacing: '0.1em', zIndex: 5 }}>
+        CONFIRM SELECTION
+      </div>
+    </PhoneShell>
+  )
+}
+
+/* ── Phone 2: Refine Your Taste ── */
+const PREF_PREVIEW = [
+  { label: 'VIBE', tags: ['Quiet', 'Cozy', 'Good Lighting', 'Lively'] },
+  { label: 'ROAST', tags: ['Light Roast', 'Medium Roast', 'Dark Roast'] },
+  { label: 'FLAVOR', tags: ['Chocolatey', 'Fruity', 'Floral', 'Bold'] },
+  { label: 'AMENITIES', tags: ['Fast Wifi', 'Outlets', 'Dog Friendly'] },
+]
+const PRESELECTED = new Set(['Cozy', 'Good Lighting', 'Medium Roast', 'Chocolatey', 'Fast Wifi'])
+
+function PrefsPhone() {
+  return (
+    <PhoneShell>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg, #0a0e18, #060810)' }} />
+      <div style={{ position: 'absolute', top: 34, left: 0, right: 0, textAlign: 'center', zIndex: 5 }}>
+        <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, margin: 0 }}>refine your taste</p>
+      </div>
+      <div style={{ position: 'absolute', top: 54, left: 0, right: 0, bottom: 52, padding: '6px 16px 0', zIndex: 5, display: 'flex', flexDirection: 'column', gap: 9, overflowY: 'hidden' }}>
+        {PREF_PREVIEW.map(g => (
+          <div key={g.label}>
+            <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 6.5, letterSpacing: '0.14em', fontWeight: 700, margin: '0 0 4px' }}>{g.label}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {g.tags.map(t => {
+                const sel = PRESELECTED.has(t)
+                return (
+                  <span key={t} style={{ fontSize: 8.5, color: sel ? '#D98E4A' : 'rgba(255,255,255,0.52)', background: sel ? 'rgba(217,142,74,0.11)' : 'rgba(255,255,255,0.05)', border: `0.5px solid ${sel ? 'rgba(217,142,74,0.38)' : 'rgba(255,255,255,0.1)'}`, borderRadius: 18, padding: '3.5px 9px' }}>{t}</span>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ position: 'absolute', bottom: 18, left: 18, right: 18, background: 'linear-gradient(135deg, #A85A18, #D98E4A)', borderRadius: 26, padding: '10px 0', textAlign: 'center', fontSize: 9.5, fontWeight: 800, color: '#000', letterSpacing: '0.1em', zIndex: 5 }}>
+        BUILD MY FEED
+      </div>
+    </PhoneShell>
+  )
+}
+
+/* ── Phone 3: Map Results ── */
 const SHOP_PINS = [
   { x: 24, y: 22, score: '9.4', photo: true,  c1: '#2d4228', c2: '#1e2d1a' },
   { x: 57, y: 18, score: '7.6', photo: true,  c1: '#4a2e1a', c2: '#321e0e' },
@@ -61,151 +151,86 @@ const SHOP_PINS = [
   { x: 63, y: 60, score: '9.1', photo: true,  c1: '#2a3820', c2: '#1a2414' },
 ]
 
-/* ── App phone mockup matching real app with bottom sheet ── */
-
-function AppPhone() {
+function MapPhone() {
   return (
-    <div style={{
-      width: 300, height: 600,
-      background: '#08111e',
-      borderRadius: 48,
-      border: '1.5px solid rgba(255,255,255,0.13)',
-      boxShadow: '0 70px 160px rgba(0,0,0,0.95), 0 0 0 0.5px rgba(255,255,255,0.05) inset',
-      overflow: 'hidden',
-      position: 'relative',
-      flexShrink: 0,
-    }}>
-      {/* Dynamic island */}
-      <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', background: '#000', borderRadius: 20, padding: '5px 16px', minWidth: 96, zIndex: 30, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#181818' }} />
-        <div style={{ flex: 1 }} />
-        <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#181818' }} />
+    <PhoneShell>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 42, zIndex: 20, background: 'linear-gradient(to bottom, rgba(8,17,30,1) 55%, transparent)', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '11px 15px 0' }}>
+        <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 9, fontWeight: 600 }}>9:41</span>
+        <svg viewBox="0 0 15 10" fill="rgba(255,255,255,0.75)" width={11}><rect x="0" y="5" width="2.5" height="5"/><rect x="4" y="3" width="2.5" height="7"/><rect x="8" y="1" width="2.5" height="9"/><rect x="12" y="0" width="2.5" height="10"/></svg>
       </div>
 
-      {/* Status bar */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 52, zIndex: 20, background: 'linear-gradient(to bottom, rgba(8,17,30,1) 55%, transparent)', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '13px 18px 0' }}>
-        <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 10, fontWeight: 600 }}>9:41</span>
-        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-          <svg viewBox="0 0 15 10" fill="rgba(255,255,255,0.75)" width={12}><rect x="0" y="5" width="2.5" height="5"/><rect x="4" y="3" width="2.5" height="7"/><rect x="8" y="1" width="2.5" height="9"/><rect x="12" y="0" width="2.5" height="10"/></svg>
-        </div>
-      </div>
-
-      {/* Map base — full background */}
+      {/* Map */}
       <div style={{ position: 'absolute', inset: 0, background: '#0d1825' }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
           <rect x="0%" y="0%" width="14%" height="22%" fill="#101e2c" />
           <rect x="56%" y="42%" width="19%" height="16%" rx="1" fill="#0e1d14" />
           <rect x="28%" y="60%" width="22%" height="14%" fill="#101e2c" />
           <rect x="72%" y="20%" width="28%" height="22%" fill="#0f1c28" />
-          {[18, 30, 43, 56, 68].map(y => (
-            <line key={`h${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#16273d" strokeWidth="2" />
-          ))}
-          {[14, 28, 42, 56, 70, 84].map(x => (
-            <line key={`v${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#16273d" strokeWidth="2" />
-          ))}
+          {[18,30,43,56,68].map(y => <line key={`h${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#16273d" strokeWidth="2" />)}
+          {[14,28,42,56,70,84].map(x => <line key={`v${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#16273d" strokeWidth="2" />)}
           <line x1="0" y1="36%" x2="100%" y2="6%" stroke="#1c2f46" strokeWidth="3" />
           <line x1="12%" y1="100%" x2="88%" y2="40%" stroke="#1c2f46" strokeWidth="2.5" />
-          {[8, 24, 37, 50, 62].map(y => (
-            <line key={`mh${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#13202e" strokeWidth="1" />
-          ))}
-          {[7, 21, 35, 49, 63, 77, 91].map(x => (
-            <line key={`mv${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#13202e" strokeWidth="1" />
-          ))}
+          {[8,24,37,50,62].map(y => <line key={`mh${y}`} x1="0" y1={`${y}%`} x2="100%" y2={`${y}%`} stroke="#13202e" strokeWidth="1" />)}
+          {[7,21,35,49,63,77,91].map(x => <line key={`mv${x}`} x1={`${x}%`} y1="0" x2={`${x}%`} y2="100%" stroke="#13202e" strokeWidth="1" />)}
         </svg>
-
-        {/* Neighbourhood label */}
-        <div style={{ position: 'absolute', top: '14%', right: '6%', fontSize: 7, fontWeight: 700, color: 'rgba(255,255,255,0.11)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>OAKVIEW</div>
-
-        {/* User location */}
         <div style={{ position: 'absolute', left: '45%', top: '40%', transform: 'translate(-50%,-50%)', zIndex: 3 }}>
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#4B8FEA', border: '1.5px solid white', boxShadow: '0 0 0 7px rgba(75,143,234,0.18)' }} />
+          <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#4B8FEA', border: '1.5px solid white', boxShadow: '0 0 0 6px rgba(75,143,234,0.18)' }} />
         </div>
-
-        {/* Shop pins */}
         {SHOP_PINS.map((pin, i) => (
           <div key={i} style={{ position: 'absolute', left: `${pin.x}%`, top: `${pin.y}%`, transform: 'translate(-50%,-50%)', zIndex: 4 }}>
             {pin.photo ? (
-              <div style={{ position: 'relative', width: 34, height: 34 }}>
-                <div style={{ width: 34, height: 34, borderRadius: '50%', background: `linear-gradient(135deg, ${pin.c1}, ${pin.c2})`, border: '2px solid rgba(0,0,0,0.8)', boxShadow: '0 2px 10px rgba(0,0,0,0.7)' }} />
-                <div style={{ position: 'absolute', bottom: -4, right: -5, background: '#080c12', borderRadius: 5, padding: '1.5px 4px', fontSize: 7.5, fontWeight: 800, color: parseFloat(pin.score) >= 9 ? '#D98E4A' : 'rgba(255,255,255,0.82)', border: '0.5px solid rgba(255,255,255,0.12)', lineHeight: 1.4 }}>
-                  {pin.score}
-                </div>
+              <div style={{ position: 'relative', width: 28, height: 28 }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: `linear-gradient(135deg, ${pin.c1}, ${pin.c2})`, border: '1.5px solid rgba(0,0,0,0.8)', boxShadow: '0 2px 8px rgba(0,0,0,0.7)' }} />
+                <div style={{ position: 'absolute', bottom: -3, right: -4, background: '#080c12', borderRadius: 4, padding: '1px 3px', fontSize: 6, fontWeight: 800, color: parseFloat(pin.score) >= 9 ? '#D98E4A' : 'rgba(255,255,255,0.82)', border: '0.5px solid rgba(255,255,255,0.12)' }}>{pin.score}</div>
               </div>
             ) : (
-              <div style={{ background: 'rgba(8,12,22,0.88)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(255,255,255,0.14)', borderRadius: 8, padding: '2px 6px', fontSize: 8, fontWeight: 800, color: 'rgba(255,255,255,0.7)' }}>
-                {pin.score}
-              </div>
+              <div style={{ background: 'rgba(8,12,22,0.88)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(255,255,255,0.14)', borderRadius: 6, padding: '1.5px 4.5px', fontSize: 6.5, fontWeight: 800, color: 'rgba(255,255,255,0.7)' }}>{pin.score}</div>
             )}
           </div>
         ))}
       </div>
 
-      {/* Search + filters overlay */}
-      <div style={{ position: 'absolute', top: 50, left: 0, right: 0, zIndex: 15, padding: '6px 10px 4px' }}>
-        <div style={{ background: 'rgba(6,10,18,0.85)', backdropFilter: 'blur(20px)', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: 22, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-          <svg viewBox="0 0 16 16" fill="none" width={10}><circle cx="7" cy="7" r="4.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3" strokeLinecap="round"/></svg>
-          <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 8.5 }}>Search coffee shops...</span>
+      {/* Search + filters */}
+      <div style={{ position: 'absolute', top: 40, left: 0, right: 0, zIndex: 15, padding: '5px 8px 4px' }}>
+        <div style={{ background: 'rgba(6,10,18,0.85)', backdropFilter: 'blur(20px)', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: '5px 10px', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
+          <svg viewBox="0 0 16 16" fill="none" width={8}><circle cx="7" cy="7" r="4.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 7 }}>Search coffee shops...</span>
         </div>
-        <div style={{ display: 'flex', gap: 5 }}>
+        <div style={{ display: 'flex', gap: 4 }}>
           {[{ l: 'My Usual ▾', a: true }, { l: 'cozy', a: false }, { l: 'wifi', a: false }].map(f => (
-            <div key={f.l} style={{ background: f.a ? 'rgba(217,142,74,0.14)' : 'rgba(6,10,18,0.8)', backdropFilter: 'blur(12px)', border: `0.5px solid ${f.a ? 'rgba(217,142,74,0.45)' : 'rgba(255,255,255,0.1)'}`, borderRadius: 20, padding: '4px 9px', fontSize: 8, fontWeight: 600, color: f.a ? '#D98E4A' : 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' as const }}>{f.l}</div>
+            <div key={f.l} style={{ background: f.a ? 'rgba(217,142,74,0.14)' : 'rgba(6,10,18,0.8)', backdropFilter: 'blur(12px)', border: `0.5px solid ${f.a ? 'rgba(217,142,74,0.45)' : 'rgba(255,255,255,0.1)'}`, borderRadius: 18, padding: '3px 7px', fontSize: 6.5, fontWeight: 600, color: f.a ? '#D98E4A' : 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' as const }}>{f.l}</div>
           ))}
         </div>
       </div>
 
-      {/* Bottom sheet — matches real app screenshot */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 20,
-        background: '#080c12',
-        borderTopLeftRadius: 20, borderTopRightRadius: 20,
-        border: '0.5px solid rgba(255,255,255,0.09)',
-        paddingBottom: 28,
-      }}>
-        {/* Drag handle */}
-        <div style={{ padding: '8px 0 6px', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: 28, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
+      {/* Bottom sheet */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 20, background: '#080c12', borderTopLeftRadius: 16, borderTopRightRadius: 16, border: '0.5px solid rgba(255,255,255,0.09)', paddingBottom: 20 }}>
+        <div style={{ padding: '6px 0 4px', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 22, height: 2.5, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
         </div>
-
-        {/* FOR YOU + score */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 14px 8px' }}>
-          <div style={{ background: 'rgba(255,255,255,0.06)', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '2px 7px', fontSize: 7.5, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>FOR YOU</div>
-          <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 8 }}>5.0</span>
-          <span style={{ color: '#D98E4A', fontSize: 15, fontWeight: 900, marginLeft: 'auto' }}>9.4</span>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px 5px' }}>
+          <div style={{ background: 'rgba(255,255,255,0.06)', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: 4, padding: '1.5px 5px', fontSize: 6, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>FOR YOU</div>
+          <span style={{ color: '#D98E4A', fontSize: 12, fontWeight: 900, marginLeft: 'auto' }}>9.4</span>
         </div>
-
-        {/* Shop image — latte art */}
-        <div style={{ margin: '0 12px 8px', borderRadius: 10, overflow: 'hidden', height: 68, position: 'relative' }}>
-          <img
-            src="https://images.unsplash.com/photo-1501959915551-4e8d30928317?w=500&q=80&auto=format&fit=crop"
-            alt="Meyerbrews latte art"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-          {/* gradient overlay so name is readable */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)' }} />
-          <p style={{ position: 'absolute', bottom: 7, left: 10, color: 'white', fontSize: 13, fontWeight: 700 }}>Meyerbrews</p>
+        <div style={{ margin: '0 10px 5px', borderRadius: 7, overflow: 'hidden', height: 52, position: 'relative' }}>
+          <img src="https://images.unsplash.com/photo-1501959915551-4e8d30928317?w=400&q=80&auto=format&fit=crop" alt="Meyerbrews" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)' }} />
+          <p style={{ position: 'absolute', bottom: 5, left: 8, color: 'white', fontSize: 10, fontWeight: 700, margin: 0 }}>Meyerbrews</p>
         </div>
-
-        {/* Tags */}
-        <div style={{ display: 'flex', gap: 5, padding: '0 12px 8px' }}>
+        <div style={{ display: 'flex', gap: 4, padding: '0 10px 5px' }}>
           {['Specialty Coffee', 'Cozy Vibe', 'Good WiFi'].map(tag => (
-            <div key={tag} style={{ fontSize: 7, color: 'rgba(255,255,255,0.45)', padding: '2px 7px', borderRadius: 18, border: '0.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)' }}>{tag}</div>
+            <div key={tag} style={{ fontSize: 5.5, color: 'rgba(255,255,255,0.45)', padding: '2px 5px', borderRadius: 14, border: '0.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)' }}>{tag}</div>
           ))}
         </div>
-
-        {/* Rate CTA */}
-        <div style={{ margin: '0 12px', background: 'white', borderRadius: 22, padding: '8px 0', textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#000', letterSpacing: '0.04em' }}>
+        <div style={{ margin: '0 10px', background: 'white', borderRadius: 18, padding: '7px 0', textAlign: 'center', fontSize: 8.5, fontWeight: 700, color: '#000', letterSpacing: '0.04em' }}>
           Rate This Shop
         </div>
       </div>
-
-      {/* Glass gloss */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 48, background: 'linear-gradient(145deg, rgba(255,255,255,0.055) 0%, transparent 40%)', pointerEvents: 'none', zIndex: 35 }} />
-    </div>
+    </PhoneShell>
   )
 }
 
 /* ── Hero ── */
-
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden">
@@ -223,117 +248,80 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
       <div className="h-20 flex-shrink-0" />
 
-      {/* ── Layout: logo 40% | [text + phone] 60% ── */}
-      <div className="relative z-10 flex-1 flex items-center py-10">
-        <div className="w-full flex flex-col lg:flex-row items-center">
+      {/* Main layout */}
+      <div className="relative z-10 flex-1 flex items-center py-6">
+        <div className="w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 px-8 lg:px-14">
 
-          {/* LEFT: logo only — desktop */}
+          {/* Left: compact text block */}
           <motion.div
-            className="hidden lg:flex lg:w-[30%] items-center justify-start pl-12"
-            initial={{ opacity: 0, x: -32 }}
+            className="flex-shrink-0 flex flex-col items-center lg:items-start text-center lg:text-left"
+            style={{ width: 'clamp(200px, 20vw, 260px)' }}
+            initial={{ opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
             <motion.img
               src="/logo.png"
               alt="Brewprint"
-              style={{
-                height: 'clamp(9rem, 18vw, 22rem)',
-                width: 'auto',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 48px rgba(200,120,40,0.8)) drop-shadow(0 0 14px rgba(255,180,60,0.4))',
-              }}
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.0 }}
+              style={{ height: 'clamp(3rem, 4.5vw, 5rem)', width: 'auto', marginBottom: 14, filter: 'drop-shadow(0 0 24px rgba(200,120,40,0.65)) drop-shadow(0 0 8px rgba(255,180,60,0.3))' }}
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.2 }}
             />
+            <h1
+              className="font-bold text-white"
+              style={{ fontSize: 'clamp(2rem, 3.2vw, 3.4rem)', letterSpacing: '-0.055em', lineHeight: 0.9, marginBottom: 14 }}
+            >
+              Brewprint
+            </h1>
+            <p
+              className="text-white/45 font-medium leading-snug"
+              style={{ fontSize: 'clamp(0.85rem, 1.1vw, 1rem)', marginBottom: 28 }}
+            >
+              Find your perfect cup.<br />Discover the shop behind it.
+            </p>
+            <a
+              href="#waitlist"
+              className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
+              style={{ fontSize: '0.88rem', padding: '13px 30px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 32px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
+            >
+              Join the Waitlist →
+            </a>
+            <p className="text-white/20 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
           </motion.div>
 
-          {/* RIGHT 70%: text stacked left, phone right */}
-          <div className="lg:w-[70%] w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-14 px-6 lg:px-0">
+          {/* Right: 3 staggered phones */}
+          <div className="flex-1 flex items-center justify-center gap-3 lg:gap-5" style={{ overflow: 'visible' }}>
 
-            {/* Text column */}
             <motion.div
-              className="flex flex-col items-center lg:items-start text-center lg:text-left flex-shrink-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              style={{ rotate: -6 }}
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: -24 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
-              {/* Mobile: logo + title inline */}
-              <div className="flex lg:hidden items-center gap-3 mb-5">
-                <img
-                  src="/logo.png"
-                  alt="Brewprint"
-                  style={{ height: '3.5rem', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(200,120,40,0.6))', flexShrink: 0 }}
-                />
-                <h1 className="font-bold text-white" style={{ fontSize: 'clamp(3rem, 9vw, 4.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, margin: 0 }}>
-                  Brewprint
-                </h1>
-              </div>
-
-              {/* Desktop: title */}
-              <h1
-                className="hidden lg:block font-bold text-white"
-                style={{ fontSize: 'clamp(3rem, 5vw, 5.5rem)', letterSpacing: '-0.055em', lineHeight: 0.9, marginBottom: 18 }}
-              >
-                Brewprint
-              </h1>
-
-              <p
-                className="text-white/45 font-medium leading-snug"
-                style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)', marginBottom: 32, maxWidth: 280 }}
-              >
-                Find your perfect cup.<br /> Discover the shop behind it.
-              </p>
-
-              <a
-                href="#waitlist"
-                className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
-                style={{ fontSize: '0.95rem', padding: '14px 36px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 36px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
-              >
-                Join the Waitlist →
-              </a>
-
-              <p className="text-white/22 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
+              <motion.div animate={{ y: [0, 9, 0] }} transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}>
+                <DrinkPhone />
+              </motion.div>
             </motion.div>
 
-            {/* Phone */}
             <motion.div
-              className="relative flex-shrink-0"
-              initial={{ opacity: 0, y: 36, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+              style={{ rotate: 1.5 }}
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 28 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
             >
-              <div style={{ position: 'absolute', inset: '-60px', background: 'radial-gradient(ellipse 70% 55% at 50% 55%, rgba(150,65,10,0.38) 0%, rgba(90,35,6,0.18) 50%, transparent 80%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
-
-              {/* Match badge */}
-              <motion.div
-                className="hidden lg:block"
-                style={{ position: 'absolute', top: 80, left: -96, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(217,142,74,0.35)', borderRadius: 14, padding: '10px 14px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
-                animate={{ y: [0, -6, 0], x: [0, 2, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <p style={{ color: 'rgba(217,142,74,0.6)', fontSize: 7.5, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 3 }}>your match</p>
-                <p style={{ color: '#D98E4A', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>9.4</p>
+              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}>
+                <PrefsPhone />
               </motion.div>
+            </motion.div>
 
-              {/* Nearby badge */}
-              <motion.div
-                className="hidden lg:block"
-                style={{ position: 'absolute', top: 130, right: -84, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, padding: '9px 12px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
-                animate={{ y: [0, 5, 0], x: [0, -2, 0] }}
-                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D98E4A', boxShadow: '0 0 8px rgba(217,142,74,0.8)' }} />
-                  <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: 9, fontWeight: 600 }}>3 shops near you</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-              >
-                <AppPhone />
+            <motion.div
+              style={{ rotate: 5 }}
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: -10 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+            >
+              <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}>
+                <MapPhone />
               </motion.div>
             </motion.div>
 
@@ -342,7 +330,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="relative z-10 flex justify-center pb-5 opacity-25">
         <motion.div
           className="w-px h-7 bg-gradient-to-b from-transparent to-white"
