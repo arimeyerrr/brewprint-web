@@ -223,115 +223,121 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
       <div className="h-20 flex-shrink-0" />
 
-      {/* ── Three-column layout: logo | text | phone ── */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-6 pb-10 pt-4">
-        <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-8 lg:gap-10">
+      {/* ── Layout: logo 40% | [text + phone] 60% ── */}
+      <div className="relative z-10 flex-1 flex items-center py-10">
+        <div className="w-full flex flex-col lg:flex-row items-center">
 
-          {/* FAR LEFT: big standalone logo — desktop only */}
-          <motion.img
-            className="hidden lg:block flex-shrink-0"
-            src="/logo.png"
-            alt=""
-            style={{
-              height: 'clamp(8rem, 17vw, 20rem)',
-              width: 'auto',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 0 40px rgba(200,120,40,0.75)) drop-shadow(0 0 12px rgba(255,180,60,0.35))',
-            }}
-            initial={{ opacity: 0, x: -32 }}
-            animate={{ opacity: 1, x: 0, y: [0, -9, 0] }}
-            transition={{ opacity: { duration: 0.9, delay: 0.1 }, x: { duration: 0.9, delay: 0.1 }, y: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.0 } }}
-          />
-
-          {/* MIDDLE: text */}
+          {/* LEFT 40%: logo only — desktop */}
           <motion.div
-            className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left min-w-0"
-            initial={{ opacity: 0, x: -28 }}
+            className="hidden lg:flex lg:w-2/5 items-center justify-center"
+            initial={{ opacity: 0, x: -32 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
-            {/* Mobile: logo + title inline */}
-            <div className="flex lg:hidden items-center gap-3" style={{ marginBottom: 20 }}>
-              <img
-                src="/logo.png"
-                alt="Brewprint"
-                style={{ height: '3.5rem', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(200,120,40,0.6))', flexShrink: 0 }}
-              />
+            <motion.img
+              src="/logo.png"
+              alt="Brewprint"
+              style={{
+                height: 'clamp(9rem, 18vw, 22rem)',
+                width: 'auto',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 48px rgba(200,120,40,0.8)) drop-shadow(0 0 14px rgba(255,180,60,0.4))',
+              }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.0 }}
+            />
+          </motion.div>
+
+          {/* RIGHT 60%: text stacked left, phone right */}
+          <div className="lg:w-3/5 w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-14 px-6 lg:px-0">
+
+            {/* Text column */}
+            <motion.div
+              className="flex flex-col items-center lg:items-start text-center lg:text-left flex-shrink-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+            >
+              {/* Mobile: logo + title inline */}
+              <div className="flex lg:hidden items-center gap-3 mb-5">
+                <img
+                  src="/logo.png"
+                  alt="Brewprint"
+                  style={{ height: '3.5rem', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(200,120,40,0.6))', flexShrink: 0 }}
+                />
+                <h1 className="font-bold text-white" style={{ fontSize: 'clamp(3rem, 9vw, 4.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, margin: 0 }}>
+                  Brewprint
+                </h1>
+              </div>
+
+              {/* Desktop: title */}
               <h1
-                className="font-bold text-white"
-                style={{ fontSize: 'clamp(3rem, 9vw, 4.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, margin: 0 }}
+                className="hidden lg:block font-bold text-white"
+                style={{ fontSize: 'clamp(3rem, 5vw, 5.5rem)', letterSpacing: '-0.055em', lineHeight: 0.9, marginBottom: 18 }}
               >
                 Brewprint
               </h1>
-            </div>
 
-            {/* Desktop: title only */}
-            <h1
-              className="hidden lg:block font-bold text-white"
-              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 6.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, marginBottom: 22 }}
-            >
-              Brewprint
-            </h1>
+              <p
+                className="text-white/45 font-medium leading-snug"
+                style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)', marginBottom: 32, maxWidth: 280 }}
+              >
+                Find your perfect cup.<br /> Discover the shop behind it.
+              </p>
 
-            <p
-              className="text-white/45 font-medium leading-snug max-w-sm"
-              style={{ fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', marginBottom: 34 }}
-            >
-              Find your perfect cup.<br className="hidden lg:block" /> Discover the shop behind it.
-            </p>
+              <a
+                href="#waitlist"
+                className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
+                style={{ fontSize: '0.95rem', padding: '14px 36px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 36px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
+              >
+                Join the Waitlist →
+              </a>
 
-            <a
-              href="#waitlist"
-              className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
-              style={{ fontSize: '1rem', padding: '15px 38px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 36px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
-            >
-              Join the Waitlist →
-            </a>
-
-            <p className="text-white/22 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
-          </motion.div>
-
-          {/* RIGHT: phone */}
-          <motion.div
-            className="relative flex-shrink-0"
-            initial={{ opacity: 0, y: 36, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
-          >
-            {/* Ambient glow */}
-            <div style={{ position: 'absolute', inset: '-60px', background: 'radial-gradient(ellipse 70% 55% at 50% 55%, rgba(150,65,10,0.38) 0%, rgba(90,35,6,0.18) 50%, transparent 80%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
-
-            {/* Match badge — desktop only */}
-            <motion.div
-              className="hidden lg:block"
-              style={{ position: 'absolute', top: 80, left: -96, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(217,142,74,0.35)', borderRadius: 14, padding: '10px 14px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
-              animate={{ y: [0, -6, 0], x: [0, 2, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <p style={{ color: 'rgba(217,142,74,0.6)', fontSize: 7.5, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 3 }}>your match</p>
-              <p style={{ color: '#D98E4A', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>9.4</p>
+              <p className="text-white/22 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
             </motion.div>
 
-            {/* Nearby badge — desktop only */}
+            {/* Phone */}
             <motion.div
-              className="hidden lg:block"
-              style={{ position: 'absolute', top: 130, right: -84, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, padding: '9px 12px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
-              animate={{ y: [0, 5, 0], x: [0, -2, 0] }}
-              transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
+              className="relative flex-shrink-0"
+              initial={{ opacity: 0, y: 36, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D98E4A', boxShadow: '0 0 8px rgba(217,142,74,0.8)' }} />
-                <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: 9, fontWeight: 600 }}>3 shops near you</span>
-              </div>
+              <div style={{ position: 'absolute', inset: '-60px', background: 'radial-gradient(ellipse 70% 55% at 50% 55%, rgba(150,65,10,0.38) 0%, rgba(90,35,6,0.18) 50%, transparent 80%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
+
+              {/* Match badge */}
+              <motion.div
+                className="hidden lg:block"
+                style={{ position: 'absolute', top: 80, left: -96, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(217,142,74,0.35)', borderRadius: 14, padding: '10px 14px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
+                animate={{ y: [0, -6, 0], x: [0, 2, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <p style={{ color: 'rgba(217,142,74,0.6)', fontSize: 7.5, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 3 }}>your match</p>
+                <p style={{ color: '#D98E4A', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>9.4</p>
+              </motion.div>
+
+              {/* Nearby badge */}
+              <motion.div
+                className="hidden lg:block"
+                style={{ position: 'absolute', top: 130, right: -84, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, padding: '9px 12px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
+                animate={{ y: [0, 5, 0], x: [0, -2, 0] }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D98E4A', boxShadow: '0 0 8px rgba(217,142,74,0.8)' }} />
+                  <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: 9, fontWeight: 600 }}>3 shops near you</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -7, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+              >
+                <AppPhone />
+              </motion.div>
             </motion.div>
 
-            <motion.div
-              animate={{ y: [0, -7, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-            >
-              <AppPhone />
-            </motion.div>
-          </motion.div>
+          </div>
 
         </div>
       </div>
