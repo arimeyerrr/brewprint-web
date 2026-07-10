@@ -224,8 +224,8 @@ export default function Hero() {
       <div className="h-20 flex-shrink-0" />
 
       {/* ── Three-column layout: logo | text | phone ── */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-6 pb-10 pt-4">
-        <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+      <div className="relative z-10 flex-1 flex items-center justify-start px-6 pb-10 pt-4">
+        <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-8 lg:gap-10">
 
           {/* FAR LEFT: big standalone logo — desktop only */}
           <motion.img
@@ -268,7 +268,7 @@ export default function Hero() {
             {/* Desktop: title only */}
             <h1
               className="hidden lg:block font-bold text-white"
-              style={{ fontSize: 'clamp(4rem, 7vw, 7.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, marginBottom: 22 }}
+              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 6.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, marginBottom: 22 }}
             >
               Brewprint
             </h1>
@@ -291,9 +291,9 @@ export default function Hero() {
             <p className="text-white/22 text-xs mt-3 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
           </motion.div>
 
-          {/* RIGHT: phone — with extra left margin for breathing room */}
+          {/* RIGHT: phone */}
           <motion.div
-            className="relative flex-shrink-0 lg:ml-8"
+            className="relative flex-shrink-0"
             initial={{ opacity: 0, y: 36, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
