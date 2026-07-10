@@ -66,11 +66,11 @@ const SHOP_PINS = [
 function AppPhone() {
   return (
     <div style={{
-      width: 260, height: 520,
+      width: 300, height: 600,
       background: '#08111e',
-      borderRadius: 42,
+      borderRadius: 48,
       border: '1.5px solid rgba(255,255,255,0.13)',
-      boxShadow: '0 60px 140px rgba(0,0,0,0.95), 0 0 0 0.5px rgba(255,255,255,0.05) inset',
+      boxShadow: '0 70px 160px rgba(0,0,0,0.95), 0 0 0 0.5px rgba(255,255,255,0.05) inset',
       overflow: 'hidden',
       position: 'relative',
       flexShrink: 0,
@@ -199,7 +199,7 @@ function AppPhone() {
       </div>
 
       {/* Glass gloss */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 42, background: 'linear-gradient(145deg, rgba(255,255,255,0.055) 0%, transparent 40%)', pointerEvents: 'none', zIndex: 35 }} />
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 48, background: 'linear-gradient(145deg, rgba(255,255,255,0.055) 0%, transparent 40%)', pointerEvents: 'none', zIndex: 35 }} />
     </div>
   )
 }
@@ -237,21 +237,21 @@ export default function Hero() {
             <motion.img
               src="/logo.png"
               alt="Brewprint"
-              style={{ width: 'clamp(72px, 9vw, 110px)', objectFit: 'contain', filter: 'drop-shadow(0 0 18px rgba(200,120,40,0.55))', marginBottom: 16 }}
-              animate={{ y: [0, -5, 0] }}
+              style={{ width: 'clamp(90px, 12vw, 160px)', objectFit: 'contain', filter: 'drop-shadow(0 0 22px rgba(200,120,40,0.6))', marginBottom: 18 }}
+              animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.2 }}
             />
 
             <h1
               className="font-bold text-white"
-              style={{ fontSize: 'clamp(3rem, 6.5vw, 6rem)', letterSpacing: '-0.055em', lineHeight: 0.9, marginBottom: 18 }}
+              style={{ fontSize: 'clamp(4rem, 9vw, 8.5rem)', letterSpacing: '-0.055em', lineHeight: 0.88, marginBottom: 22 }}
             >
               Brewprint
             </h1>
 
             <p
-              className="text-white/45 font-medium leading-snug max-w-xs"
-              style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)', marginBottom: 30 }}
+              className="text-white/45 font-medium leading-snug max-w-sm"
+              style={{ fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', marginBottom: 34 }}
             >
               Find your perfect cup.<br className="hidden lg:block" /> Discover the shop behind it.
             </p>
@@ -259,7 +259,7 @@ export default function Hero() {
             <a
               href="#waitlist"
               className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
-              style={{ fontSize: '0.9rem', padding: '13px 32px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 36px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
+              style={{ fontSize: '1rem', padding: '15px 38px', background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)', boxShadow: '0 8px 36px rgba(217,142,74,0.42), inset 0 1px 0 rgba(255,255,255,0.2)', letterSpacing: '-0.01em' }}
             >
               Join the Waitlist →
             </a>
@@ -280,7 +280,7 @@ export default function Hero() {
             {/* Match badge — desktop only */}
             <motion.div
               className="hidden lg:block"
-              style={{ position: 'absolute', top: 65, left: -86, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(217,142,74,0.35)', borderRadius: 14, padding: '10px 14px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
+              style={{ position: 'absolute', top: 80, left: -96, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(217,142,74,0.35)', borderRadius: 14, padding: '10px 14px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
               animate={{ y: [0, -6, 0], x: [0, 2, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             >
@@ -291,7 +291,7 @@ export default function Hero() {
             {/* Nearby badge — desktop only */}
             <motion.div
               className="hidden lg:block"
-              style={{ position: 'absolute', top: 108, right: -76, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, padding: '9px 12px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
+              style={{ position: 'absolute', top: 130, right: -84, zIndex: 30, background: 'rgba(8,12,22,0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, padding: '9px 12px', backdropFilter: 'blur(16px)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }}
               animate={{ y: [0, 5, 0], x: [0, -2, 0] }}
               transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
             >

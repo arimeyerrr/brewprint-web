@@ -56,7 +56,7 @@ const STEPS = [
   },
 ]
 
-function DrinkCarousel() {
+function DrinkCarousel({ onConfirm }: { onConfirm: () => void }) {
   const [idx, setIdx] = useState(0)
   const [dir, setDir] = useState(1)
   function goNext() { setDir(1); setIdx((idx + 1) % COFFEES.length) }
@@ -109,6 +109,18 @@ function DrinkCarousel() {
           </button>
         ))}
       </div>
+
+      {/* Confirm selection — matches real app */}
+      <motion.button
+        onClick={onConfirm}
+        className="w-full mt-7 font-semibold text-black text-sm tracking-widest uppercase rounded-full cursor-pointer"
+        style={{ padding: '14px 0', background: 'white', border: 'none', letterSpacing: '0.06em' }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.15 }}
+      >
+        Confirm Selection
+      </motion.button>
     </div>
   )
 }
@@ -617,7 +629,7 @@ export default function HowItWorks() {
                   <motion.div key="carousel"
                     initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
-                    <TiltWrapper maxTilt={6}><DrinkCarousel /></TiltWrapper>
+                    <TiltWrapper maxTilt={6}><DrinkCarousel onConfirm={() => goStep(1)} /></TiltWrapper>
                   </motion.div>
                 ) : (
                   <motion.div key="phone"
