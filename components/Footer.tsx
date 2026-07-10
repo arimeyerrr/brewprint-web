@@ -14,7 +14,7 @@ export default function Footer() {
             className="font-bold text-white/70"
             style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', letterSpacing: '-0.03em' }}
           >
-            brewprint
+            Brewprint
           </span>
         </a>
 

@@ -130,7 +130,7 @@ const PREF_GROUPS = [
   },
 ]
 
-function PreferencesScreen() {
+function PreferencesScreen({ onNext }: { onNext: () => void }) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   function toggle(t: string) {
     setSelected(prev => {
@@ -183,15 +183,20 @@ function PreferencesScreen() {
         ))}
       </div>
 
-      {/* CTA */}
+      {/* CTA — clicking advances to next step */}
       <div style={{ padding: '10px 14px 14px', flexShrink: 0 }}>
-        <div style={{
-          background: 'white', borderRadius: 22, padding: '9px 0',
-          textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#000',
-          letterSpacing: '0.04em',
-        }}>
+        <motion.button
+          onClick={onNext}
+          style={{
+            width: '100%', background: 'white', borderRadius: 22, padding: '9px 0',
+            textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#000',
+            letterSpacing: '0.04em', cursor: 'pointer', border: 'none', display: 'block',
+          }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ duration: 0.1 }}
+        >
           BUILD MY FEED
-        </div>
+        </motion.button>
       </div>
     </div>
   )
@@ -315,14 +320,15 @@ function ResultsScreen() {
           <span style={{ color: '#D98E4A', fontSize: 14, fontWeight: 900, marginLeft: 'auto' }}>9.4</span>
         </div>
 
-        {/* Shop photo strip + name */}
-        <div style={{
-          height: 52, borderRadius: 8, marginBottom: 7,
-          background: 'linear-gradient(135deg, #1a2a18 0%, #0e1a10 40%, #0a1208 100%)',
-          display: 'flex', alignItems: 'flex-end', padding: '0 10px 6px',
-          border: '0.5px solid rgba(255,255,255,0.06)',
-        }}>
-          <p style={{ color: 'white', fontSize: 13, fontWeight: 700 }}>Afternoon Coffee</p>
+        {/* Shop photo — latte art image */}
+        <div style={{ height: 58, borderRadius: 8, marginBottom: 7, overflow: 'hidden', position: 'relative' }}>
+          <img
+            src="https://images.unsplash.com/photo-1501959915551-4e8d30928317?w=500&q=80&auto=format&fit=crop"
+            alt="Meyerbrews"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.08) 60%, transparent 100%)' }} />
+          <p style={{ position: 'absolute', bottom: 6, left: 10, color: 'white', fontSize: 12, fontWeight: 700 }}>Meyerbrews</p>
         </div>
 
         {/* Tags */}
@@ -350,9 +356,11 @@ function ResultsScreen() {
   )
 }
 
-const PHONE_SCREENS = [<PreferencesScreen key="prefs" />, <ResultsScreen key="results" />]
-
-function PhoneMockup({ step, slideDir }: { step: number; slideDir: number }) {
+function PhoneMockup({ step, slideDir, onNextStep }: { step: number; slideDir: number; onNextStep: () => void }) {
+  const screens = [
+    <PreferencesScreen key="prefs" onNext={onNextStep} />,
+    <ResultsScreen key="results" />,
+  ]
   return (
     <div className="relative mx-auto" style={{
       width: 260, height: 520, background: '#040404', borderRadius: 40,
@@ -377,7 +385,7 @@ function PhoneMockup({ step, slideDir }: { step: number; slideDir: number }) {
             initial="enter" animate="center" exit="exit"
             transition={{ duration: 0.38, ease: 'easeOut' }}
             className="h-full">
-            {PHONE_SCREENS[step - 1]}
+            {screens[step - 1]}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -621,7 +629,7 @@ export default function HowItWorks() {
                       scale: { duration: 0.4, ease: 'easeOut' },
                       y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 },
                     }}>
-                    <TiltWrapper maxTilt={9}><PhoneMockup step={step} slideDir={dir} /></TiltWrapper>
+                    <TiltWrapper maxTilt={9}><PhoneMockup step={step} slideDir={dir} onNextStep={() => goStep(step + 1)} /></TiltWrapper>
                   </motion.div>
                 )}
               </AnimatePresence>

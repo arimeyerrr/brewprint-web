@@ -41,7 +41,7 @@ function IOSNotification({ shop, msg, time }: { shop: string; msg: string; time:
             <path d="M22 2C12.611 2 5 9.611 5 19C5 31.5 22 58 22 58C22 58 39 31.5 39 19C39 9.611 31.389 2 22 2Z" fill="rgba(255,220,160,0.7)" />
           </svg>
         </div>
-        <span className="text-white/40 text-[10px] font-semibold tracking-widest uppercase">brewprint</span>
+        <span className="text-white/40 text-[10px] font-semibold tracking-widest uppercase">Brewprint</span>
         <span className="ml-auto text-white/25 text-[10px]">{time}</span>
       </div>
       <p className="text-white text-[13px] font-semibold leading-tight">{shop}</p>
