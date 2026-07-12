@@ -2,44 +2,42 @@
 import { motion } from 'framer-motion'
 import AnimateInView from './AnimateInView'
 
-/* ── Floating iOS-style notifications ── */
+/* ── Floating iOS-style notifications — positioned in top/bottom padding only ── */
 const FLOATERS = [
-  { title: 'New match!', msg: "Joe's Coffee scores 9.4 for you.", time: 'now', top: '4%', left: '60%', drift: [0, -16, 8, -12, 0], cycle: 14 },
-  { title: '14 new customers', msg: 'discovered your shop this week.', time: '3m ago', top: '9%', left: '6%', drift: [-10, -22, -6, -16, 0], cycle: 17 },
-  { title: 'Review received', msg: '@SarahSips rated Meyerbrews 9.1 ⭐', time: '9m ago', top: '34%', left: '65%', drift: [10, -14, 18, -8, 0], cycle: 13 },
-  { title: 'Profile trending', msg: '47 views today — up 31% this week.', time: '16m ago', top: '78%', left: '8%', drift: [14, -10, 10, -18, 0], cycle: 16 },
-  { title: 'New match!', msg: '3 drinks discovered via Brewprint today.', time: '22m ago', top: '80%', left: '58%', drift: [-8, -20, -14, -6, 0], cycle: 15 },
-  { title: 'Match score updated', msg: 'Your avg customer match is now 9.1 ↑', time: '31m ago', top: '52%', left: '66%', drift: [12, -16, 6, -20, 0], cycle: 18 },
+  { title: 'New match!', msg: "Joe's Coffee scores 9.4 for you.", time: 'now', top: '3%', left: '3%', drift: [0, -10, 5, -7, 0], cycle: 14 },
+  { title: '14 new customers', msg: 'discovered your shop this week.', time: '3m ago', top: '3%', left: '55%', drift: [-6, -15, -3, -10, 0], cycle: 17 },
+  { title: 'Profile trending', msg: '47 views today — up 31% this week.', time: '16m ago', top: '87%', left: '4%', drift: [8, -6, 6, -11, 0], cycle: 16 },
+  { title: 'Match score updated', msg: 'Your avg customer match is now 9.1 ↑', time: '31m ago', top: '87%', left: '54%', drift: [6, -10, 3, -13, 0], cycle: 18 },
 ]
 
 function IOSNotif({ title, msg, time }: { title: string; msg: string; time: string }) {
   return (
     <div style={{
-      width: 292,
-      background: 'rgba(30,30,32,0.90)',
-      backdropFilter: 'blur(26px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(26px) saturate(180%)',
-      borderRadius: 16,
-      border: '0.5px solid rgba(255,255,255,0.12)',
-      boxShadow: '0 8px 30px rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.4)',
-      padding: '11px 14px 13px',
+      width: 248,
+      background: 'rgba(28,28,30,0.92)',
+      backdropFilter: 'blur(28px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+      borderRadius: 14,
+      border: '0.5px solid rgba(255,255,255,0.10)',
+      boxShadow: '0 8px 28px rgba(0,0,0,0.75), 0 2px 6px rgba(0,0,0,0.4)',
+      padding: '10px 12px 11px',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-        {/* App icon — Brewprint logo on amber gradient */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
         <div style={{
-          width: 34, height: 34, borderRadius: 9,
-          background: 'linear-gradient(145deg, #C87A35, #5A2808)',
+          width: 28, height: 28, borderRadius: 7,
+          background: '#000',
+          border: '0.5px solid rgba(217,142,74,0.25)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           flexShrink: 0,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.45)',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.6)',
         }}>
-          <img src="/logo.png" alt="" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+          <img src="/logo.png" alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
         </div>
-        <span style={{ color: 'rgba(255,255,255,0.42)', fontSize: 11, fontWeight: 600, letterSpacing: '0.01em' }}>Brewprint</span>
-        <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, marginLeft: 'auto' }}>{time}</span>
+        <span style={{ color: 'rgba(255,255,255,0.38)', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.01em' }}>Brewprint</span>
+        <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: 10.5, marginLeft: 'auto' }}>{time}</span>
       </div>
-      <p style={{ color: 'rgba(255,255,255,0.96)', fontSize: 13, fontWeight: 600, margin: '0 0 2px', lineHeight: 1.35 }}>{title}</p>
-      <p style={{ color: 'rgba(255,255,255,0.48)', fontSize: 12, margin: 0, lineHeight: 1.4 }}>{msg}</p>
+      <p style={{ color: 'rgba(255,255,255,0.94)', fontSize: 12.5, fontWeight: 600, margin: '0 0 2px', lineHeight: 1.35 }}>{title}</p>
+      <p style={{ color: 'rgba(255,255,255,0.44)', fontSize: 11.5, margin: 0, lineHeight: 1.4 }}>{msg}</p>
     </div>
   )
 }
@@ -59,42 +57,63 @@ function AnalyticsCard() {
       viewport={{ once: true }}
       transition={{ delay: 0.6, duration: 0.7 }}
       style={{
-        background: 'rgba(8,12,22,0.92)',
-        border: '1px solid rgba(217,142,74,0.22)',
-        borderRadius: 16,
-        padding: '16px 18px 14px',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+        background: '#000',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderRadius: 14,
+        padding: '18px 20px 16px',
+        boxShadow: '0 32px 64px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.04)',
         minWidth: 220,
       }}
     >
-      <div className="flex items-center justify-between mb-3">
-        <p style={{ color: 'rgba(217,142,74,0.65)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, margin: 0 }}>Weekly Views</p>
-        <span style={{ color: '#D98E4A', fontSize: 10, fontWeight: 600 }}>↑ 31%</span>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 18 }}>
+        <div>
+          <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 600, margin: '0 0 5px' }}>Profile Views</p>
+          <p style={{ color: '#fff', fontSize: 28, fontWeight: 800, lineHeight: 1, margin: 0, letterSpacing: '-0.03em' }}>47</p>
+        </div>
+        <div style={{ background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.18)', borderRadius: 6, padding: '4px 9px', marginBottom: 3 }}>
+          <span style={{ color: 'rgba(74,222,128,0.85)', fontSize: 10.5, fontWeight: 700 }}>↑ 31%</span>
+        </div>
       </div>
-      <div style={{ display: 'flex', gap: 7, alignItems: 'flex-end', height: 72 }}>
-        {BARS.map((b, i) => (
-          <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <motion.div
-              style={{
-                width: '100%',
-                background: (b as typeof b & { hi?: boolean }).hi ? '#D98E4A' : 'rgba(217,142,74,0.22)',
-                borderRadius: '3px 3px 0 0',
-                boxShadow: (b as typeof b & { hi?: boolean }).hi ? '0 0 10px rgba(217,142,74,0.55)' : 'none',
-              }}
-              initial={{ height: 0 }}
-              whileInView={{ height: `${b.v * 64}px` }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.8 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: 7.5 }}>{b.day}</span>
-          </div>
-        ))}
+
+      {/* Chart */}
+      <div style={{ position: 'relative' }}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 72 }}>
+          {BARS.map((b, i) => (
+            <div key={i} style={{ flex: 1 }}>
+              <motion.div
+                style={{
+                  width: '100%',
+                  background: (b as typeof b & { hi?: boolean }).hi
+                    ? 'linear-gradient(to top, rgba(217,142,74,0.35) 0%, #D98E4A 100%)'
+                    : 'rgba(255,255,255,0.07)',
+                  borderRadius: '2px 2px 0 0',
+                  boxShadow: (b as typeof b & { hi?: boolean }).hi ? '0 -3px 16px rgba(217,142,74,0.3)' : 'none',
+                }}
+                initial={{ height: 0 }}
+                whileInView={{ height: `${b.v * 68}px` }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, delay: 0.9 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
+          ))}
+        </div>
+        {/* Baseline */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', marginBottom: 6 }} />
+        {/* Day labels */}
+        <div style={{ display: 'flex', gap: 4 }}>
+          {BARS.map((b, i) => (
+            <div key={i} style={{ flex: 1, textAlign: 'center' }}>
+              <span style={{ color: (b as typeof b & { hi?: boolean }).hi ? 'rgba(217,142,74,0.65)' : 'rgba(255,255,255,0.18)', fontSize: 8, fontWeight: (b as typeof b & { hi?: boolean }).hi ? 700 : 400 }}>{b.day}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div style={{ marginTop: 10, paddingTop: 10, borderTop: '0.5px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
-        <span style={{ color: 'rgba(255,255,255,0.38)', fontSize: 10 }}>47 views this week</span>
-        <span style={{ color: 'rgba(217,142,74,0.55)', fontSize: 10, fontWeight: 600 }}>Peak: Fri–Sat</span>
+
+      {/* Footer */}
+      <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: 9.5 }}>This week</span>
+        <span style={{ color: 'rgba(217,142,74,0.5)', fontSize: 9.5, fontWeight: 600 }}>Peak: Fri – Sat</span>
       </div>
     </motion.div>
   )
