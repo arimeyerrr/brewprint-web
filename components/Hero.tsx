@@ -39,206 +39,6 @@ function LiquidContainer({ children }: { children: React.ReactNode }) {
   )
 }
 
-/* ── Animated mug ── */
-function AnimatedMug() {
-  return (
-    <motion.div
-      style={{ position: 'relative', width: '100%' }}
-      initial={{ opacity: 0, scale: 0.94 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-    >
-      {/* Ambient glow behind mug */}
-      <div style={{ position: 'absolute', top: '20%', left: '5%', right: '15%', height: '55%', background: 'radial-gradient(ellipse, rgba(175,78,16,0.55) 0%, rgba(100,40,8,0.25) 50%, transparent 78%)', filter: 'blur(48px)', pointerEvents: 'none' }} />
-
-      <svg viewBox="0 0 500 500" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
-        <defs>
-          {/* Clip to mug interior */}
-          <clipPath id="mugInterior">
-            <path d="M 54,58 L 374,58 L 382,434 Q 382,450 366,450 L 62,450 Q 46,450 46,434 Z" />
-          </clipPath>
-
-          {/* Coffee gradient — rich and dark */}
-          <linearGradient id="coffeeGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C05A14" />
-            <stop offset="35%" stopColor="#8C3C0A" />
-            <stop offset="100%" stopColor="#4A1A04" />
-          </linearGradient>
-
-          {/* Crema gradient */}
-          <linearGradient id="cremaGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(195,112,38,0.92)" />
-            <stop offset="40%" stopColor="rgba(238,162,58,1)" />
-            <stop offset="100%" stopColor="rgba(190,105,34,0.92)" />
-          </linearGradient>
-
-          {/* Side gloss */}
-          <linearGradient id="glossGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.07)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-          </linearGradient>
-        </defs>
-
-        {/* ── Mug body (dark fill) ── */}
-        <path
-          d="M 42,46 L 386,46 Q 400,46 400,60 L 392,440 Q 392,460 372,460 L 56,460 Q 36,460 36,440 L 28,60 Q 28,46 42,46 Z"
-          fill="rgba(4,7,14,0.98)"
-        />
-
-        {/* Handle background (dark) */}
-        <path
-          d="M 392,158 Q 470,158 470,278 Q 470,396 392,396"
-          fill="none"
-          stroke="rgba(4,7,14,0.98)"
-          strokeWidth="40"
-          strokeLinecap="round"
-        />
-
-        {/* ── Coffee fill (rises from bottom) ── */}
-        <g clipPath="url(#mugInterior)">
-          <motion.rect
-            x={40} width={338}
-            fill="url(#coffeeGrad)"
-            initial={{ y: 448, height: 2 }}
-            animate={{ y: 70, height: 380 }}
-            transition={{ duration: 3.4, ease: [0.04, 0.82, 0.16, 1.0], delay: 1.0 }}
-          />
-
-          {/* Crema layer */}
-          <motion.rect
-            x={40} width={338} height={18} rx={5}
-            fill="url(#cremaGrad)"
-            initial={{ y: 450, opacity: 0 }}
-            animate={{ y: 66, opacity: 1 }}
-            transition={{
-              y: { duration: 3.4, ease: [0.04, 0.82, 0.16, 1.0], delay: 1.0 },
-              opacity: { duration: 0.6, delay: 4.0 },
-            }}
-          />
-
-          {/* Coffee surface shine */}
-          <motion.ellipse
-            cx={214} cy={72} rx={110} ry={7}
-            fill="rgba(240,155,50,0.18)"
-            animate={{ opacity: [0.1, 0.28, 0.1], ry: [5, 9, 5] }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 4.8 }}
-          />
-        </g>
-
-        {/* ── Liquid surface wave ── */}
-        <g clipPath="url(#mugInterior)">
-          <motion.path
-            fill="rgba(210,110,30,0.28)"
-            animate={{
-              d: [
-                'M 40,72 Q 120,60 214,72 Q 300,84 378,72 L 378,94 Q 300,106 214,94 Q 120,82 40,94 Z',
-                'M 40,72 Q 120,84 214,72 Q 300,60 378,72 L 378,94 Q 300,82 214,94 Q 120,106 40,94 Z',
-              ]
-            }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 4.6, repeatType: 'mirror' }}
-          />
-        </g>
-
-        {/* ── Mug outline (draw-in animation) ── */}
-        <motion.path
-          d="M 42,46 L 386,46 Q 400,46 400,60 L 392,440 Q 392,460 372,460 L 56,460 Q 36,460 36,440 L 28,60 Q 28,46 42,46 Z"
-          fill="none"
-          stroke="rgba(217,142,74,0.7)"
-          strokeWidth="2.5"
-          strokeDasharray="2000 2000"
-          initial={{ strokeDashoffset: 2000 }}
-          animate={{ strokeDashoffset: 0 }}
-          transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1], delay: 0.5 }}
-        />
-
-        {/* Handle outline */}
-        <motion.path
-          d="M 392,158 Q 470,158 470,278 Q 470,396 392,396"
-          fill="none"
-          stroke="rgba(217,142,74,0.7)"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeDasharray="400 400"
-          initial={{ strokeDashoffset: 400 }}
-          animate={{ strokeDashoffset: 0 }}
-          transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1], delay: 1.8 }}
-        />
-
-        {/* Handle inner arc */}
-        <motion.path
-          d="M 392,200 Q 432,200 432,278 Q 432,356 392,356"
-          fill="none"
-          stroke="rgba(217,142,74,0.22)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.6 }}
-        />
-
-        {/* Rim top highlight */}
-        <motion.path
-          d="M 28,60 Q 28,46 42,46 L 386,46 Q 400,46 400,60"
-          fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="1.5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.8 }}
-        />
-
-        {/* Inner rim line */}
-        <motion.line
-          x1={54} y1={62} x2={374} y2={62}
-          stroke="rgba(255,255,255,0.06)"
-          strokeWidth="1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        />
-
-        {/* Left-side gloss streak */}
-        <motion.path
-          d="M 42,88 Q 58,80 74,88 L 70,240 Q 54,248 38,240 Z"
-          fill="url(#glossGrad)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1.2 }}
-        />
-
-        {/* ── Steam wisps (appear after fill) ── */}
-        {[
-          { x: 130, dx: 16, delay: 4.6 },
-          { x: 214, dx: -14, delay: 5.1 },
-          { x: 298, dx: 12, delay: 4.9 },
-        ].map((s, i) => (
-          <motion.path
-            key={i}
-            d={`M ${s.x},48 Q ${s.x + s.dx},18 ${s.x},-10 Q ${s.x - s.dx},-38 ${s.x + s.dx * 0.6},-64`}
-            fill="none"
-            stroke="rgba(255,255,255,0.22)"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: [0, 1, 1, 0], opacity: [0, 0.5, 0.35, 0], y: [0, -8, -18, -28] }}
-            transition={{ duration: 3.0, delay: s.delay, repeat: Infinity, repeatDelay: 1.0, ease: 'easeInOut' }}
-          />
-        ))}
-
-        {/* Bottom shadow line */}
-        <motion.ellipse
-          cx={214} cy={472} rx={170} ry={8}
-          fill="rgba(0,0,0,0.5)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        />
-      </svg>
-    </motion.div>
-  )
-}
-
-/* ── Hero ── */
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden">
@@ -256,7 +56,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
       <div className="h-20 flex-shrink-0" />
 
-      {/* ── Main two-column layout ── */}
+      {/* ── Two-column layout ── */}
       <div className="relative z-10 flex-1 flex items-center py-8">
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-10 lg:px-16">
 
@@ -268,22 +68,9 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
-            <motion.img
-              src="/logo.png"
-              alt="Brewprint"
-              style={{
-                height: 'clamp(4rem, 7vw, 8rem)',
-                width: 'auto',
-                marginBottom: 20,
-                filter: 'drop-shadow(0 0 30px rgba(200,120,40,0.7)) drop-shadow(0 0 10px rgba(255,180,60,0.35))',
-              }}
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.0 }}
-            />
-
             <h1
               className="font-bold text-white"
-              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 7.5rem)', letterSpacing: '-0.058em', lineHeight: 0.88, marginBottom: 22 }}
+              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 7.5rem)', letterSpacing: '-0.058em', lineHeight: 0.88, marginBottom: 24 }}
             >
               Brewprint
             </h1>
@@ -312,11 +99,25 @@ export default function Hero() {
             <p className="text-white/20 text-sm mt-4 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
           </motion.div>
 
-          {/* RIGHT: animated mug */}
+          {/* RIGHT: large logo */}
           <div className="flex items-center justify-center lg:justify-end">
-            <div style={{ width: '100%', maxWidth: 480 }}>
-              <AnimatedMug />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+            >
+              <motion.img
+                src="/logo.png"
+                alt="Brewprint"
+                style={{
+                  width: 'clamp(220px, 38vw, 480px)',
+                  height: 'auto',
+                  filter: 'drop-shadow(0 0 80px rgba(200,120,40,0.9)) drop-shadow(0 0 32px rgba(255,160,50,0.55)) drop-shadow(0 0 8px rgba(255,210,120,0.3))',
+                }}
+                animate={{ y: [0, -18, 0] }}
+                transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.3 }}
+              />
+            </motion.div>
           </div>
 
         </div>
