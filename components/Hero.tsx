@@ -258,12 +258,12 @@ export default function Hero() {
 
       {/* ── Main two-column layout ── */}
       <div className="relative z-10 flex-1 flex items-center py-8">
-        <div className="w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-6 px-10 lg:px-14">
+        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-10 lg:px-16">
 
-          {/* LEFT: text — scaled up */}
+          {/* LEFT: text */}
           <motion.div
-            className="flex-shrink-0 flex flex-col items-center lg:items-start text-center lg:text-left"
-            style={{ width: 'clamp(240px, 38vw, 500px)' }}
+            className="flex flex-col items-center lg:items-start text-center lg:text-left"
+            style={{ minWidth: 0 }}
             initial={{ opacity: 0, x: -28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
@@ -283,7 +283,7 @@ export default function Hero() {
 
             <h1
               className="font-bold text-white"
-              style={{ fontSize: 'clamp(4rem, 7.5vw, 9rem)', letterSpacing: '-0.058em', lineHeight: 0.88, marginBottom: 22 }}
+              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 7.5rem)', letterSpacing: '-0.058em', lineHeight: 0.88, marginBottom: 22 }}
             >
               Brewprint
             </h1>
@@ -313,8 +313,10 @@ export default function Hero() {
           </motion.div>
 
           {/* RIGHT: animated mug */}
-          <div className="flex-1 flex items-center justify-center lg:justify-end" style={{ maxWidth: 520 }}>
-            <AnimatedMug />
+          <div className="flex items-center justify-center lg:justify-end">
+            <div style={{ width: '100%', maxWidth: 480 }}>
+              <AnimatedMug />
+            </div>
           </div>
 
         </div>
