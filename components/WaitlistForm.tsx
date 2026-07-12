@@ -121,25 +121,61 @@ export default function WaitlistForm() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
           >
-            <p
-              className="text-[10px] tracking-[0.35em] uppercase font-medium mb-6"
-              style={{ color: 'rgba(217,142,74,0.55)' }}
-            >
-              waitlist
-            </p>
-            <h2
-              className="font-bold text-white leading-none mb-6"
-              style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', letterSpacing: '-0.03em' }}
-            >
-              Join the<br />Experience.
+            {/* Coffee bean cluster — decorative */}
+            <div className="relative inline-block mb-8">
+              {[
+                { x: -28, y: -6, r: -22, s: 22 }, { x: -14, y: -18, r: 8, s: 18 },
+                { x: 4, y: -22, r: -35, s: 20 }, { x: 22, y: -12, r: 15, s: 16 },
+                { x: -36, y: 8, r: 40, s: 15 }, { x: 34, y: 4, r: -10, s: 17 },
+              ].map((b, i) => (
+                <motion.svg
+                  key={i}
+                  viewBox="0 0 30 20"
+                  style={{ position: 'absolute', left: `calc(50% + ${b.x}px)`, top: b.y, width: b.s, height: 'auto', transform: `rotate(${b.r}deg)` }}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  whileInView={{ opacity: 0.38, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
+                >
+                  <ellipse cx="15" cy="10" rx="13" ry="7.5" fill="rgba(180,95,20,0.55)" />
+                  <path d="M15,4 C18.5,7 18.5,13 15,16" fill="none" stroke="rgba(90,40,5,0.7)" strokeWidth="1.5" strokeLinecap="round" />
+                </motion.svg>
+              ))}
+              <p className="text-[10px] tracking-[0.35em] uppercase font-medium" style={{ color: 'rgba(217,142,74,0.5)' }}>
+                waitlist
+              </p>
+            </div>
+
+            {/* Mixed-weight heading: light "Join the" + heavy italic "Waitlist." */}
+            <h2 style={{ lineHeight: 1, marginBottom: 28 }}>
+              <span style={{
+                display: 'block',
+                fontSize: 'clamp(1.8rem, 3.2vw, 3rem)',
+                fontWeight: 300,
+                color: 'rgba(255,255,255,0.38)',
+                letterSpacing: '0.02em',
+                marginBottom: 2,
+              }}>
+                Join the
+              </span>
+              <span style={{
+                display: 'block',
+                fontSize: 'clamp(3.4rem, 6.5vw, 6rem)',
+                fontWeight: 900,
+                fontStyle: 'italic',
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                color: '#fff',
+                letterSpacing: '-0.03em',
+                lineHeight: 0.9,
+              }}>
+                Waitlist.
+              </span>
             </h2>
-            <p className="text-white/38 text-xl leading-relaxed mb-8 max-w-sm mx-auto lg:mx-0">
+
+            <p className="text-white/38 text-lg leading-relaxed mb-8 max-w-sm mx-auto lg:mx-0">
               We&apos;re launching soon. Be among the first to find your perfect cup.
             </p>
-            <p
-              className="text-base font-medium"
-              style={{ color: 'rgba(217,142,74,0.65)' }}
-            >
+            <p className="text-base font-medium" style={{ color: 'rgba(217,142,74,0.65)' }}>
               Early access guaranteed. →
             </p>
           </motion.div>

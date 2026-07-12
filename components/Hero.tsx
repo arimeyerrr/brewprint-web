@@ -53,74 +53,99 @@ export default function Hero() {
         <WaveLayer duration={6.5} delay={0.9} opacity={0.42} yRange={8}  color="rgba(205,108,30,0.55)" path="M0,62 C120,56 240,68 360,62 C480,56 600,68 720,62 C840,56 960,68 1080,62 C1200,56 1340,66 1440,62 L1440,90 L0,90 Z" />
       </LiquidContainer>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none" />
       <div className="h-20 flex-shrink-0" />
 
-      {/* ── Two-column layout ── */}
-      <div className="relative z-10 flex-1 flex items-center py-8">
-        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-10 lg:px-16">
+      {/* ── Stacked text + rising logo ── */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center">
 
-          {/* LEFT: text */}
-          <motion.div
-            className="flex flex-col items-center lg:items-start text-center lg:text-left"
-            style={{ minWidth: 0 }}
-            initial={{ opacity: 0, x: -28 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          >
-            <h1
-              className="font-bold text-white"
-              style={{ fontSize: 'clamp(3.5rem, 5.8vw, 7.5rem)', letterSpacing: '-0.058em', lineHeight: 0.88, marginBottom: 24 }}
-            >
-              Brewprint
-            </h1>
+        {/* Text block */}
+        <div className="relative w-full select-none" style={{ isolation: 'isolate' }}>
 
-            <p
-              className="text-white/50 font-medium leading-relaxed"
-              style={{ fontSize: 'clamp(1rem, 1.5vw, 1.3rem)', marginBottom: 36, maxWidth: 360 }}
-            >
-              Find your perfect cup.<br />Discover the shop behind it.
-            </p>
-
-            <a
-              href="#waitlist"
-              className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
-              style={{
-                fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
-                padding: 'clamp(14px, 1.5vw, 18px) clamp(32px, 3vw, 48px)',
-                background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)',
-                boxShadow: '0 10px 40px rgba(217,142,74,0.48), inset 0 1px 0 rgba(255,255,255,0.22)',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Join the Waitlist →
-            </a>
-
-            <p className="text-white/20 text-sm mt-4 tracking-wide">Coming fall 2026. Early access guaranteed.</p>
-          </motion.div>
-
-          {/* RIGHT: large logo */}
-          <div className="flex items-center justify-center lg:justify-end">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-            >
-              <motion.img
-                src="/logo.png"
-                alt="Brewprint"
+          {/* 4 rows of BREWPRINT fading at top + bottom */}
+          <div style={{
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+          }}>
+            {[0, 1, 2, 3].map((i) => (
+              <motion.div
+                key={i}
                 style={{
-                  width: 'clamp(220px, 38vw, 480px)',
-                  height: 'auto',
-                  filter: 'drop-shadow(0 0 80px rgba(200,120,40,0.9)) drop-shadow(0 0 32px rgba(255,160,50,0.55)) drop-shadow(0 0 8px rgba(255,210,120,0.3))',
+                  fontSize: 'clamp(4.8rem, 17.5vw, 23rem)',
+                  fontWeight: 900,
+                  letterSpacing: '-0.045em',
+                  lineHeight: 0.87,
+                  color: 'rgba(255,255,255,0.085)',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
                 }}
-                animate={{ y: [0, -18, 0] }}
-                transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.3 }}
-              />
-            </motion.div>
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.0, delay: 0.1 + i * 0.07 }}
+              >
+                BREWPRINT
+              </motion.div>
+            ))}
           </div>
 
+          {/* Logo rising from center through the text */}
+          <motion.div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+            }}
+            initial={{ opacity: 0, scale: 0.78, y: 60 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.9, ease: [0.08, 0.94, 0.22, 1.0], delay: 0.65 }}
+          >
+            <motion.img
+              src="/logo.png"
+              alt="Brewprint"
+              style={{
+                width: 'clamp(190px, 29vw, 400px)',
+                height: 'auto',
+                filter: 'drop-shadow(0 0 90px rgba(200,120,40,0.95)) drop-shadow(0 0 36px rgba(255,160,50,0.6)) drop-shadow(0 0 10px rgba(255,210,120,0.35))',
+              }}
+              animate={{ y: [0, -16, 0] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.3, delay: 2.6 }}
+            />
+          </motion.div>
         </div>
+
+        {/* CTA below the text block */}
+        <motion.div
+          className="flex flex-col items-center text-center"
+          style={{ marginTop: 'clamp(20px, 3.5vw, 44px)' }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 1.4 }}
+        >
+          <p
+            className="text-white/45 font-medium leading-relaxed"
+            style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.2rem)', marginBottom: 26, maxWidth: 340 }}
+          >
+            Find your perfect cup.<br />Discover the shop behind it.
+          </p>
+
+          <a
+            href="#waitlist"
+            className="inline-block font-semibold text-white rounded-full transition-all duration-200 hover:scale-105 cursor-pointer"
+            style={{
+              fontSize: 'clamp(0.9rem, 1.15vw, 1.05rem)',
+              padding: 'clamp(13px, 1.4vw, 17px) clamp(30px, 2.8vw, 46px)',
+              background: 'linear-gradient(135deg, #A85A18 0%, #D98E4A 50%, #B86820 100%)',
+              boxShadow: '0 10px 40px rgba(217,142,74,0.48), inset 0 1px 0 rgba(255,255,255,0.22)',
+              letterSpacing: '-0.01em',
+            }}
+          >
+            Join the Waitlist →
+          </a>
+
+          <p className="text-white/18 text-xs mt-4 tracking-widest uppercase">Coming fall 2026 · Early access guaranteed</p>
+        </motion.div>
       </div>
 
       <div className="relative z-10 flex justify-center pb-5 opacity-25">
